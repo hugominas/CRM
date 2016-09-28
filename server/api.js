@@ -16,7 +16,7 @@ let options = {
     }
 };
 // Create a server with a host and port
-let server = Hapi.createServer(3006, options);
+let server = Hapi.createServer(3007, options);
 let options1 = {
 	cookieOptions: {
 		password: 'm4rl3n3',
@@ -38,4 +38,4 @@ server.pack.register({
 /// ADD THIS TO MAIN INDEX
 server.route(routes.endpoints);
 server.start();
-console.log("tracking running http://localhost:3006/");
+console.log("tracking running http://localhost:3007/");

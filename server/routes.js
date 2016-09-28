@@ -11,5 +11,5 @@ exports.endpoints = [
 	//affid = 'other' -> organic pixel
 	//{method: ['POST', 'GET'], 	path: '/', 	config: Track.universal},    // Info por referer
 	{method: ['POST', 'GET'], 	path: '/admin/{param*}', 	config: Admin.adminRoute},    // Info por referer
-	{method: ['POST', 'GET'], 	path: '/track/{campid}/{operation}/{param*}', 	config: Conv.convRoute()}
+	{method: ['POST', 'GET'], 	path: '/track/{campid}/{action}/{param*}', 	config: Conv.convRoute()}
 ];
