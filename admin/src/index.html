@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>axiostest</title>
+
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+// Make a request for a user with a given ID
+axios.get('/track')
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+</script>
+
+</head>
+
+<body>
+
+
+</body>
+</html>
