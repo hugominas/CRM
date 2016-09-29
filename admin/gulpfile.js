@@ -40,7 +40,7 @@ function bundle() {
         .on('error', gutil.log.bind(gutil, 'Browserify Error'))
         .pipe(source('dist/assets/js/bundle.js'))
         .pipe(buffer())
-        .pipe(uglify())
+      //  .pipe(uglify())
         .pipe(gulp.dest(''));
         browserSync.reload();
         return;
@@ -110,9 +110,9 @@ gulp.task('html', () =>
  */
  gulp.task('documentation', () =>
  {
-   return gulp.src(["./src/assets/js/**/*.js"])
-    .pipe(wrapDocco({src: 'template.html'}))
-    .pipe(gulp.dest('./dist/documentation'))
+  // return gulp.src(["./src/assets/js/**/*.js"])
+    //.pipe(wrapDocco({src: 'template.html'}))
+  //  .pipe(gulp.dest('./dist/documentation'))
  });
  /**
  * This task will copy all files from libs into 'dist/css'.

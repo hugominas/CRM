@@ -1,31 +1,33 @@
 import React from "react";
+import { Link } from "react-router";
 
-import Filters from "../components/layout/Filters";
-import Calendar from "../components/layout/Calendar";
-import Header from "../components/layout/Header";
-import Coaches from "../components/layout/Coaches";
-import HeaderClass from "../components/layout/HeaderClass";
-import CalendarClass from "../components/layout/CalendarClass";
-
-import CalendarStore from "../stores/CalendarStore";
-
-//import * as CalendarActions from "../actions/CalendarActions";
+import Footer from "../components/layout/Footer";
+import Nav from "../components/layout/Nav";
 
 export default class Layout extends React.Component {
-  constructor() {
-    super();
-  }
-
-
   render() {
-    let templateHtml = <div><Filters location={location} /><Header location={location} /><Calendar location={location} /></div>
+    const { location } = this.props;
+    const containerStyle = {
+      marginTop: "60px"
+    };
 
-    if(CalendarStore.activeFilters.class.length>0){
-      templateHtml = <div class="schedule-class"><Coaches /><HeaderClass location={location} /><CalendarClass location={location} /></div>
-    }
+    return (
+      <div>
 
-    //console.log(templateHtml)
+        <Nav location={location} />
 
-    return templateHtml;
+        <div class="container" style={containerStyle}>
+          <div class="row">
+            <div class="col-lg-12">
+
+              {this.props.children}
+
+            </div>
+          </div>
+          <Footer/>
+        </div>
+      </div>
+
+    );
   }
 }

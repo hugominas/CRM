@@ -1,29 +1,22 @@
-<!DOCTYPE HTML>
-
-<html>
-
+<!doctype html>
+<html lang="en" ng-app="RDash">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>axiostest</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
-<script>
-// Make a request for a user with a given ID
-axios.get('/track')
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-</script>
+	<title>CRM</title>
+  <!-- STYLES -->
+  <!-- build:css lib/css/main.min.css -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css">
 
 </head>
-
 <body>
 
+
+<div id="app"></div>
+<script type="text/javascript" src="assets/js/bundle.js"></script>
 
 </body>
 </html>

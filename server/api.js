@@ -20,8 +20,7 @@ let server = Hapi.createServer(3007, options);
 let options1 = {
 	cookieOptions: {
 		password: 'm4rl3n3',
-		isSecure: false,
-		path: '/'
+		isSecure: false
 	}
 };
 ///LOG ERRORS
