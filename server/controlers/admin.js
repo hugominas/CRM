@@ -8,7 +8,7 @@ function adminApp (){
   this.getVisit  = require('./track').getVisitData;
   this.db  = this.Db.dbTrackLocal();
   this.mDB = require('mongodb');
-  this.data = this.db.collection('data');
+  this.data = this.lead = this.db.collection('data');
   this.users = this.db.collection('user');
   this.campaigns = this.db.collection('campaigns');
 }
@@ -74,7 +74,7 @@ adminApp.prototype.get= function() {
             break;
         }
 
-        _this.[request.params.what].find(query)
+        _this[request.params.what].find(query)
         .then((resultArr)=>{
           reply(resultArr);
         })
@@ -83,7 +83,7 @@ adminApp.prototype.get= function() {
       }
     }
   }
-}
+
 
 //method
 adminApp.prototype.set = function() {
@@ -116,7 +116,7 @@ adminApp.prototype.set = function() {
             break;
         }
 
-        _this.[request.params.what].find(query)
+        _this[request.params.what].find(query)
         .then((resultArr)=>{
           reply(resultArr);
         })
@@ -125,7 +125,7 @@ adminApp.prototype.set = function() {
       }
     }
   }
-}
+
 
 //method
 adminApp.prototype.del= function() {
@@ -158,7 +158,7 @@ adminApp.prototype.del= function() {
             break;
         }
 
-        _this.[request.params.what].find(query)
+        _this[request.params.what].find(query)
         .then((resultArr)=>{
           reply(resultArr);
         })
@@ -167,7 +167,7 @@ adminApp.prototype.del= function() {
       }
     }
   }
-}
+
 
 
 exports.admin = new adminApp();
