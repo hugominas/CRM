@@ -56,12 +56,12 @@ trackData.prototype.convRoute = function() {
               request.session.set('leadId', curr);
               if((request.params.action!='start' || request.params.action!='visit') && request.params.multi!=='single'){
                 _this.convSave({campid:request.params.campid, action:request.params.action}, requestExtraParts).then((curr)=>{
-                  reply({status:'OK',leadId:curr});
+                  reply({status:'OK',data:curr}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
                 }).catch((err)=>{
-                  reply({status:'NOK',message:err});
+                  reply({status:'NOK',data:err}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
                 })
               }else{
-                reply({status:'NOK',message:'you can only save one lead'});
+                reply({status:'NOK',data:'you can only save one lead'}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
               }
             })
           });
@@ -69,20 +69,20 @@ trackData.prototype.convRoute = function() {
       }else if(_this.checkForHexRegExp.test(requestExtraParts.leadId)){
           //SAVE DATA
           _this.convSave({campid:request.params.campid, action:request.params.action}, requestExtraParts).then((curr)=>{
-            reply({status:'OK',leadId:curr});
+            reply({status:'OK',data:curr}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
           }).catch((err)=>{
-            reply({status:'NOK',message:err});
+            reply({status:'NOK',data:err}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
           })
       }else if(typeof sessLeadId !== 'undefined' &&  request.params.multi!=='single'){
           requestExtraParts.leadId=sessLeadId;
           //SAVE DATA WITH SESSION
           _this.convSave({campid:request.params.campid, action:request.params.action}, requestExtraParts).then((curr)=>{
-            reply({status:'OK',leadId:curr});
+            reply({status:'OK',data:curr}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
           }).catch((err)=>{
-            reply({status:'NOK',message:err});
+            reply({status:'NOK',data:err}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
           })
       }else{
-        reply({status:'NOK',message:'you can only save one lead'});
+        reply({status:'NOK',data:'you can only save one lead'}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
       }
     }
   }

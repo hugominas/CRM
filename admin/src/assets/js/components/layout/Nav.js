@@ -20,6 +20,7 @@ export default class Nav extends React.Component {
 
     const dashboardClass = location.pathname === "/" ? "active" : "";
     const campaignsClass = location.pathname.match(/^\/campaigns/) ? "active" : "";
+    const flowsClass = location.pathname.match(/^\/flows/) ? "active" : "";
     const usersClass = location.pathname.match(/^\/users/) ? "active" : "";
     const settingsClass = location.pathname.match(/^\/settings/) ? "active" : "";
     const navClass = collapsed ? "collapse" : "";
@@ -45,6 +46,9 @@ export default class Nav extends React.Component {
               </li>
               <li class={usersClass}>
                 <Link to="users" onClick={this.toggleCollapse.bind(this)}>Users</Link>
+              </li>
+              <li class={flowsClass}>
+                <Link to="flows" onClick={this.toggleCollapse.bind(this)}>Flows</Link>
               </li>
               <li class={settingsClass}>
                 <Link to="settings" onClick={this.toggleCollapse.bind(this)}>Settings</Link>
