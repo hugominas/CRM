@@ -57,11 +57,14 @@
     "run-sequence": "^1.2.2",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.7.0"
+    "watchify": "^3.7.0",
+    "intern": "~2.2.2"
   },
   "engines": {
     "node": ">=0.12.0"
   },
-  "private": true,
-  "scripts": {}
+	"scripts": {
+		"test": "intern-runner config=tests/intern"
+  },
+  "private": true
 }

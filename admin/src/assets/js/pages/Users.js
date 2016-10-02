@@ -1,49 +1,49 @@
 import React from "react";
 
-import Todo from "../components/Todo";
-import * as TodoActions from "../actions/TodoActions";
-import TodoStore from "../stores/TodoStore";
+import Lead from "../components/Lead";
+import * as LeadActions from "../actions/LeadsActions";
+import LeadStore from "../stores/Leads";
 
 
 export default class Users extends React.Component {
   constructor() {
     super();
-    this.getTodos = this.getTodos.bind(this);
+    this.getLeads = this.getLeads.bind(this);
     this.state = {
-      todos: TodoStore.getAll(),
+      leads: LeadStore.getAll(),
     };
   }
 
   componentWillMount() {
-    TodoStore.on("change", this.getTodos);
+    LeadStore.on("change", this.getLeads);
   }
 
   componentWillUnmount() {
-    TodoStore.removeListener("change", this.getTodos);
+    LeadStore.removeListener("change", this.getLeads);
   }
 
-  getTodos() {
+  getLeads() {
     this.setState({
-      todos: TodoStore.getAll(),
+      leads: LeadStore.getAll(),
     });
   }
 
-  reloadTodos() {
-    TodoActions.reloadTodos();
+  reloadLeads() {
+    LeadActions.reloadLeads();
   }
 
   render() {
-    const { todos } = this.state;
+    const { leads } = this.state;
 
-    const TodoComponents = todos.map((todo) => {
-        return <Todo key={todo.id} {...todo}/>;
+    const LeadComponents = leads.map((lead) => {
+        return <Lead key={lead.id} {...lead}/>;
     });
 
     return (
       <div>
-        <button onClick={this.reloadTodos.bind(this)}>Reload!</button>
-        <h1>Todos</h1>
-        <ul>{TodoComponents}</ul>
+        <button onClick={this.reloadLeads.bind(this)}>Reload!</button>
+        <h1>Leads</h1>
+        <ul>{LeadComponents}</ul>
       </div>
     );
   }

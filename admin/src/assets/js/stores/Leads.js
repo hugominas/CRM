@@ -2,10 +2,10 @@ import { EventEmitter } from "events";
 
 import dispatcher from "../dispatcher";
 
-class TodoStore extends EventEmitter {
+class LeadsStore extends EventEmitter {
   constructor() {
     super()
-    this.todos = [
+    this.leads = [
       {
         id: 113464613,
         text: "Go Shopping",
@@ -22,7 +22,7 @@ class TodoStore extends EventEmitter {
   createTodo(text) {
     const id = Date.now();
 
-    this.todos.push({
+    this.leads.push({
       id,
       text,
       complete: false,
@@ -32,16 +32,16 @@ class TodoStore extends EventEmitter {
   }
 
   getAll() {
-    return this.todos;
+    return this.leads;
   }
 
   handleActions(action) {
     switch(action.type) {
-      case "CREATE_TODO": {
+      case "CREATE_LEAD": {
         this.createTodo(action.text);
         break;
       }
-      case "RECEIVE_TODOS": {
+      case "RECEIVE_LEAD": {
         this.todos = action.todos;
         this.emit("change");
         break;
@@ -51,7 +51,7 @@ class TodoStore extends EventEmitter {
 
 }
 
-const todoStore = new TodoStore;
-dispatcher.register(todoStore.handleActions.bind(todoStore));
+const leadStore = new LeadStore;
+dispatcher.register(leadStore.handleActions.bind(leadStore));
 
-export default todoStore;
+export default leadStore;

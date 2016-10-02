@@ -44,7 +44,6 @@ trackData.prototype.convRoute = function() {
         //_this.log('In conv Route ' + JSON.stringify(request.params) + JSON.stringify(requestExtraParts))
         // CHECK IF THERE IS A LEADID IF NODE SAVE VISIT
         let sessLeadId = request.session.get('leadId');
-        console.log(sessLeadId);
         if(!requestExtraParts.leadId && typeof sessLeadId === 'undefined'){
           //GET VISIT data
           let response = _this.getVisit(request, reply, (response)=>{
@@ -125,14 +124,13 @@ trackData.prototype.convSave=function(type, params){
            data: params
          }
 
+
          // FIND VISIT
          _this.data.find({leadid: params.leadId, action:type.action}).then((resultArr)=>{
-           let leadoforError = convObj.data.leadId;
            if(resultArr.length>0){
             //CHECK IF ITS THE SAME
-            let toSave = true;
-            resultArr.map((result)=>{if(_this.deepCompare(result.data,convObj.data)) toSave=false; })
-            if(toSave){
+            //ITS OPEN BUT WITH SOME SAFTY
+            if(resultArr.filter((result)=>{ if(result.data.leadId)result.data.leadId=''+result.data.leadId;return _this.deepCompare(result.data,convObj.data) }).length==0){
               //JUST INSERT
               _this.data.insert(convObj).then((result)=>{
                  resolve(result.ops[0].leadid)
@@ -140,7 +138,7 @@ trackData.prototype.convSave=function(type, params){
                  reject(err)
                })
             }else{
-              reject('lead already saved with this data id - '+leadoforError);
+              reject('lead already saved with this data id - '+convObj.data.leadId);
             }
           }else{
             //JUST INSERT
