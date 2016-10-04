@@ -1,31 +1,13 @@
-define(function (require) {
-  var tdd = require('intern!tdd');
+'use strict';
+import registerSuite from 'intern!object';
 
-  tdd.suite('Suite name', function () {
-    tdd.before(function () {
-      // executes before suite starts
-    });
+registerSuite({
 
-    tdd.after(function () {
-      // executes after suite ends
-    });
-
-    tdd.beforeEach(function () {
-      // executes before each test
-    });
-
-    tdd.afterEach(function () {
-      // executes after each test
-    });
-
-    tdd.test('Test foo', function () {
-      // a test case
-    });
-
-    tdd.test('Test bar', function () {
-      // another test case
-    });
-
-    // …
-	});
-  });
+  setup() {},
+ beforeEach() {},
+ afterEach() {},
+ teardown() {},
+ testA() {},
+ testB() {},
+ testC() {}
+});

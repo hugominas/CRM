@@ -53,7 +53,7 @@ trackData.prototype.convRoute = function() {
               requestExtraParts.leadId=curr;
               //SET LEAD AS TRACKING ID
               request.session.set('leadId', curr);
-              if((request.params.action!='start' || request.params.action!='visit') && request.params.multi!=='single'){
+              if((request.params.action!='start' || request.params.action!='visit')){
                 _this.convSave({campid:request.params.campid, action:request.params.action}, requestExtraParts).then((curr)=>{
                   reply({status:'OK',data:curr}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
                 }).catch((err)=>{
@@ -123,8 +123,6 @@ trackData.prototype.convSave=function(type, params){
            action: type.action,
            data: params
          }
-
-
          // FIND VISIT
          _this.data.find({leadid: params.leadId, action:type.action}).then((resultArr)=>{
            if(resultArr.length>0){
@@ -188,7 +186,7 @@ trackData.prototype.deepCompare = function (x,y) {
       if ( typeof( x[ p ] ) !== "object" ) return false;
         // Numbers, Strings, Functions, Booleans must be strictly equal
 
-      if ( ! Object.equals( x[ p ],  y[ p ] ) ) return false;
+      if (typeof Object.equals =='function' && ! Object.equals( x[ p ],  y[ p ] ) ) return false;
         // Objects and Arrays must be tested recursively
     }
 

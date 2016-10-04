@@ -4,7 +4,8 @@
   "description": "",
   "main": "api.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "lab ./tests -t 75 -v",
+    "test-cov-html": "lab server/tests -r html -o server/tests/coverage.html"
   },
   "author": "",
   "license": "ISC",
