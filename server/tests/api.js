@@ -11,10 +11,10 @@ let affectedLeadsToDelete = [];
 
 suite('API operations', () => {
 
-    test('Check if can set user', (done)=> {
+    test('Check if can put user', (done)=> {
       var options = {
-          method: "GET",
-          url: "/api/user",
+          method: "POST",
+          url: "/api/users",
           payload:{
             data:{
               name:'Hugo Rodrigues',
@@ -24,22 +24,61 @@ suite('API operations', () => {
           }
       };
       server.inject(options, function (response) {
+
         let resp = JSON.parse(response.payload);
         expect(resp.status).to.equal('OK');
-        expect(/^[0-9a-fA-F]{24}$/.test(resp.data)).to.be.true();
+        expect(resp.data.insertedCount).to.be.equal(1);
         //to delete
-        affectedLeadsToDelete.push(resp.data)
+        affectedLeadsToDelete.push(resp.data.insertedIds[1])
         done();
       })
     });
 		test('Check if can read user', (done)=> {
-			done();
+      var options = {
+          method: "GET",
+          url: "/api/users/"+encodeURIComponent('hugo.rodrigues@hiperformancesales.com')
+      };
+      server.inject(options, function (response) {
+        let resp = JSON.parse(response.payload);
+        expect(resp.status).to.equal('OK');
+        //to delete
+        done();
+      })
 		})
-		test('Check if can put user', (done)=> {
-			done();
+		test('Check if can update user', (done)=> {
+      var options = {
+          method: "PUT",
+          url: "/api/users/"+encodeURIComponent('hugo.rodrigues@hiperformancesales.com'),
+          payload:{
+            data:{
+              name:'Rodrigues',
+              email:'hugo.teste@hiperformancesales.com',
+              pass:'1234665'
+            }
+          }
+      };
+      server.inject(options, function (response) {
+
+        let resp = JSON.parse(response.payload);
+        expect(resp.status).to.equal('OK');
+        expect(resp.data.ok).to.equal(1);
+        //to delete
+        done();
+      })
 		})
 		test('Check if can delete user', (done)=> {
-			done();
+      var options = {
+          method: "DEL",
+          url: "/api/users/"+encodeURIComponent('hugo.rodrigues@hiperformancesales.com')
+      };
+      server.inject(options, function (response) {
+        let resp = JSON.parse(response.payload);
+
+        //expect(resp.status).to.equal('OK');
+        //expect(resp.data.ok).to.equal(1);
+        //to delete
+        done();
+      })
 		})
 
     test('Check if server is saving visits with campid and single', (done)=> {

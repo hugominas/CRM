@@ -10,7 +10,7 @@ function apiApp (){
   this.mDB = require('mongodb');
   //Colections
   this.data = this.lead = this.db.collection('data');
-  this.users = this.db.collection('user');
+  this.users = this.db.collection('users');
   this.campaigns = this.db.collection('campaigns');
   this.flows = this.db.collection('flows');
 }
@@ -24,11 +24,11 @@ apiApp.prototype.CRUD = function() {
     validate: {
         params: {
           what: this.Joi.string(),
-          id: this.Joi.string().regex(/^[0-9a-fA-F]{24}$/)
+          id: this.Joi.string()
         }
     },
     handler: function(request, reply) {
-      if(_this.hasOwnProperty(request.params.what)){
+      if(_this.hasOwnProperty(request.params.what) && _this.__proto__.hasOwnProperty(request.method)){
         let q = {}
 
         //Switch dataType and query
@@ -37,8 +37,8 @@ apiApp.prototype.CRUD = function() {
             q.query = {campid: request.params.id}
             q.db = 'data';
             break;
-          case 'user':
-            q.query = {_id: request.params.id}
+          case 'users':
+            q.query = (/^[0-9a-fA-F]{24}$/.test(request.params.id))?{id: request.params.id}:{email: request.params.id};
             q.db = 'users';
             break;
           case 'lead':
@@ -51,7 +51,8 @@ apiApp.prototype.CRUD = function() {
             break;
         }
         //SEND REQUEST TO CORRECT METHOD
-        _this[request.method](q,request.params.what,request.params.id)
+        let objMethods = _this.__proto__;
+        objMethods[request.method](q,request.params.what,request.params.id,(request.payload)?request.payload.data:'', _this)
         .then((response)=>{
           reply({status:'OK',data:response}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
         }).catch((err)=>{
@@ -66,8 +67,7 @@ apiApp.prototype.CRUD = function() {
 }
 
 //method GET
-apiApp.prototype.get= function(q, what, id) {
-  let _this = this;
+apiApp.prototype.get= function(q, what, id, data, _this) {
   return new Promise((resolve, reject) => {
     _this[q.db].find(q.query)
     .then((resultArr)=>{
@@ -80,22 +80,44 @@ apiApp.prototype.get= function(q, what, id) {
 }
 
 //method SET/EDIT
-apiApp.prototype.put= function(query, what, id) {
-  let _this = this;
+apiApp.prototype.post= function(q, what, id, data, _this) {
   return new Promise((resolve, reject) => {
-    _this[q.db].find(q.query)
-    .then((resultArr)=>{
-      resolve(resultArr);
-    })
-    .catch((err)=>{
-      reject(err)
-    });
+    //UPDATE ENTRY
+    if(id){
+      _this[q.db].update(q.query,data,{ upsert: true })
+      .then((resultArr)=>{
+        resolve(resultArr);
+      })
+      .catch((err)=>{
+        reject(err)
+      });
+    }else{
+      data._id=_this.mDB.ObjectId();
+      _this[q.db].insert(data)
+      .then((resultArr)=>{
+        resolve(resultArr);
+      })
+      .catch((err)=>{
+        reject(err)
+      });
+    }
+
   });
 }
 
+//method SET/EDIT
+apiApp.prototype.put= function(q, what, id, data, _this) {
+  return new Promise((resolve, reject) => {
+    this.post(q, what, id, data, _this).then((data)=>{
+      resolve(data);
+    }).catch((err)=> {
+      reject(err);
+    });
+  })
+}
+
 //method delete
-apiApp.prototype.del= function(query, what, id) {
-  let _this = this;
+apiApp.prototype.del= function(q, what, id, data, _this) {
   return new Promise((resolve, reject) => {
     _this[q.db].find(q.query)
     .then((resultArr)=>{
