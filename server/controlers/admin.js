@@ -4,7 +4,7 @@
 function adminApp (){
   this.debug = false;
   this.Joi = require('joi');
-  this.api  = require('./api');
+  this.api  = require('./api').api;
 }
 
 //method
@@ -28,20 +28,18 @@ adminApp.prototype.auth = function(){
         }
     },
     handler: function(request, reply) {
-      let userSession = utils.checkPermission(params),
-              pasword = request.payload.password,
-                 user = request.payload.email,
-                _this = this;
+      let password = request.payload.password,
+             user = request.payload.email;
 
-                this.api.get({db:'users',query:{email: user, password:password}})
-                .then((u)=>{
-                  if(u.length==0)reply({status:'NOK',data:'invalid credentials'});
-                  delete u[0].password;
-                  request.session.set('user', curr);
-                  reply({status:'OK',data:'loged in'});
-                }).catch((err)=>{
-                  reply({status:'NOK',data:err});
-                })
+             _this.api.get({db:'users',query:{email: user, password:password}})
+              .then((u)=>{
+                if(u.length==0)reply({status:'NOK',data:'invalid credentials'});
+                delete u[0].password;
+                request.session.set('user', curr);
+                reply({status:'OK',data:'loged in'});
+              }).catch((err)=>{
+                reply({status:'NOK',data:err});
+              })
 
     }
   }

@@ -15,7 +15,7 @@ function apiApp (){
   this.flows = this.db.collection('flows');
   this.admin = require('./admin');
   //current Request
-  this.request = {}
+  this.request = {session:'internalRequesst'}
 }
 
 

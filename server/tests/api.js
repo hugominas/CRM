@@ -1,6 +1,7 @@
 'use strict';
 const Code = require('code');
 const server = require("../api");
+const Api = require("../controlers/api");
 const Lab = require('lab');
 const lab = exports.lab = Lab.script();
 
@@ -11,6 +12,30 @@ let affectedLeadsToDelete = [];
 
 suite('API operations', () => {
 
+    test('Check if user can loggin', (done)=> {
+      //setup user for login
+
+        var options = {
+            method: "POST",
+            url: "/admin/auth",
+            payload:{
+              data:{
+                email:'hugo.rodrigues@hiperformancesales.com',
+                password:'12345'
+              }
+            }
+        };
+        server.inject(options, function (response) {
+
+          let resp = JSON.parse(response.payload);
+          console.log(resp)
+          expect(resp.status).to.equal('OK');
+          expect(resp.data.insertedCount).to.be.equal(1);
+          //to delete
+          done();
+        })
+    
+    })
     test('Check if can put user', (done)=> {
       var options = {
           method: "POST",
@@ -19,7 +44,7 @@ suite('API operations', () => {
             data:{
               name:'Hugo Rodrigues',
               email:'hugo.rodrigues@hiperformancesales.com',
-              pass:'12345'
+              password:'12345'
             }
           }
       };
@@ -53,7 +78,7 @@ suite('API operations', () => {
             data:{
               name:'Rodrigues',
               email:'hugo.teste@hiperformancesales.com',
-              pass:'1234665'
+              password:'1234665'
             }
           }
       };
