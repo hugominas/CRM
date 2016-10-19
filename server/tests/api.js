@@ -81,33 +81,108 @@ suite('API operations', () => {
       })
 		})
 
-    test('Check if server is saving visits with campid and single', (done)=> {
+
+    test('Check if can put campaign', (done)=> {
+      var options = {
+          method: "POST",
+          url: "/api/campaigns",
+          payload:{
+            data:{
+              name:'campaignTeste',
+              local:'PT',
+              time: Date.now()
+            }
+          }
+      };
+      server.inject(options, function (response) {
+
+        let resp = JSON.parse(response.payload);
+        expect(resp.status).to.equal('OK');
+        expect(resp.data.insertedCount).to.be.equal(1);
+        //to delete
+        affectedLeadsToDelete.push(resp.data.insertedIds[1])
+        done();
+      })
+    });
+    test('Check if can read all campaigns', (done)=> {
       var options = {
           method: "GET",
-          url: "/track/57ebbc827c06bdfb3408800b/save/single/test1/test2"
+          url: "/api/campaigns/"
       };
-
-      //TEST START
       server.inject(options, function (response) {
         let resp = JSON.parse(response.payload);
         expect(resp.status).to.equal('OK');
-        expect(/^[0-9a-fA-F]{24}$/.test(resp.data)).to.equal(true);
-        affectedLeadsToDelete.push(resp.data)
-        //GET COOKIE
-        var header = response.headers['set-cookie'];
-        let cookie = header[0].match(/(?:[^\x00-\x20\(\)<>@\,;\:\\"\/\[\]\?\=\{\}\x7F]+)\s*=\s*(?:([^\x00-\x20\"\,\;\\\x7F]*))/);
-        options.headers = {cookie:cookie[0]};
+        //to delete
+        done();
+      })
+    })
+    test('Check if can read campaign', (done)=> {
+      var optionsCampaign = {
+          method: "GET",
+          url: "/api/campaigns/"
+      };
+      var options = {
+          method: "GET",
+          url: "/api/campaigns/"+encodeURIComponent('campaignTeste')
+      };
 
-        server.inject(options, function (response1) {
-          // you can only save one lead
-          let resp1 = JSON.parse(response1.payload);
-          expect(resp1.status).to.equal('NOK');
-          expect(resp1.data).to.equal('you can only save one lead');
-          done()
+      server.inject(optionsCampaign, function (response) {
+        let resp = JSON.parse(response.payload);
+        expect(resp.status).to.equal('OK');
+        //to delete
+        options.url = "/api/campaigns/"+encodeURIComponent(resp.data[0]._id)
+        server.inject(options, function (responseNew) {
+          let resp = JSON.parse(responseNew.payload);
+          expect(resp.status).to.equal('OK');
+          expect(resp.data.length).to.be.equal(1);
+          //to delete
+          done();
         })
 
-        //TEST INSERT CONV
       })
-    });
+
+
+
+    })
+    test('Check if can update campaign', (done)=> {
+      var optionsCampaign = {
+          method: "GET",
+          url: "/api/campaigns/"
+      };
+      var options = {
+          method: "PUT",
+          url: "/api/campaigns/"+encodeURIComponent('campaignTeste'),
+          payload:{
+            data:{
+              name:'campaignTesteChanged',
+              local:'FR',
+              time: Date.now()
+            }
+          }
+      };
+      server.inject(options, function (response) {
+
+        let resp = JSON.parse(response.payload);
+        expect(resp.status).to.equal('OK');
+        expect(resp.data.ok).to.equal(1);
+        //to delete
+        done();
+      })
+    })
+    test('Check if can delete campaign', (done)=> {
+    /*  var options = {
+          method: "DEL",
+          url: "/api/campaigns/"+encodeURIComponent('campaignTesteChanged')
+      };
+      server.inject(options, function (response) {
+        let resp = JSON.parse(response.payload);
+
+        //expect(resp.status).to.equal('OK');
+        //expect(resp.data.ok).to.equal(1);
+        //to delete*/
+        done();
+      //})
+    })
+
 
 });

@@ -13,6 +13,9 @@ function apiApp (){
   this.users = this.db.collection('users');
   this.campaigns = this.db.collection('campaigns');
   this.flows = this.db.collection('flows');
+  this.admin = require('./admin');
+  //current Request
+  this.request = {}
 }
 
 
@@ -30,15 +33,16 @@ apiApp.prototype.CRUD = function() {
     handler: function(request, reply) {
       if(_this.hasOwnProperty(request.params.what) && _this.__proto__.hasOwnProperty(request.method)){
         let q = {}
+        _this.request=request;
 
         //Switch dataType and query
         switch (request.params.what) {
-          case 'campaign':
-            q.query = {campid: request.params.id}
-            q.db = 'data';
+          case 'campaigns':
+            q.query = (request.params.id)?{_id: _this.mDB.ObjectId(request.params.id)}:{};
+            q.db = 'campaigns';
             break;
           case 'users':
-            q.query = (/^[0-9a-fA-F]{24}$/.test(request.params.id))?{id: request.params.id}:{email: request.params.id};
+            q.query = (/^[0-9a-fA-F]{24}$/.test(request.params.id))?{_id: this.mDB.ObjectId(request.params.id)}:{email: request.params.id};
             q.db = 'users';
             break;
           case 'lead':
@@ -46,7 +50,7 @@ apiApp.prototype.CRUD = function() {
             q.db = 'data';
             break;
           case 'flows':
-            q.query = {id: request.params.id};
+            q.query = (request.params.id)?{_id: _this.mDB.ObjectId(request.params.id)}:{};
             q.db = 'flows';
             break;
         }
@@ -69,6 +73,7 @@ apiApp.prototype.CRUD = function() {
 //method GET
 apiApp.prototype.get= function(q, what, id, data, _this) {
   return new Promise((resolve, reject) => {
+    if(!_this.admin.checkPermission(_this.request))reject('not logedin');
     _this[q.db].find(q.query)
     .then((resultArr)=>{
       resolve(resultArr);
@@ -82,6 +87,7 @@ apiApp.prototype.get= function(q, what, id, data, _this) {
 //method SET/EDIT
 apiApp.prototype.post= function(q, what, id, data, _this) {
   return new Promise((resolve, reject) => {
+    if(!_this.admin.checkPermission(_this.request))reject('not logedin');
     //UPDATE ENTRY
     if(id){
       _this[q.db].update(q.query,data,{ upsert: true })
@@ -108,6 +114,7 @@ apiApp.prototype.post= function(q, what, id, data, _this) {
 //method SET/EDIT
 apiApp.prototype.put= function(q, what, id, data, _this) {
   return new Promise((resolve, reject) => {
+    if(!_this.admin.checkPermission(_this.request))reject('not logedin');
     this.post(q, what, id, data, _this).then((data)=>{
       resolve(data);
     }).catch((err)=> {
@@ -119,6 +126,7 @@ apiApp.prototype.put= function(q, what, id, data, _this) {
 //method delete
 apiApp.prototype.del= function(q, what, id, data, _this) {
   return new Promise((resolve, reject) => {
+    if(!_this.admin.checkPermission(_this.request))reject('not logedin');
     _this[q.db].find(q.query)
     .then((resultArr)=>{
       resolve(resultArr);
