@@ -23,36 +23,40 @@ adminApp.prototype.auth = function(){
   return {
     validate: {
         params: {
-          email: _this.Joi.string().email(),
-          password: _this.Joi.string()
+          email: this.Joi.string().email(),
+          password: this.Joi.string()
         }
     },
     handler: function(request, reply) {
-      let password = request.payload.password,
-             user = request.payload.email;
-
-             _this.api.get({db:'users',query:{email: user, password:password}})
-              .then((u)=>{
-                if(u.length==0)reply({status:'NOK',data:'invalid credentials'});
-                delete u[0].password;
-                request.session.set('user', curr);
-                reply({status:'OK',data:'loged in'});
-              }).catch((err)=>{
-                reply({status:'NOK',data:err});
-              })
+      let password = request.payload.data.password,
+             user = request.payload.data.email;
+            _this.authCheck(user,password).then((u)=>{
+              delete u[0].password;
+              request.session.set('user', u);
+              reply({status:'OK',data:'loged in'});
+            }).catch((err)=>{
+              reply({status:'NOK',data:err});
+            })
 
     }
   }
 }
 
-adminApp.prototype.checkPermission = function(req){
-  if(req.session=='internalRequesst'){
-      return true;
-  }else if(typeof req.session != 'undefined' && typeof req.session.get == 'function'){
-      return  req.session.get('user');
-  }else{
-      return false;
-  }
+adminApp.prototype.authCheck = function(user,password){
+  return new Promise((resolve, reject) => {
+    let Db = require('../conf/db').dbTrackLocal();
+    Db.collection('users').find({email: user, password:password})
+     .then((u)=>{
+       if(u.length==0){
+         reject('invalid credentials');
+       }else{
+         resolve(u);
+       }
+     }).catch((err)=>{
+       reject(err);
+     })
+  })
 }
+
 
 exports.admin = new adminApp();

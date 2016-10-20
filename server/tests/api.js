@@ -1,13 +1,12 @@
 'use strict';
 const Code = require('code');
-const server = require("../api");
-const Api = require("../controlers/api");
 const Lab = require('lab');
 const lab = exports.lab = Lab.script();
-
 const suite = lab.suite;
 const test = lab.test;
 const expect = Code.expect;
+const server = require("../api");
+let logCookie = {};
 let affectedLeadsToDelete = [];
 
 suite('API operations', () => {
@@ -20,21 +19,24 @@ suite('API operations', () => {
             url: "/admin/auth",
             payload:{
               data:{
-                email:'hugo.rodrigues@hiperformancesales.com',
+                email:'admin@admin.com',
                 password:'12345'
               }
             }
         };
         server.inject(options, function (response) {
 
+          var header = response.headers['set-cookie'];
+          let cookie = header[0].match(/(?:[^\x00-\x20\(\)<>@\,;\:\\"\/\[\]\?\=\{\}\x7F]+)\s*=\s*(?:([^\x00-\x20\"\,\;\\\x7F]*))/);
+          logCookie = {cookie:cookie[0]};
+
           let resp = JSON.parse(response.payload);
-          console.log(resp)
           expect(resp.status).to.equal('OK');
-          expect(resp.data.insertedCount).to.be.equal(1);
+          expect(resp.data).to.be.equal('loged in');
           //to delete
           done();
         })
-    
+
     })
     test('Check if can put user', (done)=> {
       var options = {
@@ -44,10 +46,12 @@ suite('API operations', () => {
             data:{
               name:'Hugo Rodrigues',
               email:'hugo.rodrigues@hiperformancesales.com',
-              password:'12345'
+              password:'12345',
+              time:Date.now()
             }
           }
       };
+      options.headers = logCookie;
       server.inject(options, function (response) {
 
         let resp = JSON.parse(response.payload);
@@ -63,6 +67,7 @@ suite('API operations', () => {
           method: "GET",
           url: "/api/users/"+encodeURIComponent('hugo.rodrigues@hiperformancesales.com')
       };
+      options.headers = logCookie;
       server.inject(options, function (response) {
         let resp = JSON.parse(response.payload);
         expect(resp.status).to.equal('OK');
@@ -82,6 +87,7 @@ suite('API operations', () => {
             }
           }
       };
+      options.headers = logCookie;
       server.inject(options, function (response) {
 
         let resp = JSON.parse(response.payload);
@@ -96,6 +102,7 @@ suite('API operations', () => {
           method: "DEL",
           url: "/api/users/"+encodeURIComponent('hugo.rodrigues@hiperformancesales.com')
       };
+      options.headers = logCookie;
       server.inject(options, function (response) {
         let resp = JSON.parse(response.payload);
 
@@ -119,6 +126,7 @@ suite('API operations', () => {
             }
           }
       };
+      options.headers = logCookie;
       server.inject(options, function (response) {
 
         let resp = JSON.parse(response.payload);
@@ -134,6 +142,7 @@ suite('API operations', () => {
           method: "GET",
           url: "/api/campaigns/"
       };
+      options.headers = logCookie;
       server.inject(options, function (response) {
         let resp = JSON.parse(response.payload);
         expect(resp.status).to.equal('OK');
@@ -151,6 +160,8 @@ suite('API operations', () => {
           url: "/api/campaigns/"+encodeURIComponent('campaignTeste')
       };
 
+      options.headers = logCookie;
+      optionsCampaign.headers = logCookie;
       server.inject(optionsCampaign, function (response) {
         let resp = JSON.parse(response.payload);
         expect(resp.status).to.equal('OK');
@@ -185,13 +196,21 @@ suite('API operations', () => {
             }
           }
       };
-      server.inject(options, function (response) {
+      optionsCampaign.headers = logCookie;
+      server.inject(optionsCampaign, function (response) {
 
         let resp = JSON.parse(response.payload);
-        expect(resp.status).to.equal('OK');
-        expect(resp.data.ok).to.equal(1);
-        //to delete
-        done();
+
+        options.url="/api/campaigns/"+encodeURIComponent(resp.data[0]._id)
+        options.headers = logCookie;
+        server.inject(options, function (response) {
+          let resp = JSON.parse(response.payload);
+          console.log()
+          expect(resp.status).to.equal('OK');
+          expect(resp.data.ok).to.equal(1);
+          //to delete
+          done();
+        })
       })
     })
     test('Check if can delete campaign', (done)=> {

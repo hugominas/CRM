@@ -4,5 +4,7 @@ exports.config = {
     userDBTrack : 'ruth',
     passDBTrack : 'mArl3n3',
     host : 'localhost',
-    dbName : 'PSAPI'
+    dbName : 'PSAPI',
+    adminEmail: 'admin@admin.com',
+    adminPassword: '12345'
 }

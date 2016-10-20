@@ -1,12 +1,11 @@
 'use strict';
 const Code = require('code');
-const server = require("../api");
 const Lab = require('lab');
 const lab = exports.lab = Lab.script();
-
 const suite = lab.suite;
 const test = lab.test;
 const expect = Code.expect;
+const server = require("../api");
 let affectedLeadsToDelete = [];
 
 suite('Tracking GET/POST operations', () => {
@@ -246,6 +245,7 @@ suite('Tracking GET/POST operations', () => {
 const conv = require("../controlers/conv").track;
 
 suite('Tracking class', () => {
+
     test('Check conversion method is working', (done)=> {
         let requestExtraParts ={'0':'data teste 1'};
 

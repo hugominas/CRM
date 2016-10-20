@@ -1,42 +1,47 @@
 'use strict';
-const Hapi = require("hapi");
-const Yar = require("yar");
-const routes = require('./routes');
+const Hapi 		= require("hapi");
+const Yar 			= require("yar");
+const Checks 		= require("./conf/init").systemCheck;
+const routes 	= require('./routes');
 
-let options = {
-	cors: {
-		origin: ['*'],
-		credentials: true
-	},
-    state : {
-        cookies: {
-            parse: true,
-            failAction: 'ignore'
-        }
-    }
-};
-// Create a server with a host and port
-let server = Hapi.createServer(3007, options);
+const options 	= {
+		server: {
+				cors: {
+					origin: ['*'],
+					credentials: true
+				},
+		    state : {
+		        cookies: {
+		            parse: true,
+		            failAction: 'ignore'
+		        }
+		    }
+		},
+		cookie: {
+			storeBlank: false,
+			cookieOptions: {
+					password: 'ZKJeD:R4(Zoxz66,Jz4e1,6p+0q~52o+%R7@9*C^5qa83+."lRj|t[/-Ym:mc.?',
+					isSecure: true
+			}
+		}
+	};
+	// CHECK for system defaults Before Start
+	Checks.doChecks()
 
-let options1 = {
-	cookieOptions: {
-		password: 'm4rl3n3',
-		isSecure: false
-	}
-};
-///LOG ERRORS
-process.on('uncaughtException', function(err) {
-	console.log('Caught exception[' + new Date() + ']: ' + err);
-});
+	let server = Hapi.createServer(3007, options.serve);
+	server.pack.register({
+		maxCookieSize: 0,
+		plugin: Yar,
+		options: options.cookie
+	}, function(err) {});
 
-server.pack.register({
-	maxCookieSize: 0,
-	plugin: Yar,
-	options: options1
-}, function(err) {});
+	///LOG ERRORS
+	//process.on('uncaughtException', function(err) {
+		//console.log('✖ Caught exception [' + new Date() + ']: ' + err);
+	//});
 
-/// ADD THIS TO MAIN INDEX
-server.route(routes.endpoints);
-server.start();
-module.exports = server;
-console.log("tracking running http://localhost:3007/");
+	server.route(routes.endpoints);
+	server.start();
+	/// ADD THIS TO MAIN INDEX
+	console.log('✓ server started succefully at http://localhost:3007/');
+	module.exports = server;
