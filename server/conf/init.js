@@ -1,11 +1,12 @@
 'use strict';
-
+const sha256 = require('js-sha256');
+const Db  = require('./db');
+const Api  = require('../controlers/api').api;
+const Conf  = require('./conf').config;
+const db  = Db.dbTrackLocal();
+const mongojs = require('mongodb-promises');
 function systemCheck(){
-  this.Db  = require('./db');
-  this.Api  = require('../controlers/api').api;
-  this.Conf  = require('./conf').config;
-  this.db  = this.Db.dbTrackLocal();
-  this.mongojs = require('mongodb-promises');
+
 }
 
 systemCheck.prototype.doChecks = function (){
@@ -28,10 +29,10 @@ systemCheck.prototype.checkDBConn = function() {
   return new Promise((resolve, reject) => {
     switch (true) {
       case (typeof this.Db.dbTrackLocal!== 'function'):
-        reject("please check db config, cannot connect", this.Conf)
+        reject("please check db config, cannot connect", Conf)
         break;
       default:
-        console.log('✓ database login check')
+        console.log('✓ database access check')
         resolve('all good');
         break;
     }
@@ -40,9 +41,9 @@ systemCheck.prototype.checkDBConn = function() {
 
 systemCheck.prototype.chekckAdminUser = function() {
   return new Promise((resolve, reject) => {
-    //request.session.set('user', {email:this.Conf.adminEmail,group:'admin'});
-    let options = {email:this.Conf.adminEmail, group:'admin'}
-    this.Api.get({db:'users',query:{email:this.Conf.adminEmail}}, options)
+    //request.session.set('user', {email:Conf.adminEmail,group:'admin'});
+    let options = {email:Conf.adminEmail, group:'admin'}
+    Api.get({q:{db:'users',query:{email:Conf.adminEmail}}, credentials:options})
     .then((resultArr)=>{
       if(resultArr.length<1){
         console.log('✖ admin user not found')
@@ -65,15 +66,15 @@ systemCheck.prototype.chekckAdminUser = function() {
 
 systemCheck.prototype.setAdminUser = function() {
   return new Promise((resolve, reject) => {
-    let options = [{email:this.Conf.adminEmail, group:'admin'}]
+    let options = [{email:Conf.adminEmail, group:'admin'}]
     let data = {
       name:'Administrator',
-      email:this.Conf.adminEmail,
+      email:Conf.adminEmail,
       group:'admin',
-      password:this.Conf.adminPassword,
+      password:sha256(Conf.adminPassword+Conf.secret),
       time:Date.now()
     }
-    this.Api.post({q:{db:'users'},data:data,credentials:options}).then((result)=>{
+    Api.post({q:{db:'users'},data:data,credentials:options}).then((result)=>{
       console.log('✓ admin user inserted')
       resolve(result);
     }).catch((err)=>{

@@ -1,10 +1,13 @@
 'use strict';
 
+const sha256 = require('js-sha256');
+const Joi = require('joi');
+const api  = require('./api').api;
+const Conf  = require('../conf/conf').config;
+
 //constructor
 function adminApp (){
   this.debug = false;
-  this.Joi = require('joi');
-  this.api  = require('./api').api;
 }
 
 //method
@@ -23,14 +26,14 @@ adminApp.prototype.auth = function(){
   return {
     validate: {
         params: {
-          email: this.Joi.string().email(),
-          password: this.Joi.string()
+          email: Joi.string().email(),
+          password: Joi.string()
         }
     },
     handler: function(request, reply) {
       let password = request.payload.data.password,
              user = request.payload.data.email;
-            _this.authCheck(user,password).then((u)=>{
+            _this.authCheck(user,sha256(password+Conf.secret)).then((u)=>{
               delete u[0].password;
               request.session.set('user', u);
               reply({status:'OK',data:'loged in'});

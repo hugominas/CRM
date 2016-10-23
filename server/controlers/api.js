@@ -1,10 +1,12 @@
 
 'use strict';
 
-let Joi = require('joi');
-let Db  = require('../conf/db');
-let db  = Db.dbTrackLocal();
-let mDB = require('mongodb');
+const Joi = require('joi');
+const Db  = require('../conf/db');
+const db  = Db.dbTrackLocal();
+const mDB = require('mongodb');
+const sha256 = require('js-sha256');
+const Conf  = require('../conf/conf').config;
 
 //Colections
 let collections = {
@@ -60,6 +62,10 @@ apiApp.prototype.CRUD = function() {
         }
         //SEND REQUEST TO CORRECT METHOD
         let objMethods = _this.__proto__;
+        //Encode Pass
+        if(request.payload && request.payload.data && request.payload.data.password)
+           request.payload.data.password=sha256(request.payload.data.password+Conf.secret);
+
         let params = {
           q:q,
           what:request.params.what,
