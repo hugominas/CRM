@@ -1,22 +1,27 @@
 import { EventEmitter } from "events";
-
 import dispatcher from "../dispatcher";
 
 class LeadsStore extends EventEmitter {
+
   constructor() {
     super()
-    this.leads = [
-      {
-        id: 113464613,
-        text: "Go Shopping",
-        complete: false
-      },
-      {
-        id: 235684679,
-        text: "Pay Water Bill",
-        complete: false
-      },
-    ];
+    this.login = '';
+    if (typeof(Storage) !== "undefined") {
+      if(localStorage.getItem("login")){
+          let nowTime = new Date();
+          //Check if 20 min passed
+          if(nowTime.setMinutes(nowTime.getMinutes() - 30)<localStorage.getItem("login"))
+            this.login = 'OK';
+        }
+      }
+  }
+
+  get(what){
+    return this[what];
+  }
+
+  authCheck() {
+    return this.login;
   }
 
   createTodo(text) {
@@ -37,13 +42,20 @@ class LeadsStore extends EventEmitter {
 
   handleActions(action) {
     switch(action.type) {
-      case "CREATE_LEAD": {
-        this.createTodo(action.text);
+      case "UPDATE_DATA": {
+        this[action.what] = action.result.data.data;
+        this.emit("change");
         break;
       }
-      case "RECEIVE_LEAD": {
-        this.todos = action.todos;
-        this.emit("change");
+      case "AUTH_USER": {
+        this.login = action.result.data.status;
+        if(this.login === 'OK'){
+          localStorage.login = Date.now();
+          this.emit("login");
+        }else{
+          localStorage.login='';
+        //  window.location='/';
+        }
         break;
       }
     }
@@ -51,7 +63,7 @@ class LeadsStore extends EventEmitter {
 
 }
 
-const leadStore = new LeadStore;
+const leadStore = new LeadsStore;
 dispatcher.register(leadStore.handleActions.bind(leadStore));
 
 export default leadStore;

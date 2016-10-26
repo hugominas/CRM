@@ -26,21 +26,25 @@ adminApp.prototype.auth = function(){
   return {
     validate: {
         params: {
-          email: Joi.string().email(),
-          password: Joi.string()
+          data:{
+            email: Joi.string().email(),
+            password: Joi.string()
+          }
         }
     },
     handler: function(request, reply) {
+      if(!request.payload.data){reply({status:'NOK',data:'no data'}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");}
+      else{
       let password = request.payload.data.password,
              user = request.payload.data.email;
             _this.authCheck(user,sha256(password+Conf.secret)).then((u)=>{
               delete u[0].password;
-              request.session.set('user', u);
-              reply({status:'OK',data:'loged in'});
+              request.session.set('user', u[0]);
+              reply({status:'OK',data:'loged in'}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
             }).catch((err)=>{
-              reply({status:'NOK',data:err});
+              reply({status:'NOK',data:err}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
             })
-
+          }
     }
   }
 }

@@ -48,7 +48,7 @@ apiApp.prototype.CRUD = function() {
             q.db = 'campaigns';
             break;
           case 'users':
-            q.query = (/^[0-9a-fA-F]{24}$/.test(request.params.id))?{_id: mDB.ObjectId(request.params.id)}:{email: request.params.id};
+            q.query = (request.params.id)?(/^[0-9a-fA-F]{24}$/.test(request.params.id))?{_id: mDB.ObjectId(request.params.id)}:{email: request.params.id}:{};
             q.db = 'users';
             break;
           case 'lead':

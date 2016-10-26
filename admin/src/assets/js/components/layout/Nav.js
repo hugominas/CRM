@@ -17,49 +17,61 @@ export default class Nav extends React.Component {
   render() {
     const { location } = this.props;
     const { collapsed } = this.state;
+    let currentTile = 'Dashboard';
 
     const dashboardClass = location.pathname === "/" ? "active" : "";
-    const campaignsClass = location.pathname.match(/^\/campaigns/) ? "active" : "";
-    const flowsClass = location.pathname.match(/^\/flows/) ? "active" : "";
-    const usersClass = location.pathname.match(/^\/users/) ? "active" : "";
-    const settingsClass = location.pathname.match(/^\/settings/) ? "active" : "";
+    const campaignsClass = location.pathname.match(/campaigns/) ? "active" : "";
+    currentTile = (campaignsClass!='')?'Manage your Campaigns':currentTile;
+    const flowsClass = location.pathname.match(/flows/) ? "active" : "";
+    currentTile = (flowsClass!='')?'Administer your Flows':currentTile;
+    const usersClass = location.pathname.match(/users/) ? "active" : "";
+    currentTile = (usersClass!='')?'Manage Aplication User':currentTile;
+    const settingsClass = location.pathname.match(/settings/) ? "active" : "";
+    currentTile = (settingsClass!='')?'Change your Settings':currentTile;
     const navClass = collapsed ? "collapse" : "";
 
+
     return (
+      <div>
       <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
           <div class="navbar-header">
-            <button type="button" class="navbar-toggle" onClick={this.toggleCollapse.bind(this)} >
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
+
+
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/"><i class="fa fa-google-wallet" aria-hidden="true"></i> followme</a>
+
           </div>
           <div class={"navbar-collapse " + navClass} id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
               <li class={dashboardClass}>
-                <IndexLink to="/" onClick={this.toggleCollapse.bind(this)}>Dashboard</IndexLink>
+                <IndexLink to="/admin" onClick={this.toggleCollapse.bind(this)}>Dashboard</IndexLink>
               </li>
               <li class={campaignsClass}>
-                <Link to="campaigns" onClick={this.toggleCollapse.bind(this)}>Campaigns</Link>
+                <Link to="/admin/campaigns" onClick={this.toggleCollapse.bind(this)}>Campaigns</Link>
               </li>
               <li class={usersClass}>
-                <Link to="users" onClick={this.toggleCollapse.bind(this)}>Users</Link>
+                <Link to="/admin/users" onClick={this.toggleCollapse.bind(this)}>Users</Link>
               </li>
               <li class={flowsClass}>
-                <Link to="flows" onClick={this.toggleCollapse.bind(this)}>Flows</Link>
+                <Link to="/admin/flows" onClick={this.toggleCollapse.bind(this)}>Flows</Link>
               </li>
               <li class={settingsClass}>
-                <Link to="settings" onClick={this.toggleCollapse.bind(this)}>Settings</Link>
+                <Link to="/admin/settings" onClick={this.toggleCollapse.bind(this)}>Settings</Link>
               </li>
               <li>
-                <Link to="logout" onClick={this.toggleCollapse.bind(this)}>Logout</Link>
+                <Link to="/admin/logout" onClick={this.toggleCollapse.bind(this)}>Logout</Link>
               </li>
             </ul>
-          </div>
         </div>
       </nav>
+      <div class="bs-docs-header" id="content"><div class="container"><h1>{currentTile}</h1><p class="subtitle">please see the sections below</p></div></div>
+
+      </div>
     );
   }
 }

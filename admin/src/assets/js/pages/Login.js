@@ -1,35 +1,42 @@
-import React from "react";
-import { Link } from "react-router";
+import React from 'react';
 import DocumentTitle from 'react-document-title';
-
 import Footer from "../components/layout/Footer";
-import Nav from "../components/layout/Nav";
+import LoginForm from '../components/Login';
 
-export default class Layout extends React.Component {
+
+
+export default class LoginPage extends React.Component {
+
+  constructor(){
+    super();
+  }
+
+
   render() {
+
     const { location } = this.props;
     const containerStyle = {
-      marginTop: "60px"
+        marginTop: "60px"
     };
 
     return (
       <DocumentTitle title={'Start'}>
-        <div>
-          <Nav location={location} />
+        <div class="login">
 
-          <div class="container" style={containerStyle}>
+          <div class="bs-docs-header" id="content"><div class="container"></div></div>
+
+
+          <div class="container innerCont" style={containerStyle}>
             <div class="row">
               <div class="col-lg-12">
 
-                {this.props.children}
+                <LoginForm/>
 
               </div>
             </div>
-            <Footer/>
           </div>
         </div>
       </DocumentTitle>
-
     );
   }
 }

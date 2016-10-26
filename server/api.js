@@ -21,7 +21,8 @@ const options 	= {
 			storeBlank: false,
 			cookieOptions: {
 					password: 'ZKJeD:R4(Zoxz66,Jz4e1,6p+0q~52o+%R7@9*C^5qa83+."lRj|t[/-Ym:mc.?',
-					isSecure: true
+					isSecure: false,
+					ttl:1200000
 			}
 		}
 	};
