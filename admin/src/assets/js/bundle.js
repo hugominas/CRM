@@ -5,6 +5,9 @@ import { Router, Route, IndexRoute, hashHistory, browserHistory } from "react-ro
 import Store from './stores/Leads';
 
 import Campaigns from "./pages/Campaigns";
+import Leads from "./pages/Leads";
+import EditCampaigns from "./pages/editCampaigns";
+
 import Users from "./pages/Users";
 import Settings from "./pages/Settings";
 import Dashboard from "./pages/Dashboard";
@@ -28,8 +31,18 @@ ReactDOM.render(
     <Route path="/admin" component={layout} onEnter={authCheck}>
       <IndexRoute component={Dashboard}></IndexRoute>
       <Route path="campaigns" component={Campaigns}></Route>
+      <Route path="campaigns/edit/:campid" component={EditCampaigns}></Route>
+
+      <Route path="leads" component={Leads}></Route>
+      <Route path="leads/:campid" component={Leads}></Route>
+      <Route path="leads/edit/:leadid" component={Leads}></Route>
+
       <Route path="flows" component={Flows}></Route>
+      <Route path="flows/:campid/edit/:flowid" component={Flows}></Route>
+      <Route path="flows/:campid" component={Flows}></Route>
       <Route path="users" component={Users}></Route>
+      <Route path="users/:campid/:userid" component={Users}></Route>
+      <Route path="users/:userid" component={Users}></Route>
       <Route path="settings" component={Settings}></Route>
     </Route>
   </Router>),

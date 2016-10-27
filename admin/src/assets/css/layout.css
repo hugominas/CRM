@@ -39,8 +39,12 @@ body{
   font-size: 0.8em;
 }
 
+.bs-docs-header h1{
+  color: #fff;
+}
+
 .bs-docs-header, .bs-docs-masthead {
-    background: #511c39;
+    background: #f16f21;
     filter: none;
     color: #e9e9e9;
     padding-top: 85px;
@@ -48,7 +52,27 @@ body{
     font-size: 24px;
     text-align: left;
   }
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form, .navbar-inverse{
+  background:#e7383a;
+  border-color:#f16f21;
+}
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>.active>a:focus{
+  background: #f16f21;
+  color: #fff;
+}
+.navbar-inverse .navbar-nav>li>a:hover, .navbar-inverse .navbar-nav>li>a:focus{
+  background:#f16f21;
+  color: #fff;
 
+}
+.logo{
+      width: 148px;
+}
+.getData{
+  float: right;
+margin-top: -150px;
+margin-right: -40px;
+}
 .griddle-filter{
   float: right;
       margin-top: -60px;
@@ -83,9 +107,12 @@ td, th{
 /// LOGIN
 //////////////*/
 .login .bs-docs-header, .login .bs-docs-masthead {
-  min-height: 60%;
+      min-height: 350px;
 }
 .login .innerCont{
   margin-top: -130px!important;
   width: 390px;
+}
+.login .container{
+  text-align: center;
 }

@@ -11,11 +11,13 @@ import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
 
 export default class Campaigns extends React.Component {
 
-      constructor (){
+      constructor (props){
         super();
+        if(props)props.params
         //SetState
         this.state = {
-          data : LeadStore.get('campaigns'),
+          campid: (props.params.campid)?props.params.campid:'',
+          data : LeadStore.get('leads'+(props.params.campid)?props.params.campid:''),
           columnMeta:   [{
             "columnName": "_id",
             "order": 9999,
@@ -26,7 +28,12 @@ export default class Campaigns extends React.Component {
           }]
         }
         //Get DAta
-        actions.get('campaigns');
+        actions.get((this.state.campid)?'leads/'+this.state.campid:'leads/');
+        this.wordData();
+
+      }
+
+      wordData() {
       }
 
       componentWillMount() {
@@ -40,7 +47,8 @@ export default class Campaigns extends React.Component {
 
       getExternalData (){
         if(!this.isUnmounted ){
-          this.setState({data:LeadStore.get('campaigns')})
+          this.setState({data:LeadStore.get('leads'+this.state.campid)})
+          this.wordData();
         }
       }
 

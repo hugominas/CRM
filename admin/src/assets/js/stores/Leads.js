@@ -1,11 +1,15 @@
 import { EventEmitter } from "events";
 import dispatcher from "../dispatcher";
+import * as actions from '../actions/LeadsActions';
 
 class LeadsStore extends EventEmitter {
 
   constructor() {
     super()
     this.login = '';
+    this.nowDate  = new Date();
+    this.passDate = new Date();
+    this.passDate = this.passDate.setMonth(this.passDate.getMonth() - 1)
     if (typeof(Storage) !== "undefined") {
       if(localStorage.getItem("login")){
           let nowTime = new Date();
@@ -18,6 +22,12 @@ class LeadsStore extends EventEmitter {
 
   get(what){
     return this[what];
+  }
+
+  getDates(which){
+    if(which=='start')return this.passDate;
+    if(which=='end')return this.nowDate;
+    return {start:this.passDate, end:this.nowDate};
   }
 
   authCheck() {
@@ -43,13 +53,20 @@ class LeadsStore extends EventEmitter {
   handleActions(action) {
     switch(action.type) {
       case "UPDATE_DATA": {
-        this[action.what] = action.result.data.data;
+        let updateWhat = (action.what.indexOf('/')>=0)?action.what.replace('/',''):action.what;
+        this[updateWhat] = action.result.data.data;
         this.emit("change");
         break;
       }
+      case "UPDATE_DATE": {
+        console.log(action.data)
+        this.passDate = action.data.start;
+        this.nowDate = action.data.end;
+        this.emit("update");
+        break;
+      }
       case "AUTH_USER": {
-        this.login = action.result.data.status;
-        if(this.login === 'OK'){
+        if(action.result.data.status === 'OK'){
           localStorage.login = Date.now();
           this.emit("login");
         }else{

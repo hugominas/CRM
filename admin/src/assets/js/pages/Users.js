@@ -5,6 +5,7 @@ import DocumentTitle from 'react-document-title';
 import tableEditDelete from "../components/tableEditDelete";
 import LeadStore from '../stores/Leads';
 import * as actions from '../actions/LeadsActions';
+import ActionsToolbar from '../components/ActionsToolbar';
 
 import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
 
@@ -12,17 +13,20 @@ import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
 export default class Users extends React.Component {
   constructor (){
     super();
+    //SetState
     this.state = {
-      data : actions.get('users'),
-      columnMeta:   {
-        "columnName": "actions",
+      data : LeadStore.get('users'),
+      columnMeta:   [{
+        "columnName": "_id",
         "order": 9999,
         "locked": false,
         "visible": true,
-        'component': 'campaigns',
+        component:'users',
         "customComponent": tableEditDelete
-        }
+      }]
     }
+    //Get DAta
+    actions.get('users');
   }
 
   componentWillMount() {
@@ -30,11 +34,14 @@ export default class Users extends React.Component {
   }
 
   componentWillUnmount() {
+    this.isUnmounted = true;
     LeadStore.removeListener("change", this.getExternalData.bind(this));
   }
 
   getExternalData (){
-    this.setState({data:LeadStore.get('users')})
+    if(!this.isUnmounted ){
+      this.setState({data:LeadStore.get('users')})
+    }
   }
 
 
@@ -48,9 +55,11 @@ export default class Users extends React.Component {
   }
 
   render() {
+    let button = (typeof this.state.data !== 'undefined')?<ActionsToolbar data='campaigns' />:'';
     return (
       <DocumentTitle title={'Users'}>
         <div class="container innerCont">
+          {button}
           <GriddleBootstrap
               hover={true}
               striped={true}

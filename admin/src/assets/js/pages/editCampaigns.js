@@ -11,8 +11,9 @@ import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
 
 export default class Campaigns extends React.Component {
 
-      constructor (){
+      constructor (props){
         super();
+        console.log(props)
         //SetState
         this.state = {
           data : LeadStore.get('campaigns'),

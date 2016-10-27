@@ -12,29 +12,36 @@ import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
 export default class Flows extends React.Component {
   constructor (){
     super();
+    //SetState
     this.state = {
-      data : actions.get('flows'),
-      columnMeta:   {
-        "columnName": "actions",
+      data : LeadStore.get('flows'),
+      columnMeta:   [{
+        "columnName": "_id",
         "order": 9999,
         "locked": false,
         "visible": true,
-        'component': 'campaigns',
+        'component': 'flows',
         "customComponent": tableEditDelete
-        }
+        }]
     }
+    //Get DAta
+    actions.get('flows');
   }
 
   componentWillMount() {
-    LeadStore.on("change", this.getExternalData.bind(this));
+    LeadStore.on("change_flows", this.getExternalData.bind(this));
   }
 
   componentWillUnmount() {
-    LeadStore.removeListener("change", this.getExternalData.bind(this));
+    this.isUnmounted = true;
+    LeadStore.removeListener("change_flows", this.getExternalData.bind(this));
   }
 
+
   getExternalData (){
-    this.setState({data:LeadStore.get('flows')})
+    if(!this.isUnmounted ){
+      this.setState({data:LeadStore.get('flows')})
+    }
   }
 
   setPage (index){

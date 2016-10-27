@@ -29,6 +29,7 @@
     "moment": "^2.14.1",
     "react": "^15.3.0",
     "react-bootstrap": "^0.30.5",
+    "react-date-picker": "^5.3.28",
     "react-document-title": "^2.0.2",
     "react-dom": "^15.3.0",
     "react-router": "^2.6.1",

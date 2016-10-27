@@ -23,7 +23,9 @@ export default class LoginPage extends React.Component {
       <DocumentTitle title={'Start'}>
         <div class="login">
 
-          <div class="bs-docs-header" id="content"><div class="container"></div></div>
+          <div class="bs-docs-header" id="content"><div class="container">
+            <img src="http://www.energia-galp.com/assets/img/logoGalpOn.png" />
+          </div></div>
 
 
           <div class="container innerCont" style={containerStyle}>

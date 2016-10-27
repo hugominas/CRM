@@ -39,13 +39,20 @@ export function get(what) {
     });
   }).catch((result)=>{
     //if not logedin
-    if(result.data.data == 'not logedin')dispatcher.dispatch({type: "AUTH_USER",result});
+    if(!result.data || result.data.data == 'not logedin')dispatcher.dispatch({type: "AUTH_USER",result});
     //dispatch data
     dispatcher.dispatch({
       type: "UPDATE_DATA",
       what,
       result,
     });
+  });
+}
+
+export function updateDataSet(data) {
+  dispatcher.dispatch({
+    type: "UPDATE_DATE",
+    data,
   });
 }
 

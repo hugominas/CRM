@@ -11,7 +11,7 @@ const Conf  = require('../conf/conf').config;
 //Colections
 let collections = {
   data :db.collection('data'),
-  data : db.collection('data'),
+  leads : db.collection('data'),
   users : db.collection('users'),
   campaigns : db.collection('campaigns'),
   flows : db.collection('flows')
@@ -51,6 +51,10 @@ apiApp.prototype.CRUD = function() {
             q.query = (request.params.id)?(/^[0-9a-fA-F]{24}$/.test(request.params.id))?{_id: mDB.ObjectId(request.params.id)}:{email: request.params.id}:{};
             q.db = 'users';
             break;
+          case 'leads':
+              q.query = (request.params.id)?{campid: request.params.id}:{};
+              q.db = 'data';
+              break;
           case 'lead':
             q.query = {leadid: request.params.id};
             q.db = 'data';
@@ -96,6 +100,11 @@ apiApp.prototype.get= function(params) {
       }else{
         collections[params.q.db].find(params.q.query)
         .then((resultArr)=>{
+          if(params.q.db=='users'){
+            resultArr.forEach((ele)=>{
+              delete ele.password;
+            })
+          }
           resolve(resultArr);
         })
         .catch((err)=>{
