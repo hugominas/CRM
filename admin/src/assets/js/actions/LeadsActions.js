@@ -2,7 +2,7 @@ import dispatcher from "../dispatcher";
 import axios from "axios";
 
 export function sendLogin(email,password) {
-    axios({
+  axios({
       method: 'post',
       url: '/admin/auth',
       data: {
@@ -12,17 +12,42 @@ export function sendLogin(email,password) {
         }
       }
     }).then((result)=>{
+      if(result.data.status=='OK'){
+        dispatcher.dispatch({
+          type: "AUTH_USER",
+          result:'OK'
+        });
+      }
+    }).catch((err)=>{
+      console.log(err)
+      if(err.data.status=='NOK'){
+        dispatcher.dispatch({
+          type: "LOGOUT_USER",
+          result: 'OK'
+        });
+      }
+    });
+}
+
+
+export function sendLogout() {
+  console.log('aaa',1)
+    axios({
+      method: 'get',
+      url: '/admin/logout'
+    }).then((act)=>{
       dispatcher.dispatch({
-        type: "AUTH_USER",
-        result,
+        type: "LOGOUT_USER",
+        result:'OK',
       });
-    }).catch((result)=>{
+    }).catch((err)=>{
       dispatcher.dispatch({
-        type: "AUTH_USER",
-        result,
+        type: "LOGOUT_USER",
+        result:'NOK',
       });
     });
 }
+
 
 export function get(what) {
   axios({

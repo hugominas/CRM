@@ -12,8 +12,9 @@ exports.endpoints = [
 	//affid = 'other' -> organic pixel
 	//http://localhost:3007/track/57ebbc827c06bdfb3408800b/save/57ebbc827c06bdfb3408800b/asdasd/asdada
 	//{method: ['POST', 'GET'], 	path: '/', 	config: Track.universal},    // Info por referer
-	{method: ['POST', 'GET'], 	path: '/{param*}', 	config: Admin.adminRoute},    // Info por referer
+	{method: ['POST', 'GET'], 	path: '/{param*}', 				config: Admin.adminRoute},    // Info por referer
 	{method: ['POST'], 					path: '/admin/auth', 			config: Admin.auth()},    // Info por referer
+	{method: ['POST'], 					path: '/admin/logout', 		config: Admin.logout},    // Info por referer
 
 	//admin
 	{method: ['POST', 'GET', 'PUT', 'DEL'], 	path: '/api/{what}/{id?}', 	config: API.CRUD()},    // Info por referer

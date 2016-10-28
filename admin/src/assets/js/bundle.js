@@ -14,6 +14,7 @@ import Dashboard from "./pages/Dashboard";
 import layout from "./pages/Layout";
 import Flows from "./pages/Flows";
 import Index from "./pages/Login";
+import Logout from "./pages/Logout";
 
 const app = document.getElementById('app');
 
@@ -27,9 +28,9 @@ Store.on("login", authCheck);
 ReactDOM.render(
   (<Router history={hashHistory}>
     <Route path="/" component={Index}></Route>
-
     <Route path="/admin" component={layout} onEnter={authCheck}>
       <IndexRoute component={Dashboard}></IndexRoute>
+
       <Route path="campaigns" component={Campaigns}></Route>
       <Route path="campaigns/edit/:campid" component={EditCampaigns}></Route>
 
@@ -37,13 +38,13 @@ ReactDOM.render(
       <Route path="leads/:campid" component={Leads}></Route>
       <Route path="leads/edit/:leadid" component={Leads}></Route>
 
-      <Route path="flows" component={Flows}></Route>
-      <Route path="flows/:campid/edit/:flowid" component={Flows}></Route>
-      <Route path="flows/:campid" component={Flows}></Route>
       <Route path="users" component={Users}></Route>
       <Route path="users/:campid/:userid" component={Users}></Route>
       <Route path="users/:userid" component={Users}></Route>
+
       <Route path="settings" component={Settings}></Route>
+
+      <Route path="logout" component={Logout}></Route>
     </Route>
   </Router>),
 app);

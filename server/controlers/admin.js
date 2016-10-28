@@ -49,6 +49,13 @@ adminApp.prototype.auth = function(){
   }
 }
 
+adminApp.prototype.logout = {
+    handler: function(request, reply) {
+      request.session.clear('user');
+      reply({status:'OK',data:'user loggedout'}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
+    }
+}
+
 adminApp.prototype.authCheck = function(user,password){
   return new Promise((resolve, reject) => {
     let Db = require('../conf/db').dbTrackLocal();

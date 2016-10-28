@@ -40,8 +40,7 @@ export default class Nav extends React.Component {
     const dashboardClass = location.pathname === "/" ? "active" : "";
     const campaignsClass = location.pathname.match(/campaigns/) ? "active" : "";
     currentTile = (campaignsClass!='')?'Manage your Campaigns':currentTile;
-    const flowsClass = location.pathname.match(/flows/) ? "active" : "";
-    currentTile = (flowsClass!='')?'Administer your Flows':currentTile;
+
     const usersClass = location.pathname.match(/users/) ? "active" : "";
     currentTile = (usersClass!='')?'Manage Aplication User':currentTile;
     const settingsClass = location.pathname.match(/settings/) ? "active" : "";
@@ -77,9 +76,6 @@ export default class Nav extends React.Component {
               </li>
               <li class={leadsClass}>
                 <Link to="/admin/leads" onClick={this.toggleCollapse.bind(this)}>Customers</Link>
-              </li>
-              <li class={flowsClass}>
-                <Link to="/admin/flows" onClick={this.toggleCollapse.bind(this)}>Flows</Link>
               </li>
               <li class={usersClass}>
                 <Link to="/admin/users" onClick={this.toggleCollapse.bind(this)}>Users</Link>
