@@ -1,3 +1,0 @@
-define([
-	'./unit/test',
-], function () {});

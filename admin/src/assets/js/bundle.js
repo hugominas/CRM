@@ -12,7 +12,6 @@ import Users from "./pages/Users";
 import Settings from "./pages/Settings";
 import Dashboard from "./pages/Dashboard";
 import layout from "./pages/Layout";
-import Flows from "./pages/Flows";
 import Index from "./pages/Login";
 import Logout from "./pages/Logout";
 

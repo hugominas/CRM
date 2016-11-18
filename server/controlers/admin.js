@@ -24,6 +24,7 @@ adminApp.prototype.adminRoute = {
 adminApp.prototype.auth = function(){
   let _this = this;
   return {
+
     validate: {
         params: {
           data:{
@@ -32,6 +33,7 @@ adminApp.prototype.auth = function(){
           }
         }
     },
+
     handler: function(request, reply) {
       if(!request.payload.data){reply({status:'NOK',data:'no data'}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");}
       else{

@@ -3,12 +3,15 @@ const Hapi 		= require("hapi");
 const Yar 			= require("yar");
 const Checks 		= require("./conf/init").systemCheck;
 const routes 	= require('./routes');
+const Inert = require('inert');
+const corsHeaders = require('hapi-cors-headers')
+
 
 const options 	= {
 		server: {
 				cors: {
 					origin: ['*'],
-					credentials: true
+            additionalHeaders: ['cache-control', 'x-requested-with']
 				},
 		    state : {
 		        cookies: {
@@ -29,12 +32,24 @@ const options 	= {
 	// CHECK for system defaults Before Start
 	Checks.doChecks()
 
-	let server = Hapi.createServer(3007, options.serve);
-	server.pack.register({
+	// Create a server with a host and port
+	const server = new Hapi.Server();
+
+	server.connection({
+	    host: 'localhost',
+	    port: 3007
+	});
+
+	server.register(Inert, () => {});
+
+	server.register({
 		maxCookieSize: 0,
-		plugin: Yar,
+		register: Yar,
 		options: options.cookie
 	}, function(err) {});
+
+	server.ext('onPreResponse', corsHeaders)
+
 
 	///LOG ERRORS
 	//process.on('uncaughtException', function(err) {

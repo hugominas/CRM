@@ -7,7 +7,6 @@ import Users from "./pages/Users";
 import Settings from "./pages/Settings";
 import Dashboard from "./pages/Dashboard";
 import Layout from "./pages/Layout";
-import Flows from "./pages/Flows";
 
 const app = document.getElementById('app');
 

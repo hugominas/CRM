@@ -100,12 +100,33 @@ apiApp.prototype.get= function(params) {
       }else{
         collections[params.q.db].find(params.q.query)
         .then((resultArr)=>{
+
           if(params.q.db=='users'){
-            resultArr.forEach((ele)=>{
-              delete ele.password;
-            })
+              resultArr.forEach((ele)=>{
+                delete ele.password;
+              })
+              resolve(resultArr);
+          }else if (params.what=='leads'){
+              let output = [];
+              let agregate = {};
+              resultArr=resultArr.filter((ele)=>{
+                //create aggregate
+                if(ele.leadid){
+                  (agregate[''+ele.leadid])?agregate[''+ele.leadid].push(ele):agregate[''+ele.leadid]=[ele];
+                  return true;
+                }else {
+                  return false;
+                }
+              }).map((ele)=>{
+                //create outpute
+                  (ele.history)?ele.history.push(agregate[''+ele._id]):ele.history=[''+agregate[ele._id]]
+                  return ele;
+              })
+
+              resolve(resultArr);
+          }else{
+              resolve(resultArr);
           }
-          resolve(resultArr);
         })
         .catch((err)=>{
           reject(err)

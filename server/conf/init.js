@@ -20,7 +20,6 @@ systemCheck.prototype.doChecks = function (){
     }, reason => {
       reject(reason)
     });
-
   })
 }
 
@@ -28,7 +27,7 @@ systemCheck.prototype.doChecks = function (){
 systemCheck.prototype.checkDBConn = function() {
   return new Promise((resolve, reject) => {
     switch (true) {
-      case (typeof this.Db.dbTrackLocal!== 'function'):
+      case (typeof Db.dbTrackLocal!== 'function'):
         reject("please check db config, cannot connect", Conf)
         break;
       default:
