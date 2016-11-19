@@ -5,7 +5,7 @@ import { Button, ButtonToolbar } from 'react-bootstrap';
 
 @connect((store) => {
   return {
-    data: store.admin.data[props.data]
+    data: []
   };
 })
 
@@ -13,7 +13,7 @@ import { Button, ButtonToolbar } from 'react-bootstrap';
 export default class ActionsToolbar extends React.Component {
   constructor(props) {
     super();
-    //this.state={data:setTimeout(LeadStore.get(props.data),3000)};
+    //this.state={data:setTimeout(LeadStore.get(props.data),3000)}; store.admin.data[props.data]
   }
 
   exportData (){

@@ -43,7 +43,7 @@ trackData.prototype.convRoute = function() {
         //_this.log(requestExtraParts)
         //_this.log('In conv Route ' + JSON.stringify(request.params) + JSON.stringify(requestExtraParts))
         // CHECK IF THERE IS A LEADID IF NODE SAVE VISIT
-        let sessLeadId = request.session.get('leadId');
+        let sessLeadId = request.yar.get('leadId');
         if(!requestExtraParts.leadId && typeof sessLeadId === 'undefined'){
           //GET VISIT data
           let response = _this.getVisit(request, reply, (response)=>{
@@ -52,7 +52,7 @@ trackData.prototype.convRoute = function() {
               //HAVE LEADID NOW SAVE
               requestExtraParts.leadId=curr;
               //SET LEAD AS TRACKING ID
-              request.session.set('leadId', curr);
+              request.yar.set('leadId', curr);
               if((request.params.action!='start' || request.params.action!='visit')){
                 _this.convSave({campid:request.params.campid, action:request.params.action}, requestExtraParts).then((curr)=>{
                   reply({status:'OK',data:curr}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");

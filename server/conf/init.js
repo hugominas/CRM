@@ -40,7 +40,7 @@ systemCheck.prototype.checkDBConn = function() {
 
 systemCheck.prototype.chekckAdminUser = function() {
   return new Promise((resolve, reject) => {
-    //request.session.set('user', {email:Conf.adminEmail,group:'admin'});
+    //request.yar.set('user', {email:Conf.adminEmail,group:'admin'});
     let options = {email:Conf.adminEmail, group:'admin'}
     Api.get({q:{db:'users',query:{email:Conf.adminEmail}}, credentials:options})
     .then((resultArr)=>{

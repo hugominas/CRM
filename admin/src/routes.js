@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { Router, Route, IndexRoute } from 'react-router';
 
 import Campaigns from "./containers/Campaigns";
 import Leads from "./containers/Leads";
@@ -20,24 +20,25 @@ const authCheck = function(nextState, replace) {
 
 
 export default (
-    <Route path="/" component={Index}>
-    <Route path="/admin" component={layout} onEnter={authCheck}>
-      <IndexRoute component={Dashboard}></IndexRoute>
+  <Router>
+    <Route path="/" component={Index}></Route>
+      <Route path="admin" component={layout} onEnter={authCheck}>
+        <IndexRoute component={Dashboard}></IndexRoute>
 
-      <Route path="campaigns" component={Campaigns}></Route>
-      <Route path="campaigns/edit/:campid" component={EditCampaigns}></Route>
+        <Route path="campaigns" component={Campaigns}></Route>
+        <Route path="campaigns/edit/:campid" component={EditCampaigns}></Route>
 
-      <Route path="leads" component={Leads}></Route>
-      <Route path="leads/:campid" component={Leads}></Route>
-      <Route path="leads/edit/:leadid" component={Leads}></Route>
+        <Route path="leads" component={Leads}></Route>
+        <Route path="leads/:campid" component={Leads}></Route>
+        <Route path="leads/edit/:leadid" component={Leads}></Route>
 
-      <Route path="users" component={Users}></Route>
-      <Route path="users/:campid/:userid" component={Users}></Route>
-      <Route path="users/:userid" component={Users}></Route>
+        <Route path="users" component={Users}></Route>
+        <Route path="users/:campid/:userid" component={Users}></Route>
+        <Route path="users/:userid" component={Users}></Route>
 
-      <Route path="settings" component={Settings}></Route>
+        <Route path="settings" component={Settings}></Route>
 
-      <Route path="logout" component={Logout}></Route>
-    </Route>
-    </Route>
+        <Route path="logout" component={Logout}></Route>
+      </Route>
+    </Router>
 );

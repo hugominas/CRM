@@ -12,17 +12,9 @@ import { DateField, MultiMonthView } from 'react-date-picker'
   return {
     campid: (store.campid)?store.campid:'',
     collapsed: true,
-    passDate: store.start,
-    nowDate: store.end,
-    data : [],
-    columnMeta:   [{
-      "columnName": "_id",
-      "order": 9999,
-      "locked": false,
-      "visible": true,
-      component:'campaigns',
-      "customComponent": tableEditDelete
-    }]
+    passDate: store.start || '',
+    nowDate: store.end || '',
+    data : []
   };
 })
 
@@ -33,21 +25,22 @@ export default class Nav extends React.Component {
 
 
   toggleCollapse() {
-    const collapsed = !this.state.collapsed;
-    this.setState({collapsed});
+    //const collapsed = !this.collapsed;
+    //this.setState({collapsed});
   }
 
   onChangeStart (dateString, { dateMoment, timestamp }) {
-    actions.updateDataSet({start:dateString,end:this.state.nowDate})
+    //actions.updateDataSet({start:dateString,end:this.nowDate})
   }
 
   onChangeEnd (dateString, { dateMoment, timestamp }) {
-    actions.updateDataSet({start:this.state.passDate,end:dateString})
+    //actions.updateDataSet({start:this.passDate,end:dateString})
   }
 
   render() {
+    console.log(this.props)
     const { location } = this.props;
-    const { collapsed } = this.state;
+    const { collapsed } = false//this;
     let currentTile = 'Dashboard';
 
     const dashboardClass = location.pathname === "/" ? "active" : "";
@@ -101,14 +94,14 @@ export default class Nav extends React.Component {
               </li>
               <li>
                       <DateField
-                        defaultValue={this.state.passDate}
+                        defaultValue={this.passDate}
                         dateFormat="YYYY-MM-DD"
                         onChange={this.onChangeStart.bind(this)}
                       />
               </li>
               <li>
                       <DateField
-                        defaultValue={this.state.nowDate}
+                        defaultValue={this.nowDate}
                         dateFormat="YYYY-MM-DD"
                         onChange={this.onChangeEnd.bind(this)}
                       />

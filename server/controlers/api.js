@@ -40,7 +40,7 @@ apiApp.prototype.CRUD = function() {
     handler: function(request, reply) {
       if(collections.hasOwnProperty(request.params.what) && _this.__proto__.hasOwnProperty(request.method)){
         let q = {}
-        _this.requestSession=request.session.get('user');
+        _this.requestSession=request.yar.get('user');
         //Switch dataType and query
         switch (request.params.what) {
           case 'campaigns':

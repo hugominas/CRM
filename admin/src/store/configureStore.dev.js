@@ -6,11 +6,13 @@ import {createStore, compose, applyMiddleware} from 'redux';
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 import thunkMiddleware from 'redux-thunk';
 import rootReducer from '../reducers';
+import { routerMiddleware } from 'react-router-redux'
+import { browserHistory } from 'react-router'
 
 export default function configureStore(initialState) {
   const middlewares = [
     // Add other middleware on this line...
-
+    routerMiddleware(browserHistory),
     // Redux middleware that spits an error on you when you try to mutate your state either inside a dispatch or between dispatches.
     reduxImmutableStateInvariant(),
 

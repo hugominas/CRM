@@ -27,7 +27,6 @@ export default class LoginForm extends React.Component {
   }
 
   componentWillMount() {
-    //LeadStore.on("login", this.checkLogStatus.bind(this));
   }
 
   componentWillUnmount() {
@@ -45,9 +44,7 @@ export default class LoginForm extends React.Component {
   }
 
   getValidationState(){
-    console.log(this.props.valid)
-    if (this.props.valid =='OK') { window.location="#/admin"; return 'success';}
-    else if (this.props.valid === 'NOK' || this.props.valid !== '') return 'error';
+    if (this.props.valid === 'NOK' || this.props.valid !== '') return 'error';
     else return;
   }
 

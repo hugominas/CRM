@@ -1,4 +1,4 @@
-import {AUTH_USER, LOGOUT_USER} from '../constants/actionTypes';
+import {AUTH_USER, LOGOUT_USER, INCORRECT_USER} from '../constants/actionTypes';
 //import calculator from '../utils/fuelSavingsCalculator';
 import objectAssign from 'object-assign';
 import initialState from './initialState';
@@ -21,17 +21,23 @@ export default function leadsReducer(state = initialState.auth, action) {
         return state;
         //window.location.reload();
       }
+    case INCORRECT_USER:
+
+      if(action.result === 'NOK'){
+        return objectAssign({}, state, {valid: 'NOK'});
+        //window.location.reload();
+      }else{
+        return state;
+        //window.location.reload();
+      }
 
 
     case AUTH_USER:
 
       if(action.result === 'OK'){
         localStorage.login = Date.now();
+        //window.location="/admin";
         return objectAssign({}, state, {login: 'OK'});
-      }else{
-        localStorage.login='';
-        return objectAssign({}, state, {login: ''});
-        //window.location.reload();
       }
 
     default:

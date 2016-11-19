@@ -2,44 +2,25 @@
 1 verbose cli [ '/home/hugo/.nvm/versions/node/v5.0.0/bin/node',
 1 verbose cli   '/home/hugo/.nvm/versions/node/v5.0.0/bin/npm',
 1 verbose cli   'run',
-1 verbose cli   'startntest' ]
+1 verbose cli   'stratntest' ]
 2 info using npm@3.3.6
 3 info using node@v5.0.0
-4 verbose run-script [ 'prestartntest', 'startntest', 'poststartntest' ]
-5 info lifecycle APIPSADMIN@0.3.0~prestartntest: APIPSADMIN@0.3.0
-6 silly lifecycle APIPSADMIN@0.3.0~prestartntest: no script for prestartntest, continuing
-7 info lifecycle APIPSADMIN@0.3.0~startntest: APIPSADMIN@0.3.0
-8 verbose lifecycle APIPSADMIN@0.3.0~startntest: unsafe-perm in lifecycle true
-9 verbose lifecycle APIPSADMIN@0.3.0~startntest: PATH: /home/hugo/.nvm/versions/node/v5.0.0/lib/node_modules/npm/bin/node-gyp-bin:/home/hugo/Documents/Repos/CRM/admin/node_modules/.bin:/home/hugo/bin:/home/hugo/.nvm/versions/node/v5.0.0/bin:/home/hugo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/android-sdk/tools:/opt/android-sdk/platform-tools:/opt/node/bin:/snap/bin:/opt/android-sdk/tools:/opt/android-sdk/platform-tools:/opt/node/bin
-10 verbose lifecycle APIPSADMIN@0.3.0~startntest: CWD: /home/hugo/Documents/Repos/CRM/admin
-11 silly lifecycle APIPSADMIN@0.3.0~startntest: Args: [ '-c', 'npm-run-all --parallel open:src' ]
-12 silly lifecycle APIPSADMIN@0.3.0~startntest: Returned: code: 1  signal: null
-13 info lifecycle APIPSADMIN@0.3.0~startntest: Failed to exec startntest script
-14 verbose stack Error: APIPSADMIN@0.3.0 startntest: `npm-run-all --parallel open:src`
-14 verbose stack Exit status 1
-14 verbose stack     at EventEmitter.<anonymous> (/home/hugo/.nvm/versions/node/v5.0.0/lib/node_modules/npm/lib/utils/lifecycle.js:233:16)
-14 verbose stack     at emitTwo (events.js:87:13)
-14 verbose stack     at EventEmitter.emit (events.js:172:7)
-14 verbose stack     at ChildProcess.<anonymous> (/home/hugo/.nvm/versions/node/v5.0.0/lib/node_modules/npm/lib/utils/spawn.js:24:14)
-14 verbose stack     at emitTwo (events.js:87:13)
-14 verbose stack     at ChildProcess.emit (events.js:172:7)
-14 verbose stack     at maybeClose (internal/child_process.js:818:16)
-14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:211:5)
-15 verbose pkgid APIPSADMIN@0.3.0
-16 verbose cwd /home/hugo/Documents/Repos/CRM/admin
-17 error Linux 4.4.0-47-generic
-18 error argv "/home/hugo/.nvm/versions/node/v5.0.0/bin/node" "/home/hugo/.nvm/versions/node/v5.0.0/bin/npm" "run" "startntest"
-19 error node v5.0.0
-20 error npm  v3.3.6
-21 error code ELIFECYCLE
-22 error APIPSADMIN@0.3.0 startntest: `npm-run-all --parallel open:src`
-22 error Exit status 1
-23 error Failed at the APIPSADMIN@0.3.0 startntest script 'npm-run-all --parallel open:src'.
-23 error This is most likely a problem with the APIPSADMIN package,
-23 error not with npm itself.
-23 error Tell the author that this fails on your system:
-23 error     npm-run-all --parallel open:src
-23 error You can get their info via:
-23 error     npm owner ls APIPSADMIN
-23 error There is likely additional logging output above.
-24 verbose exit [ 1, true ]
+4 verbose stack Error: missing script: stratntest
+4 verbose stack     at run (/home/hugo/.nvm/versions/node/v5.0.0/lib/node_modules/npm/lib/run-script.js:148:19)
+4 verbose stack     at /home/hugo/.nvm/versions/node/v5.0.0/lib/node_modules/npm/lib/run-script.js:58:5
+4 verbose stack     at /home/hugo/.nvm/versions/node/v5.0.0/lib/node_modules/npm/node_modules/read-package-json/read-json.js:345:5
+4 verbose stack     at checkBinReferences_ (/home/hugo/.nvm/versions/node/v5.0.0/lib/node_modules/npm/node_modules/read-package-json/read-json.js:309:45)
+4 verbose stack     at final (/home/hugo/.nvm/versions/node/v5.0.0/lib/node_modules/npm/node_modules/read-package-json/read-json.js:343:3)
+4 verbose stack     at then (/home/hugo/.nvm/versions/node/v5.0.0/lib/node_modules/npm/node_modules/read-package-json/read-json.js:113:5)
+4 verbose stack     at ReadFileContext.<anonymous> (/home/hugo/.nvm/versions/node/v5.0.0/lib/node_modules/npm/node_modules/read-package-json/read-json.js:284:20)
+4 verbose stack     at ReadFileContext.callback (/home/hugo/.nvm/versions/node/v5.0.0/lib/node_modules/npm/node_modules/graceful-fs/graceful-fs.js:76:16)
+4 verbose stack     at FSReqWrap.readFileAfterOpen [as oncomplete] (fs.js:324:13)
+5 verbose cwd /home/hugo/Documents/Repos/CRM/admin
+6 error Linux 4.4.0-47-generic
+7 error argv "/home/hugo/.nvm/versions/node/v5.0.0/bin/node" "/home/hugo/.nvm/versions/node/v5.0.0/bin/npm" "run" "stratntest"
+8 error node v5.0.0
+9 error npm  v3.3.6
+10 error missing script: stratntest
+11 error If you need help, you may report this error at:
+11 error     <https://github.com/npm/npm/issues>
+12 verbose exit [ 1, true ]

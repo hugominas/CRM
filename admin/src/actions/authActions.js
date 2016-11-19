@@ -1,5 +1,6 @@
 import * as types from '../constants/actionTypes';
 import axios from "axios";
+import {  push } from 'react-router-redux'
 
 
 export function sendLogin(email,password) {
@@ -14,22 +15,19 @@ export function sendLogin(email,password) {
             }
           }
         }).then((result)=>{
-          console.log(result,1)
           if(result.data.status=='OK'){
             dispatch({
               type: types.AUTH_USER,
               result:'OK'
-            });
-          }
-        }).catch((err)=>{
-          console.log(err)
-          if(err.data.status=='NOK'){
+            })
+            dispatch(push('/admin'))
+          }else{
             dispatch({
-              type: types.LOGOUT_USER,
-              result: 'OK'
+              type: types.INCORRECT_USER,
+              result: 'NOK'
             });
           }
-        });
+        })
     }
 }
 
