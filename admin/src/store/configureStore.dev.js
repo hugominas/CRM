@@ -8,9 +8,13 @@ import thunkMiddleware from 'redux-thunk';
 import rootReducer from '../reducers';
 import { routerMiddleware } from 'react-router-redux'
 import { browserHistory } from 'react-router'
+import { checkAuth } from '../utils/authentication'
 
 export default function configureStore(initialState) {
   const middlewares = [
+
+    //Check authentication
+    checkAuth(),
     // Add other middleware on this line...
     routerMiddleware(browserHistory),
     // Redux middleware that spits an error on you when you try to mutate your state either inside a dispatch or between dispatches.

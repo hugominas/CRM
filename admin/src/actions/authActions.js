@@ -2,12 +2,14 @@ import * as types from '../constants/actionTypes';
 import axios from "axios";
 import {  push } from 'react-router-redux'
 
+axios.defaults.baseURL = 'http://localhost:3007'
 
 export function sendLogin(email,password) {
     return function(dispatch) {
+      console.log('logginin')
       axios({
           method: 'post',
-          url: 'http://localhost:3007/admin/auth',
+          url: '/admin/auth',
           data: {
             data:{
               password: password,
@@ -16,6 +18,7 @@ export function sendLogin(email,password) {
           }
         }).then((result)=>{
           if(result.data.status=='OK'){
+            localStorage.login = Date.now();
             dispatch({
               type: types.AUTH_USER,
               result:'OK'
@@ -35,13 +38,16 @@ export function sendLogin(email,password) {
 export function sendLogout() {
   return function(dispatch) {
     axios({
-      method: 'get',
+      method: 'post',
       url: '/admin/logout'
     }).then((act)=>{
       dispatch({
         type: types.LOGOUT_USER,
         result:'OK',
       });
+      localStorage.login='';
+      dispatch(push('/'))
+
     }).catch((err)=>{
       dispatch({
         type: types.LOGOUT_USER,

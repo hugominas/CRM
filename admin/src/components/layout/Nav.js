@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux"
 import { IndexLink, Link } from "react-router";
 import * as actions from '../../actions/adminActions';
+import * as actionsAuth from '../../actions/authActions';
 
 //date Picker
 import { DateField, MultiMonthView } from 'react-date-picker'
@@ -37,8 +38,12 @@ export default class Nav extends React.Component {
     //actions.updateDataSet({start:this.passDate,end:dateString})
   }
 
+  logOut (){
+    this.props.dispatch(actionsAuth.sendLogout());
+  }
+
+
   render() {
-    console.log(this.props)
     const { location } = this.props;
     const { collapsed } = false//this;
     let currentTile = 'Dashboard';
@@ -90,7 +95,8 @@ export default class Nav extends React.Component {
                 <Link to="/admin/settings" onClick={this.toggleCollapse.bind(this)}>Settings</Link>
               </li>
               <li>
-                <Link to="/admin/logout" onClick={this.toggleCollapse.bind(this)}>Logout</Link>
+
+                <Link onClick={this.logOut.bind(this)}>Logout</Link>
               </li>
               <li>
                       <DateField

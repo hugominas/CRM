@@ -10,7 +10,7 @@ import Settings from "./containers/Settings";
 import Dashboard from "./containers/Dashboard";
 import layout from "./containers/Layout";
 import Index from "./containers/Login";
-import Logout from "./containers/Logout";
+import NotFoundPage from "./containers/NotFoundPage";
 
 
 
@@ -37,8 +37,9 @@ export default (
         <Route path="users/:userid" component={Users}></Route>
 
         <Route path="settings" component={Settings}></Route>
+        
+        <Route path="*" component={NotFoundPage}></Route>
 
-        <Route path="logout" component={Logout}></Route>
       </Route>
     </Router>
 );
