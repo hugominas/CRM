@@ -2,16 +2,16 @@ import React from "react";
 import { connect } from "react-redux"
 import DocumentTitle from 'react-document-title';
 
-import tableEditDelete from "../components/tableEditDelete";
-import ActionsToolbar from '../components/ActionsToolbar';
+import tableEditDelete from "../Layout/Components/tableEditDelete";
+import ActionsToolbar from '../Layout/Components/ActionsToolbar';
+import * as actions from '../../actions/adminActions';
+
 import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
-
-import * as actions from '../actions/adminActions';
-
 
 
 @connect((store) => {
   return {
+    campid: (store.campid)?store.campid:'',
     data : [],
     columnMeta:   [{
       "columnName": "_id",
@@ -26,13 +26,22 @@ import * as actions from '../actions/adminActions';
 
 export default class Campaigns extends React.Component {
 
-      constructor (){
+      constructor (props){
         super();
+        if(props)props.params
+
+        //LeadStore.get('leads'+(props.params.campid)?props.params.campid:'')
         //Get DAta
+        //actions.get((this.props.campid)?'leads/'+this.props.campid:'leads/');
+        this.wordData();
+
+      }
+
+      wordData() {
       }
 
       componentWillMount() {
-        this.props.dispatch(actions.get('campaigns'));
+        //this.props.dispatch(fetchTweets())
         //LeadStore.on("change", this.getExternalData.bind(this));
       }
 
@@ -42,8 +51,9 @@ export default class Campaigns extends React.Component {
       }
 
       getExternalData (){
-      /*  if(!this.isUnmounted ){
-          this.setState({data:LeadStore.get('campaigns')})
+        /*if(!this.isUnmounted ){
+          this.setState({data:LeadStore.get('leads'+this.props.campid)})
+          this.wordData();
         }*/
       }
 
@@ -55,6 +65,8 @@ export default class Campaigns extends React.Component {
 
       setPageSize (size){
       }
+
+
 
 
       render() {

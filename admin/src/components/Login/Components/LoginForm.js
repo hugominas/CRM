@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from "react-redux"
 
-import * as actions from '../actions/authActions';
+import * as actions from '../../../actions/authActions';
 
 import { InputGroup, FormControl, ButtonGroup, Button, FormGroup, ControlLabel } from 'react-bootstrap';
 import { browserHistory } from "react-router";
-//import { Button, ButtonToolbar } from 'react-bootstrap';
 
 
 
@@ -15,6 +14,7 @@ import { browserHistory } from "react-router";
     valid: store.auth.valid
   };
 })
+
 
 export default class LoginForm extends React.Component {
 
@@ -44,6 +44,7 @@ export default class LoginForm extends React.Component {
   }
 
   getValidationState(){
+
     if (this.props.valid === 'NOK' || this.props.valid !== '') return 'error';
     else return;
   }

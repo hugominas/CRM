@@ -2,9 +2,9 @@ import React from "react";
 import { connect } from "react-redux"
 import DocumentTitle from 'react-document-title';
 
-import tableEditDelete from "../components/tableEditDelete";
-import ActionsToolbar from '../components/ActionsToolbar';
-import * as actions from '../actions/adminActions';
+import tableEditDelete from "../Layout/Components/tableEditDelete";
+import ActionsToolbar from '../Layout/Components/ActionsToolbar';
+import * as actions from '../../actions/adminActions';
 
 import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
 

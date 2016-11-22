@@ -1,28 +1,22 @@
 import React from 'react';
 import { Router, Route, IndexRoute } from 'react-router';
 
-import Campaigns from "./containers/Campaigns";
-import Leads from "./containers/Leads";
-import EditCampaigns from "./containers/editCampaigns";
+import Campaigns from "./components/Campaigns";
+import Leads from "./components/Leads";
+import EditCampaigns from "./components/Campaigns/editCampaigns";
 
-import Users from "./containers/Users";
-import Settings from "./containers/Settings";
-import Dashboard from "./containers/Dashboard";
-import layout from "./containers/Layout";
-import Index from "./containers/Login";
-import NotFoundPage from "./containers/NotFoundPage";
-
-
-
-const authCheck = function(nextState, replace) {
-  //if(Store.authCheck() == false)replace({ pathname: '/', state: { nextPathname: nextState.location.pathname }  })
-}
+import Users from "./components/Users";
+import Settings from "./components/Settings";
+import Dashboard from "./components/Dashboard";
+import layout from "./components/Layout";
+import Index from "./components/Login";
+import NotFoundPage from "./components/NotFoundPage";
 
 
 export default (
   <Router>
     <Route path="/" component={Index}></Route>
-      <Route path="admin" component={layout} onEnter={authCheck}>
+      <Route path="admin" component={layout}>
         <IndexRoute component={Dashboard}></IndexRoute>
 
         <Route path="campaigns" component={Campaigns}></Route>
@@ -37,7 +31,7 @@ export default (
         <Route path="users/:userid" component={Users}></Route>
 
         <Route path="settings" component={Settings}></Route>
-        
+
         <Route path="*" component={NotFoundPage}></Route>
 
       </Route>

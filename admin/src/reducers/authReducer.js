@@ -1,4 +1,4 @@
-import {AUTH_USER, LOGOUT_USER, INCORRECT_USER} from '../constants/actionTypes';
+import {AUTH_USER, LOGOUT_USER, INCORRECT_USER} from '../actions/actionTypes';
 //import calculator from '../utils/fuelSavingsCalculator';
 import objectAssign from 'object-assign';
 import initialState from './initialState';

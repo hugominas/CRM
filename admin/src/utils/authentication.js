@@ -1,4 +1,4 @@
-import * as types from '../constants/actionTypes';
+import * as types from '../actions/actionTypes';
 import {  push } from 'react-router-redux'
 
 export function checkAuth() {

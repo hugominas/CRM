@@ -3,9 +3,9 @@ import { connect } from "react-redux"
 import DocumentTitle from 'react-document-title';
 
 //import { Button, ButtonToolbar } from 'react-bootstrap';
-import tableEditDelete from "../components/tableEditDelete";
-import * as actions from '../actions/adminActions';
-import ActionsToolbar from '../components/ActionsToolbar';
+import tableEditDelete from "../Layout/Components/tableEditDelete";
+import * as actions from '../../actions/adminActions';
+import ActionsToolbar from '../Layout/Components/ActionsToolbar';
 
 import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
 
@@ -33,7 +33,7 @@ export default class Users extends React.Component {
   }
 
   componentWillMount() {
-    this.props.dispath(actions.get('users'));
+    //this.props.dispath(actions.get('users'));
   }
 
   componentWillUnmount() {

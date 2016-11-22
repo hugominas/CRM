@@ -1,4 +1,4 @@
-import * as types from '../constants/actionTypes';
+import * as types from './actionTypes';
 import axios from "axios";
 
 export function get(what) {

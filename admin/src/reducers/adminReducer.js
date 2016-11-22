@@ -1,4 +1,4 @@
-import {UPDATE_DATA, UPDATE_DATE, DELETE_LEAD} from '../constants/actionTypes';
+import {UPDATE_DATA, UPDATE_DATE, DELETE_LEAD} from '../actions/actionTypes';
 //import calculator from '../utils/fuelSavingsCalculator';
 import objectAssign from 'object-assign';
 import initialState from './initialState';

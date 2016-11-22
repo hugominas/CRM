@@ -1,6 +1,8 @@
-import * as types from '../constants/actionTypes';
+import * as types from './actionTypes';
 import axios from "axios";
 import {  push } from 'react-router-redux'
+import {toastr} from 'react-redux-toastr'
+
 
 axios.defaults.baseURL = 'http://localhost:3007'
 
@@ -19,6 +21,7 @@ export function sendLogin(email,password) {
         }).then((result)=>{
           if(result.data.status=='OK'){
             localStorage.login = Date.now();
+            toastr.success('Login', 'you have successfuly logged in');
             dispatch({
               type: types.AUTH_USER,
               result:'OK'
@@ -29,6 +32,7 @@ export function sendLogin(email,password) {
               type: types.INCORRECT_USER,
               result: 'NOK'
             });
+            toastr.error('Error', 'please verify your details');
           }
         })
     }
@@ -45,6 +49,7 @@ export function sendLogout() {
         type: types.LOGOUT_USER,
         result:'OK',
       });
+      toastr.warning('Warning', 'you have been succefully logedout');
       localStorage.login='';
       dispatch(push('/'))
 
