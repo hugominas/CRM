@@ -1,8 +1,9 @@
 export default {
   admin: {
     campid:'',
-    data:'',
-
+    data:{
+      users:[]
+    },
   },
   auth:{
     login: '',

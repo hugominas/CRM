@@ -5,6 +5,9 @@ import {toastr} from 'react-redux-toastr'
 
 
 axios.defaults.baseURL = 'http://localhost:3007'
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+//WORKS FOR CROSSDOMAIN
+axios.defaults.withCredentials = true;
 
 export function sendLogin(email,password) {
     return function(dispatch) {

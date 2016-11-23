@@ -44,6 +44,7 @@ trackData.prototype.convRoute = function() {
         //_this.log('In conv Route ' + JSON.stringify(request.params) + JSON.stringify(requestExtraParts))
         // CHECK IF THERE IS A LEADID IF NODE SAVE VISIT
         let sessLeadId = request.yar.get('leadId');
+        
         if(!requestExtraParts.leadId && typeof sessLeadId === 'undefined'){
           //GET VISIT data
           let response = _this.getVisit(request, reply, (response)=>{

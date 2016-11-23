@@ -12,7 +12,7 @@ import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
 
 @connect((store) => {
   return {
-    data : [],
+    data : (store.admin.data.users || []),
     columnMeta:   [{
       "columnName": "_id",
       "order": 9999,
@@ -33,7 +33,7 @@ export default class Users extends React.Component {
   }
 
   componentWillMount() {
-    //this.props.dispath(actions.get('users'));
+    this.props.dispatch(actions.get('users'));
   }
 
   componentWillUnmount() {

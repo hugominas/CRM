@@ -2,11 +2,14 @@ import * as types from './actionTypes';
 import axios from "axios";
 
 export function get(what) {
+
   return function(dispatch) {
+
     axios({
       method: 'get',
       url: '/api/'+what
     }).then((result)=>{
+
       //if not logedin
       if(result.data.data == 'not logedin')dispatch({type: types.AUTH_USER,result});
       //dispatch data
@@ -15,7 +18,9 @@ export function get(what) {
         what,
         result,
       });
+
     }).catch((result)=>{
+
       //if not logedin
       if(!result.data || result.data.data == 'not logedin')dispatch({type: types.AUTH_USER,result});
       //dispatch data
@@ -24,8 +29,11 @@ export function get(what) {
         what,
         result,
       });
+      
     });
+
   }
+
 }
 
 export function updateDataSet(data) {

@@ -31,7 +31,6 @@ const options 	= {
 	};
 	// CHECK for system defaults Before Start
 	Checks.doChecks()
-
 	// Create a server with a host and port
 	const server = new Hapi.Server();
 
@@ -40,13 +39,16 @@ const options 	= {
 	    port: 3007
 	});
 
-	server.register(Inert, () => {});
 
-	server.register({
-		maxCookieSize: 0,
-		register: Yar,
-		options: options.cookie
-	}, function(err) {});
+	const cache = server.cache({ segment: 'countries', expiresIn: 60 * 60 * 1000 });
+
+	server.register([
+		Inert,
+		{
+			maxCookieSize: 0,
+			register: Yar,
+			options: options.cookie
+		}], function(err) {});
 
 	server.ext('onPreResponse', corsHeaders)
 
