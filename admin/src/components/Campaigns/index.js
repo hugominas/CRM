@@ -12,7 +12,7 @@ import * as actions from '../../actions/adminActions';
 
 @connect((store) => {
   return {
-    data : [],
+    data : (store.admin.data.campaigns || []),
     columnMeta:   [{
       "columnName": "_id",
       "order": 9999,

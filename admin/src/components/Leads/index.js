@@ -12,7 +12,7 @@ import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
 @connect((store) => {
   return {
     campid: (store.campid)?store.campid:'',
-    data : [],
+    data : (store.admin.data[store.campid] || []),
     columnMeta:   [{
       "columnName": "_id",
       "order": 9999,
@@ -28,12 +28,10 @@ export default class Campaigns extends React.Component {
 
       constructor (props){
         super();
-        if(props)props.params
 
         //LeadStore.get('leads'+(props.params.campid)?props.params.campid:'')
         //Get DAta
         //actions.get((this.props.campid)?'leads/'+this.props.campid:'leads/');
-        this.wordData();
 
       }
 
@@ -41,6 +39,7 @@ export default class Campaigns extends React.Component {
       }
 
       componentWillMount() {
+        //this.props.dispatch(actions.get('users'));
         //this.props.dispatch(fetchTweets())
         //LeadStore.on("change", this.getExternalData.bind(this));
       }

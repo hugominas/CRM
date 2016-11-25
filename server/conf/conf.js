@@ -1,8 +1,8 @@
 'use strict';
 ///////////////////////// CONFIG
 exports.config = {
-    userDBTrack : 'ruth',
-    passDBTrack : 'mArl3n3',
+    userDBTrack : '',
+    passDBTrack : '',
     host : 'localhost',
     dbName : 'PSAPI',
     adminEmail: 'admin@admin.com',

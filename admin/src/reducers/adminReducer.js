@@ -15,7 +15,8 @@ export default function adminReducer(state = initialState.admin, action) {
     case UPDATE_DATA:
       // For this example, just simulating a save by changing date modified.
       // In a real app using Redux, you might use redux-thunk and handle the async call in fuelSavingsActions.js
-      return objectAssign({}, state, {dateModified: action.dateModified});
+      console.log(objectAssign({}, state, {data:{[action.what]: action.result.data.data}}))
+      return objectAssign({}, state, {data:{[action.what]: action.result.data.data}});
       break;
     case UPDATE_DATE:
       newState = objectAssign({}, state);

@@ -2,6 +2,7 @@ export default {
   admin: {
     campid:'',
     data:{
+      campaigns:[],
       users:[]
     },
   },
