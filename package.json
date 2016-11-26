@@ -1,0 +1,17 @@
+{
+  "name": "apies6",
+  "version": "1.0.0",
+  "description": "",
+  "main": "api.js",
+  "scripts": {
+    "client": "cd admin/ && npm run startntest",
+    "server": "cd server/ && node api.js",
+    "start": "concurrent \"npm run client\" \"npm run server\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^3.1.0"
+  }
+}
