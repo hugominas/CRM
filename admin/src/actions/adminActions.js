@@ -12,7 +12,6 @@ export function get(what, id='') {
       if(result.data.data == 'not logedin'){
         dispatch({type: types.AUTH_USER,result});
       }else{
-
         //Update id requested
         if(id!=''){
           dispatch({

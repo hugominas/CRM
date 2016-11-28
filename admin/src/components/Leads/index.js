@@ -12,15 +12,8 @@ import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
 @connect((store) => {
   return {
     campid: (store.campid)?store.campid:'',
-    data : (store.campid)?store.admin.data[store.campid]:store.admin.data.leads,
-    columnMeta:   [{
-      "columnName": "_id",
-      "order": 9999,
-      "locked": false,
-      "visible": true,
-      component:'campaigns',
-      "customComponent": tableEditDelete
-    }]
+    data : (store.campid)?store.admin.data[store.campid]:store.admin.data.leads
+
   };
 })
 
@@ -31,7 +24,15 @@ export default class Campaigns extends React.Component {
         //LeadStore.get('leads'+(props.params.campid)?props.params.campid:'')
         //Get DAta
         //actions.get((this.props.campid)?'leads/'+this.props.campid:'leads/');
-
+        this.columnMeta =   [{
+          "columnName": "_id",
+          "order": 9999,
+          "locked": false,
+          "visible": true,
+          component:'campaigns',
+          campid:props.params.campid,
+          "customComponent": tableEditDelete
+        }]
       }
 
       wordData() {
@@ -70,7 +71,7 @@ export default class Campaigns extends React.Component {
 
 
       render() {
-        let button = (typeof this.props.data !== 'undefined')?<ActionsToolbar data='campaigns' />:'';
+        let button = (typeof this.props.data !== 'undefined')?<ActionsToolbar data='leads' />:'';
         return (
 
           <DocumentTitle title={'Campaigns'}>
@@ -85,9 +86,10 @@ export default class Campaigns extends React.Component {
                 condensed={false}
                 showFilter={true}
                 showSettings={true}
+                useCustomRowComponent={true}
                 pagerOptions={{ maxButtons: 7 }}
                 customPagerComponent={ BootstrapPager }
-                columnMetadata={this.props.columnMeta}
+                columnMetadata={this.columnMeta}
                 results={this.props.data}
                 />
           </div>

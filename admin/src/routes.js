@@ -3,6 +3,7 @@ import { Router, Route, IndexRoute } from 'react-router';
 
 import Campaigns from "./components/Campaigns";
 import Leads from "./components/Leads";
+import LeadsEdit from "./components/Leads/edit";
 import EditCampaigns from "./components/Campaigns/editCampaigns";
 
 import Users from "./components/Users";
@@ -20,10 +21,12 @@ export default (
         <IndexRoute component={Dashboard}></IndexRoute>
 
         <Route path="campaigns" component={Campaigns}></Route>
+        <Route path="campaigns/:campid/edit/:leadid" component={LeadsEdit}></Route>
         <Route path="campaigns/edit/:campid" component={EditCampaigns}></Route>
         <Route path="campaigns/:campid" component={Leads}></Route>
 
         <Route path="leads" component={Leads}></Route>
+        <Route path="leads/:leadid" component={LeadsEdit}></Route>
         <Route path="leads/edit/:leadid" component={Leads}></Route>
 
         <Route path="users" component={Users}></Route>

@@ -10,8 +10,9 @@ const Conf  = require('../conf/conf').config;
 
 //Colections
 let collections = {
-  data :db.collection('data'),
+  data  : db.collection('data'),
   leads : db.collection('data'),
+  lead  : db.collection('data'),
   users : db.collection('users'),
   campaigns : db.collection('campaigns'),
   flows : db.collection('flows')
