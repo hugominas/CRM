@@ -12,7 +12,7 @@ import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
 @connect((store) => {
   return {
     campid: (store.campid)?store.campid:'',
-    data : (store.admin.data[store.campid] || []),
+    data : (store.campid)?store.admin.data[store.campid]:store.admin.data.leads,
     columnMeta:   [{
       "columnName": "_id",
       "order": 9999,
@@ -28,7 +28,6 @@ export default class Campaigns extends React.Component {
 
       constructor (props){
         super();
-
         //LeadStore.get('leads'+(props.params.campid)?props.params.campid:'')
         //Get DAta
         //actions.get((this.props.campid)?'leads/'+this.props.campid:'leads/');
@@ -42,6 +41,8 @@ export default class Campaigns extends React.Component {
         //this.props.dispatch(actions.get('users'));
         //this.props.dispatch(fetchTweets())
         //LeadStore.on("change", this.getExternalData.bind(this));
+        this.props.dispatch(actions.get('leads',this.props.params.campid));
+
       }
 
       componentWillUnmount() {

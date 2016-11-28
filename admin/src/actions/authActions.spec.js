@@ -1,5 +1,5 @@
-import * as ActionTypes from '../constants/actionTypes';
-import * as ActionCreators from './fuelSavingsActions';
+import * as ActionTypes from './actionTypes';
+import * as ActionCreators from './authActions';
 
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';

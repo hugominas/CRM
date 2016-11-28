@@ -1,4 +1,4 @@
-import {UPDATE_DATA, UPDATE_DATE, DELETE_LEAD} from '../actions/actionTypes';
+import {UPDATE_DATA, UPDATE_DATE, DELETE_LEAD, UPDATE_SELECTOR} from '../actions/actionTypes';
 //import calculator from '../utils/fuelSavingsCalculator';
 import objectAssign from 'object-assign';
 import initialState from './initialState';
@@ -15,8 +15,12 @@ export default function adminReducer(state = initialState.admin, action) {
     case UPDATE_DATA:
       // For this example, just simulating a save by changing date modified.
       // In a real app using Redux, you might use redux-thunk and handle the async call in fuelSavingsActions.js
-      console.log(objectAssign({}, state, {data:{[action.what]: action.result.data.data}}))
-      return objectAssign({}, state, {data:{[action.what]: action.result.data.data}});
+      console.log(action.what, data)
+      return objectAssign({}, state,  {[action.what]: action.result.data.data});
+      break;
+    case UPDATE_SELECTOR:
+
+      return objectAssign({}, state, {[action.what]: action.id});
       break;
     case UPDATE_DATE:
       newState = objectAssign({}, state);

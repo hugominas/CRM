@@ -13,7 +13,7 @@ export default class tableEditDelete extends React.Component {
     let delURL ='/admin/'+this.props.metadata.component+"/delete/" + this.props.data;
     let viewURL ='/admin/'+this.props.metadata.component+"/" + this.props.data;
     if(this.props.metadata.component==='campaigns'){
-      viewURL ='/admin/leads/' + this.props.data;
+      viewURL ='/admin/campaigns/' + this.props.data;
     }
       return (
         <div>

@@ -1,7 +1,10 @@
 export default {
   admin: {
-    campid:'',
+    lead:'',
+    campaign:'',
+    user:'',
     data:{
+      leads:[],
       campaigns:[],
       users:[]
     },

@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import {expect} from 'chai';
-import AboutPage from './AboutPage';
+import AboutPage from './index';
 
 describe('<AboutPage />', () => {
   it('should have a header called \'About\'', () => {

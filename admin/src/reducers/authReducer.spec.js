@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import * as ActionTypes from '../constants/actionTypes';
-import reducer from './fuelSavingsReducer';
+import * as ActionTypes from '../actions/actionTypes';
+import reducer from './authReducer';
 import dateHelper from '../utils/dateHelper';
 
 describe('Reducers::FuelSavings', () => {

@@ -21,9 +21,9 @@ export default (
 
         <Route path="campaigns" component={Campaigns}></Route>
         <Route path="campaigns/edit/:campid" component={EditCampaigns}></Route>
+        <Route path="campaigns/:campid" component={Leads}></Route>
 
         <Route path="leads" component={Leads}></Route>
-        <Route path="leads/:campid" component={Leads}></Route>
         <Route path="leads/edit/:leadid" component={Leads}></Route>
 
         <Route path="users" component={Users}></Route>

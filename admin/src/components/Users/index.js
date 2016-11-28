@@ -11,6 +11,7 @@ import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
 
 
 @connect((store) => {
+  console.log(store.admin.data)
   return {
     data : (store.admin.data.users || []),
     columnMeta:   [{
