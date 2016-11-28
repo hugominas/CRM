@@ -19,7 +19,7 @@ const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
 render(
-  <Provider store={store}>
+  <Provider store={store}> 
     <div>
       <Router history={history} routes={routes} />
       <ReduxToastr
