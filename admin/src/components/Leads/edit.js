@@ -4,7 +4,10 @@ import DocumentTitle from 'react-document-title';
 
 import tableEditDelete from "../Layout/Components/tableEditDelete";
 import ActionsToolbar from '../Layout/Components/ActionsToolbar';
+import customRowComponent from '../Layout/Components/customRow';
 import * as actions from '../../actions/adminActions';
+
+
 
 import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
 
@@ -49,7 +52,7 @@ export default class Lead extends React.Component {
 
     return (
       <DocumentTitle title={'Leads'}>
-      <div class="container innerCont">
+      <div class="upContainer">
 
 
         {button}
@@ -60,6 +63,12 @@ export default class Lead extends React.Component {
             condensed={false}
             showFilter={true}
             showSettings={true}
+
+            useCustomRowComponent={true}
+            customRowComponent={customRowComponent}
+            enableToggleCustom={true}
+            resultsPerPage={10}
+
             pagerOptions={{ maxButtons: 7 }}
             customPagerComponent={ BootstrapPager }
             columnMetadata={this.columnMeta}

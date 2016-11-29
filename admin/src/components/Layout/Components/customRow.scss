@@ -1,0 +1,31 @@
+/*//////////
+/// Custom Row
+//////////////*/
+.innerCont{
+    padding: 12px 40px !important;
+
+
+  .avatar{
+    width: 60px;
+    height: 60px;
+    background: url(../../../assets/img/Blank_woman_placeholder.svg.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .action{
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+
+  h6{
+    font-size: 1.1em;
+    font-weight: bold;
+  }
+}
+.eleRow:hover .innerCont{
+  border-left: 5px solid #f16f21;
+  background: #fafafa;
+  margin-left: 15px;
+}
+.eleRow:nth-child(even) .innerCont{background: #fafafa;}
+.eleRow:nth-child(odd) {margin-left: 0px}

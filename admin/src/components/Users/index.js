@@ -6,6 +6,7 @@ import DocumentTitle from 'react-document-title';
 import tableEditDelete from "../Layout/Components/tableEditDelete";
 import * as actions from '../../actions/adminActions';
 import ActionsToolbar from '../Layout/Components/ActionsToolbar';
+import customRowUsers from '../Layout/Components/customRowUsers';
 
 import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
 
@@ -62,7 +63,7 @@ export default class Users extends React.Component {
     let button = (typeof this.props.data !== 'undefined')?<ActionsToolbar data='campaigns' />:'';
     return (
       <DocumentTitle title={'Users'}>
-        <div class="container innerCont">
+        <div class="upContainer">
           {button}
           <GriddleBootstrap
               hover={true}
@@ -71,6 +72,12 @@ export default class Users extends React.Component {
               condensed={false}
               showFilter={true}
               showSettings={true}
+
+              useCustomRowComponent={true}
+              customRowComponent={customRowUsers}
+              enableToggleCustom={true}
+              resultsPerPage={10}
+
               pagerOptions={{ maxButtons: 7 }}
               customPagerComponent={ BootstrapPager }
               columnMetadata={this.props.columnMeta}

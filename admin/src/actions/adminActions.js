@@ -1,5 +1,6 @@
 import * as types from './actionTypes';
 import axios from "axios";
+import {  push } from 'react-router-redux'
 
 export function get(what, id='') {
 
@@ -10,7 +11,7 @@ export function get(what, id='') {
     }).then((result)=>{
       //if not logedin
       if(result.data.data == 'not logedin'){
-        dispatch({type: types.AUTH_USER,result});
+        dispatch(push('/'))
       }else{
         //Update id requested
         if(id!=''){
@@ -30,11 +31,11 @@ export function get(what, id='') {
       }
 
     }).catch((result)=>{
-
+      console.log(result)
       //if not logedin
-      if(!result.data || result.data.data == 'not logedin'){
-        dispatch({type: types.AUTH_USER,result});
-      }else{
+      if(result.data.data == 'not logedin'){
+        dispatch(push('/'))
+      }else if(result.data){
         //dispatch data
         dispatch({
           type: types.UPDATE_DATA,

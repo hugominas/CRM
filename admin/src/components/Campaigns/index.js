@@ -5,6 +5,7 @@ import DocumentTitle from 'react-document-title';
 import tableEditDelete from "../Layout/Components/tableEditDelete";
 import ActionsToolbar from '../Layout/Components/ActionsToolbar';
 import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
+import customRowCampaigns from '../Layout/Components/customRowCampaigns';
 
 import * as actions from '../../actions/adminActions';
 
@@ -62,7 +63,7 @@ export default class Campaigns extends React.Component {
         return (
 
           <DocumentTitle title={'Campaigns'}>
-          <div class="container innerCont">
+          <div class="upContainer">
 
 
             {button}
@@ -73,6 +74,12 @@ export default class Campaigns extends React.Component {
                 condensed={false}
                 showFilter={true}
                 showSettings={true}
+
+                useCustomRowComponent={true}
+                customRowComponent={customRowCampaigns}
+                enableToggleCustom={true}
+                resultsPerPage={10}
+
                 pagerOptions={{ maxButtons: 7 }}
                 customPagerComponent={ BootstrapPager }
                 columnMetadata={this.props.columnMeta}

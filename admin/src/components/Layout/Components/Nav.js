@@ -3,7 +3,7 @@ import { connect } from "react-redux"
 import { IndexLink, Link } from "react-router";
 import * as actions from '../../../actions/adminActions';
 import * as actionsAuth from '../../../actions/authActions';
-import "../../../styles/react-date-picker.min.css";
+import "../../../assets/styles/react-date-picker.min.css";
 
 //date Picker
 import { DateField, MultiMonthView } from 'react-date-picker'

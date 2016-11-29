@@ -10,8 +10,8 @@ import configureStore from './store/configureStore';
 import { syncHistoryWithStore } from 'react-router-redux';
 
 require('./favicon.ico'); // Tell webpack to load favicon.ico
-import './styles/styles.scss'; // Yep, that's right. You can import SASS/CSS files too! Webpack will run the associated loader and plug this into the page.
-import './styles/react-redux-toastr.min.css'
+import './assets/styles/styles.scss'; // Yep, that's right. You can import SASS/CSS files too! Webpack will run the associated loader and plug this into the page.
+import './assets/styles/react-redux-toastr.min.css'
 
 const store = configureStore();
 
@@ -19,7 +19,7 @@ const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
 render(
-  <Provider store={store}> 
+  <Provider store={store}>
     <div>
       <Router history={history} routes={routes} />
       <ReduxToastr
