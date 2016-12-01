@@ -19,12 +19,18 @@ export default class Campaigns extends React.Component {
 
       constructor (){
         super();
+        this.pager={
+          page:0,
+          items:10,
+          order:'date',
+          search:''
+        }
 
         //Get DAta
       }
 
       componentWillMount() {
-        this.props.dispatch(actions.get('campaigns'));
+        this.props.dispatch(actions.get('campaigns','',this.pager));
         //LeadStore.on("change", this.getExternalData.bind(this));
       }
 

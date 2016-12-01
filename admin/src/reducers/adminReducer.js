@@ -31,11 +31,14 @@ export default function adminReducer(state = initialState.admin, action) {
 
       break;
       case DELETE_DATA:
-      let newDeleteState = objectAssign({}, state);
-      let afterFilter = newDeleteState.data[action.what].filter((ele)=>{return (ele._id!=action.id)});
-      newDeleteState.data[action.what] = objectAssign({}, newDeleteState.data[action.what], afterFilter);
-      return newDeleteState;
 
+      return {
+         ...state,
+         data : {
+             ...state.data,
+             [action.what] : state.data[action.what].filter((ele)=>{return (ele._id!=action.id)})
+         }
+       }
       break;
 
     default:

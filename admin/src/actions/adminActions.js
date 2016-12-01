@@ -3,7 +3,7 @@ import axios from "axios";
 import {  push } from 'react-router-redux'
 import {toastr} from 'react-redux-toastr'
 
-export function get(what, id='') {
+export function get(what, id='', pager) {
 
   return function(dispatch) {
     axios({
