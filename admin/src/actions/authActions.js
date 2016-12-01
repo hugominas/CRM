@@ -3,7 +3,7 @@ import axios from "axios";
 import {  push } from 'react-router-redux'
 import {toastr} from 'react-redux-toastr'
 
-
+//TEMp
 axios.defaults.baseURL = 'http://localhost:3007'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 //WORKS FOR CROSSDOMAIN
@@ -11,7 +11,6 @@ axios.defaults.withCredentials = true;
 
 export function sendLogin(email,password) {
     return function(dispatch) {
-      console.log('logginin')
       axios({
           method: 'post',
           url: '/admin/auth',

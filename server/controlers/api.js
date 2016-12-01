@@ -178,12 +178,12 @@ apiApp.prototype.put= function(params) {
 }
 
 //method delete
-apiApp.prototype.del= function(params) {
+apiApp.prototype.delete= function(params) {
   let _this = this;
   return new Promise((resolve, reject) => {
-    if(!this.checkPermission(params.requestSession))
+    if(!this.checkPermission(params.credentials))
     {reject('not logedin');}else{
-      collections[params.q.db].find(params.q.query)
+      collections[params.q.db].remove(params.q.query)
       .then((resultArr)=>{
         resolve(resultArr);
       })

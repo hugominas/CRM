@@ -3,10 +3,10 @@ import { connect } from "react-redux"
 import DocumentTitle from 'react-document-title';
 
 //import { Button, ButtonToolbar } from 'react-bootstrap';
-import tableEditDelete from "../Layout/Components/tableEditDelete";
+import tableEditDelete from "../../components/Layout/tableEditDelete";
 import * as actions from '../../actions/adminActions';
-import ActionsToolbar from '../Layout/Components/ActionsToolbar';
-import customRowUsers from '../Layout/Components/customRowUsers';
+import ActionsToolbar from '../../components/Layout/ActionsToolbar';
+import customRowUsers from '../../components/Layout/customRowUsers';
 
 import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
 

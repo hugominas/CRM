@@ -1,18 +1,12 @@
 import React from "react";
-import { connect } from "react-redux"
 import { Button, ButtonToolbar } from 'react-bootstrap';
-
-
-@connect((store) => {
-  return {
-    data: []
-  };
-})
+import { IndexLink, Link } from "react-router";
 
 
 export default class ActionsToolbar extends React.Component {
   constructor(props) {
     super();
+    this.component = props.data;
     //this.state={data:setTimeout(LeadStore.get(props.data),3000)}; store.admin.data[props.data]
   }
 
@@ -70,8 +64,7 @@ export default class ActionsToolbar extends React.Component {
   render() {
       return (
         <div class="getData" >
-
-        <Button bsStyle="warning" onClick={()=>this.exportData()}>click here to download all data</Button>
+          <Button bsStyle="warning" onClick={()=>this.exportData()}>click here to download all data</Button>&nbsp;<IndexLink to={'/admin/'+this.component+'/add/'}><Button bsStyle="success">Add new</Button></IndexLink>
         </div>
     );
   }

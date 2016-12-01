@@ -16,6 +16,11 @@ export default class customRowComponent extends React.Component {
     let a = 0;
     let limitData = 3
 
+    let url = '/admin/campaigns/'+campid+'/edit/' + _id;
+    let delURL ='/admin/campaigns/'+campid+'/delete/' + _id;
+    let viewURL ='/admin/campaigns/'+campid+'/'+ _id;
+
+
     let dataElement = Object.keys(data).map(ele => {
       a++;
       return <div key={_id+Date.now()+ele} class={(a>limitData)?"hidden col-lg-3":"col-lg-3"}><h6>{ele}</h6>{data[ele]}</div>;
@@ -31,11 +36,13 @@ export default class customRowComponent extends React.Component {
               <div class="action">{ action }</div>
               <div class="date">{ date }</div>
             </div>
-            <div class="col-lg-9">
+            <div class="col-lg-7">
               {dataElement}
             </div>
-            <div class="col-lg-1">
-            {tableEditDelete}
+            <div class="col-lg-2 actions">
+              <IndexLink to={url}><Button bsSize="small">Edit</Button></IndexLink>
+              <IndexLink to={delURL}><Button bsSize="small">Delete</Button></IndexLink>
+              <IndexLink to={viewURL}><Button bsSize="small" bsStyle="success">View</Button></IndexLink>
             </div>
            </div>
        </div>

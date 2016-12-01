@@ -1,8 +1,13 @@
 export default {
   admin: {
-    lead:{},
-    campaign:{},
-    user:{},
+    leads:{},
+    campaigns:{
+      _id:'',
+      local:'',
+      nam:'',
+      time:''
+    },
+    users:{},
     data:{
       leads:[],
       campaigns:[],

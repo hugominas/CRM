@@ -2,9 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import DocumentTitle from 'react-document-title';
 
-import tableEditDelete from "../Layout/Components/tableEditDelete";
-import ActionsToolbar from '../Layout/Components/ActionsToolbar';
-import customRowComponent from '../Layout/Components/customRow';
+import tableEditDelete from "../../components/Layout/tableEditDelete";
+import ActionsToolbar from '../../components/Layout/ActionsToolbar';
+import customRowComponent from '../../components/Layout/customRow';
 import * as actions from '../../actions/adminActions';
 
 

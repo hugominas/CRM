@@ -16,24 +16,29 @@ export default class customRowCampaigns extends React.Component {
     let a = 0;
     let limitData = 3
 
+    let dt = new Date(time);
+    let date =  parseInt(dt.getDate()) + '/' + parseInt(dt.getMonth()+1) + '/' + dt.getFullYear();
 
+    let url = '/admin/users/edit/' + _id;
+    let delURL ='/admin/users/delete/' + _id;
+    let viewURL ='/admin/users/'+ _id;
 
       return (
         <div class="col-lg-6 eleRow">
           <div class="container innerCont">
-            <div class="col-lg-1">
+            <div class="col-lg-2">
               <div class="avatar"></div>
             </div>
             <div class="col-lg-6">
               <div class="action">{ name }</div>
+              <div class="group">{ group } { date }</div>
               <div class="date">{ email }</div>
             </div>
-            <div class="col-lg-2">
-            <div class="date">{ group }</div>
-            <div class="date">{ time }</div>
-            </div>
-            <div class="col-lg-1">
-            {tableEditDelete}
+
+            <div class="col-lg-4 actions">
+              <IndexLink to={url}><Button bsSize="small">Edit</Button></IndexLink>
+              <IndexLink to={delURL}><Button bsSize="small">Delete</Button></IndexLink>
+              <IndexLink to={viewURL}><Button bsSize="small" bsStyle="success">View</Button></IndexLink>
             </div>
            </div>
        </div>

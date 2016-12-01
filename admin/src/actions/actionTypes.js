@@ -6,4 +6,6 @@ export const INCORRECT_USER = 'INCORRECT_USER';
 export const UPDATE_DATA = 'UPDATE_DATA';
 export const UPDATE_SELECTOR = 'UPDATE_SELECTOR';
 export const UPDATE_DATE = 'UPDATE_DATE';
-export const DELETE_LEAD = 'DELETE_LEAD';
+export const DELETE_DATA = 'DELETE_DATA';
+export const UPDATE_DATA_SINGLE = 'UPDATE_DATA_SINGLE';
+export const UPDATE_FORM = 'UPDATE_FORM';

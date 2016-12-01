@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux"
 
-import * as actions from '../../../actions/authActions';
+import * as actions from '../../actions/authActions';
 
 import { InputGroup, FormControl, ButtonGroup, Button, FormGroup, ControlLabel } from 'react-bootstrap';
 import { browserHistory } from "react-router";

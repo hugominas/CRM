@@ -2,38 +2,30 @@ import React from "react";
 import { connect } from "react-redux"
 import DocumentTitle from 'react-document-title';
 
-import tableEditDelete from "../Layout/Components/tableEditDelete";
-import ActionsToolbar from '../Layout/Components/ActionsToolbar';
+import ActionsToolbar from '../../components/Layout/ActionsToolbar';
+import CustomRowCampaigns from '../../components/Layout/customRowCampaigns';
+
 import * as actions from '../../actions/adminActions';
 
-import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
+
 
 @connect((store) => {
   return {
-    //SetState
-      data : [],
-      columnMeta:   [{
-        "columnName": "_id",
-        "order": 9999,
-        "locked": false,
-        "visible": true,
-        component:'campaigns',
-        "customComponent": tableEditDelete
-      }]
+    data : (store.admin.data.campaigns || [])
   };
 })
 
 export default class Campaigns extends React.Component {
 
-      constructor (props){
+      constructor (){
         super();
 
         //Get DAta
-        actions.get('campaigns');
       }
 
       componentWillMount() {
         this.props.dispatch(actions.get('campaigns'));
+        //LeadStore.on("change", this.getExternalData.bind(this));
       }
 
       componentWillUnmount() {
@@ -42,9 +34,13 @@ export default class Campaigns extends React.Component {
       }
 
       getExternalData (){
-        /*if(!this.isUnmounted ){
+      /*  if(!this.isUnmounted ){
           this.setState({data:LeadStore.get('campaigns')})
         }*/
+      }
+
+      deleteElement (id){
+        this.props.dispatch(actions.del('campaigns',id));
       }
 
       setPage (index){
@@ -57,29 +53,17 @@ export default class Campaigns extends React.Component {
       }
 
 
-
-
       render() {
         let button = (typeof this.props.data !== 'undefined')?<ActionsToolbar data='campaigns' />:'';
+        let grid = this.props.data.map((ele)=>{
+            return <CustomRowCampaigns key={ele._id} deleteElement={this.deleteElement.bind(this)} {... ele} />
+        })
         return (
 
           <DocumentTitle title={'Campaigns'}>
-          <div class="container innerCont">
-
-
+          <div class="upContainer">
             {button}
-            <GriddleBootstrap
-                hover={true}
-                striped={true}
-                bordered={false}
-                condensed={false}
-                showFilter={true}
-                showSettings={true}
-                pagerOptions={{ maxButtons: 7 }}
-                customPagerComponent={ BootstrapPager }
-                columnMetadata={this.props.columnMeta}
-                results={this.props.data}
-                />
+            {grid}
           </div>
           </DocumentTitle>
         );

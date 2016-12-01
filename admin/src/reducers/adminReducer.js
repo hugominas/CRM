@@ -1,4 +1,4 @@
-import {UPDATE_DATA, UPDATE_DATE, DELETE_LEAD, UPDATE_SELECTOR} from '../actions/actionTypes';
+import {UPDATE_DATA, UPDATE_DATE, DELETE_DATA, UPDATE_SELECTOR, UPDATE_DATA_SINGLE, UPDATE_FORM} from '../actions/actionTypes';
 //import calculator from '../utils/fuelSavingsCalculator';
 import objectAssign from 'object-assign';
 import initialState from './initialState';
@@ -13,32 +13,28 @@ export default function adminReducer(state = initialState.admin, action) {
 
   switch (action.type) {
     case UPDATE_DATA:
-      // For this example, just simulating a save by changing date modified.
-      // In a real app using Redux, you might use redux-thunk and handle the async call in fuelSavingsActions.js
-      let newState = objectAssign({}, state);
-      console.log
+      newState = objectAssign({}, state);
       //MAKE THE CHANGES
       newState.data[action.what] = action.result.data.data;
       return newState;
 
       break;
-    case UPDATE_SELECTOR:
+    case UPDATE_DATA_SINGLE:
+      //MAKE THE CHANGES
+      return objectAssign({}, state, {[action.what]: action.result.data.data[0]});
 
-      return objectAssign({}, state, {[action.what]: action.id});
       break;
-    case UPDATE_DATE:
-      newState = objectAssign({}, state);
-      newState[action.fieldName] = action.value;
-      newState.necessaryDataIsProvidedToCalculateSavings = calculator().necessaryDataIsProvidedToCalculateSavings(newState);
-      newState.dateModified = action.dateModified;
+      case UPDATE_FORM:
+        //Update individual details
+        let inerchange = objectAssign({}, state[action.what], {[action.name]:action.value})
+        return objectAssign({}, state, {[action.what]:inerchange});
 
-      if (newState.necessaryDataIsProvidedToCalculateSavings) {
-        newState.savings = calculator().calculateSavings(newState);
-      }
-
-      return newState;
       break;
-      case DELETE_LEAD:
+      case DELETE_DATA:
+      let newDeleteState = objectAssign({}, state);
+      let afterFilter = newDeleteState.data[action.what].filter((ele)=>{return (ele._id!=action.id)});
+      newDeleteState.data[action.what] = objectAssign({}, newDeleteState.data[action.what], afterFilter);
+      return newDeleteState;
 
       break;
 

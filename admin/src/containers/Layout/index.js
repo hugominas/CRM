@@ -1,8 +1,8 @@
 import React from "react";
 import DocumentTitle from 'react-document-title';
 
-import Footer from "./Components/Footer";
-import Nav from "./Components/Nav";
+import Footer from "../../components/Layout/Footer";
+import Nav from "../../components/Layout/Nav";
 
 export default class Layout extends React.Component {
   render() {

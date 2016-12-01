@@ -1,8 +1,8 @@
 import React from 'react';
 import DocumentTitle from 'react-document-title';
 
-import Footer from "../Layout/Components/Footer";
-import LoginForm from './Components/LoginForm';
+import Footer from "../../components/Layout/Footer";
+import LoginForm from '../../components/Login/LoginForm';
 import "./Login.scss";
 
 

@@ -8,10 +8,15 @@
   .avatar{
     width: 60px;
     height: 60px;
-    background: url(../../../assets/img/Blank_woman_placeholder.svg.png) no-repeat center center;
+    background: url(../../assets/img/Blank_woman_placeholder.svg.png) no-repeat center center;
     background-size: contain;
   }
-
+  .actions button{
+    margin-right: 5px;
+  }
+  .actions{
+    padding:15px;
+  }
   .action{
     font-size: 1.5em;
     font-weight: bold;
@@ -21,6 +26,7 @@
     font-size: 1.1em;
     font-weight: bold;
   }
+
 }
 .eleRow:hover .innerCont{
   border-left: 5px solid #f16f21;

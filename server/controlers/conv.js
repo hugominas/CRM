@@ -38,13 +38,13 @@ trackData.prototype.convRoute = function() {
         ///HANDLE REQUEST EXTRA PARAMAS
         let requestExtraParts = _this.toObject((request.params.param)?request.params.param.split('/'):[]);
         //IF WE HAVE POST ADD TO FIRST ARRAY
-        if(request.payload)Object.keys(request.payload.data).map((ele)=>{requestExtraParts[ele]=request.payload.data[ele]});
+        if(request.payload && request.payload.data)Object.keys(request.payload.data).map((ele)=>{requestExtraParts[ele]=request.payload.data[ele]});
         //LOG
         //_this.log(requestExtraParts)
         //_this.log('In conv Route ' + JSON.stringify(request.params) + JSON.stringify(requestExtraParts))
         // CHECK IF THERE IS A LEADID IF NODE SAVE VISIT
         let sessLeadId = request.yar.get('leadId');
-        
+
         if(!requestExtraParts.leadId && typeof sessLeadId === 'undefined'){
           //GET VISIT data
           let response = _this.getVisit(request, reply, (response)=>{
