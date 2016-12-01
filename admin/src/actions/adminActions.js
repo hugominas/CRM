@@ -6,9 +6,10 @@ import {toastr} from 'react-redux-toastr'
 export function get(what, id='', pager) {
 
   return function(dispatch) {
+    ///api/{what}/{page}/{offset}/{sort}/{id?}
     axios({
       method: 'get',
-      url: '/api/'+what+((id)?'/'+id:'')
+      url: '/api/'+what+'/'+pager.page+'/'+pager.items+'/'+pager.sort+'/'+((id)?'/'+id:'')
     }).then((result)=>{
       //if not logedin
       if(result.data.data == 'not logedin'){

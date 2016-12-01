@@ -22,9 +22,10 @@ export default class Campaigns extends React.Component {
         this.pager={
           page:0,
           items:10,
-          order:'date',
-          search:''
+          sort:'date',
+          id:''
         }
+        ///api/{what}/{page}/{items}/{sort}/{id?}
 
         //Get DAta
       }

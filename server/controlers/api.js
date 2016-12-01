@@ -35,10 +35,14 @@ apiApp.prototype.CRUD = function() {
     validate: {
         params: {
           what: Joi.string(),
-          id: Joi.string()
+          id: Joi.string(),
+          page: Joi.number(),
+          items: Joi.number(),
+          sort: Joi.string()
         }
     },
     handler: function(request, reply) {
+      //admin /api/campaigns/page/items/order/id
       if(collections.hasOwnProperty(request.params.what) && _this.__proto__.hasOwnProperty(request.method)){
         let q = {}
         _this.requestSession=request.yar.get('user');
