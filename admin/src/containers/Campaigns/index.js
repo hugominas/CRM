@@ -5,45 +5,38 @@ import DocumentTitle from 'react-document-title';
 import ActionsToolbar from '../../components/Layout/ActionsToolbar';
 import CustomRowCampaigns from '../../components/Layout/customRowCampaigns';
 
+import * as types from '../../actions/actionTypes';
 import * as actions from '../../actions/adminActions';
+import {Col, Pagination } from 'react-bootstrap';
 
 
 
 @connect((store) => {
   return {
-    data : (store.admin.data.campaigns || [])
+    data : (store.admin.data.campaigns || []),
+    pager: store.admin.pager
   };
 })
 
 export default class Campaigns extends React.Component {
 
-      constructor (){
+      constructor (props){
         super();
-        this.pager={
-          page:0,
-          items:10,
-          sort:'date',
-          id:''
-        }
-        ///api/{what}/{page}/{items}/{sort}/{id?}
-
-        //Get DAta
       }
 
       componentWillMount() {
-        this.props.dispatch(actions.get('campaigns','',this.pager));
+        this.props.dispatch(actions.get('campaigns','',{... this.props.pager, page:0}));
         //LeadStore.on("change", this.getExternalData.bind(this));
       }
 
-      componentWillUnmount() {
-        //this.isUnmounted = true;
-        //LeadStore.removeListener("change", this.getExternalData.bind(this));
-      }
-
-      getExternalData (){
+      handleSelect (pagenum){
       /*  if(!this.isUnmounted ){
           this.setState({data:LeadStore.get('campaigns')})
         }*/
+        this.props.dispatch({
+          type: types.UPDATE_PAGER,
+          pager: {... this.props.pager, page:pagenum}
+        });
       }
 
       deleteElement (id){
@@ -71,6 +64,17 @@ export default class Campaigns extends React.Component {
           <div class="upContainer">
             {button}
             {grid}
+            <Pagination
+              prev
+              next
+              first
+              last
+              ellipsis
+              boundaryLinks
+              items={20}
+              maxButtons={7}
+              activePage={this.page}
+              onSelect={this.handleSelect} />
           </div>
           </DocumentTitle>
         );

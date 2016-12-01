@@ -17,7 +17,8 @@ exports.endpoints = [
 	{method: ['POST'], 					path: '/admin/logout', 	config: Admin.logout},    // Info por referer
 
 	//admin /api/campaigns/page/items/order/id
-	{method: ['POST', 'GET', 'PUT', 'DELETE'], 	path: '/api/{what}/{page}/{items}/{sort}/{id?}', 	config: API.CRUD()},    // Info por referer
+	{method: ['GET'], 										path: '/api/{what}/{page}/{items}/{sort}/{startDate}/{endDate}/{id?}', 	config: API.CRUD()},    // Info por referer
+	{method: ['POST', 'PUT', 'DELETE'], 	path: '/api/{what}/{id?}', 												config: API.CRUD()},    // Info por referer
 
 
 	{method: ['POST', 'GET'], 	path: '/track/{campid}/{action}/{multi}/{param*}', 	config: Conv.convRoute()} //multi value - 57ebbc827c06bdfb3408800b or single

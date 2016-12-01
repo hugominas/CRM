@@ -1,4 +1,4 @@
-import {UPDATE_DATA, UPDATE_DATE, DELETE_DATA, UPDATE_SELECTOR, UPDATE_DATA_SINGLE, UPDATE_FORM} from '../actions/actionTypes';
+import {UPDATE_DATA, UPDATE_DATE, DELETE_DATA, UPDATE_SELECTOR, UPDATE_DATA_SINGLE, UPDATE_FORM, UPDATE_PAGER} from '../actions/actionTypes';
 //import calculator from '../utils/fuelSavingsCalculator';
 import objectAssign from 'object-assign';
 import initialState from './initialState';
@@ -29,6 +29,11 @@ export default function adminReducer(state = initialState.admin, action) {
         let inerchange = objectAssign({}, state[action.what], {[action.name]:action.value})
         return objectAssign({}, state, {[action.what]:inerchange});
 
+      break;
+      case UPDATE_PAGER:
+        let thisDate = new Date()
+
+        return {... state, pager: action.pager}
       break;
       case DELETE_DATA:
 

@@ -31,14 +31,17 @@ function apiApp (){
 apiApp.prototype.CRUD = function() {
   let _this = this;
   // VALIDATE ROUTE
+  ///api/{what}/{page}/{items}/{sort}/{startDate}/{endDate}/
   return {
     validate: {
         params: {
           what: Joi.string(),
           id: Joi.string(),
-          page: Joi.number(),
-          items: Joi.number(),
-          sort: Joi.string()
+          page: Joi.number().allow(''),
+          items: Joi.number().allow(''),
+          startDate: Joi.number().allow(''),
+          endDate: Joi.number().allow(''),
+          sort: Joi.string().allow('')
         }
     },
     handler: function(request, reply) {

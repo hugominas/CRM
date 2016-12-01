@@ -4,6 +4,7 @@ import { IndexLink, Link } from "react-router";
 import * as actions from '../../actions/adminActions';
 import * as actionsAuth from '../../actions/authActions';
 import "../../assets/styles/react-date-picker.min.css";
+import * as types from '../../actions/actionTypes';
 
 //date Picker
 import { DateField, MultiMonthView } from 'react-date-picker'
@@ -11,9 +12,11 @@ import { DateField, MultiMonthView } from 'react-date-picker'
 
 
 @connect((store) => {
+  console.log(store)
   return {
     campid: (store.campid)?store.campid:'',
     collapsed: true,
+    pager:store.admin.pager,
     passDate: store.start || '',
     nowDate: store.end || '',
     data : []
@@ -33,10 +36,18 @@ export default class Nav extends React.Component {
 
   onChangeStart (dateString, { dateMoment, timestamp }) {
     //actions.updateDataSet({start:dateString,end:this.nowDate})
+    this.props.dispatch({
+      type: types.UPDATE_PAGER,
+      pager: {... this.props.pager, startDate:dateString}
+    });
   }
 
   onChangeEnd (dateString, { dateMoment, timestamp }) {
     //actions.updateDataSet({start:this.passDate,end:dateString})
+    this.props.dispatch({
+      type: types.UPDATE_PAGER,
+      pager: {... this.props.pager, endDate:dateString}
+    });
   }
 
   logOut (){
@@ -60,7 +71,6 @@ export default class Nav extends React.Component {
     const leadsClass = location.pathname.match(/leads/) ? "active" : "";
     currentTile = (leadsClass!='')?'Check all your Customers':currentTile;
     const navClass = collapsed ? "collapse" : "";
-
 
 
     return (
@@ -101,15 +111,15 @@ export default class Nav extends React.Component {
               </li>
               <li>
                       <DateField
-                        defaultValue={this.passDate}
-                        dateFormat="YYYY-MM-DD"
+                        defaultValue={this.props.pager.startDate}
+                        dateFormat="DD-MM-YYYY"
                         onChange={this.onChangeStart.bind(this)}
                       />
               </li>
               <li>
                       <DateField
-                        defaultValue={this.nowDate}
-                        dateFormat="YYYY-MM-DD"
+                        defaultValue={this.props.pager.endDate}
+                        dateFormat="DD-MM-YYYY"
                         onChange={this.onChangeEnd.bind(this)}
                       />
               </li>

@@ -3,13 +3,19 @@ import axios from "axios";
 import {  push } from 'react-router-redux'
 import {toastr} from 'react-redux-toastr'
 
-export function get(what, id='', pager) {
+export function get(what, id='', pager={page:0,items:10,sort:'date',startDate:'00-00-0000',endDate:'00-00-0000'}) {
 
   return function(dispatch) {
-    ///api/{what}/{page}/{offset}/{sort}/{id?}
+    ///api/{what}/{page}/{items}/{sort}/{startDate}/{endDate}/
+    pager.startDate=pager.startDate.replace(/-/g, '');
+    pager.endDate=pager.endDate.replace(/-/g, '');
+    //create query URL
+    let queryURL = ['api',what, pager.page, pager.items, pager.sort,pager.startDate, pager.endDate, id]
+    .join('/');
+
     axios({
       method: 'get',
-      url: '/api/'+what+'/'+pager.page+'/'+pager.items+'/'+pager.sort+'/'+((id)?'/'+id:'')
+      url: queryURL
     }).then((result)=>{
       //if not logedin
       if(result.data.data == 'not logedin'){
