@@ -108,7 +108,6 @@ apiApp.prototype.get= function(params) {
       }else{
         collections[params.q.db].find(params.q.query)
         .then((resultArr)=>{
-
           if(params.q.db=='users'){
               resultArr.forEach((ele)=>{
                 delete ele.password;

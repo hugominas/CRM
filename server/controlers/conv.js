@@ -34,12 +34,12 @@ trackData.prototype.convRoute = function() {
         ///TODO: CHECK IF CAMPID IS IN CAMPID DB
         ///////////////
         /////
-
         ///HANDLE REQUEST EXTRA PARAMAS
         let requestExtraParts = _this.toObject((request.params.param)?request.params.param.split('/'):[]);
         //IF WE HAVE POST ADD TO FIRST ARRAY
         if(request.payload && request.payload.data)Object.keys(request.payload.data).map((ele)=>{requestExtraParts[ele]=request.payload.data[ele]});
-        //LOG
+        if(request.payload)Object.keys(request.payload).map((ele)=>{requestExtraParts[ele]=request.payload[ele]});
+
         //_this.log(requestExtraParts)
         //_this.log('In conv Route ' + JSON.stringify(request.params) + JSON.stringify(requestExtraParts))
         // CHECK IF THERE IS A LEADID IF NODE SAVE VISIT
@@ -114,8 +114,11 @@ trackData.prototype.convSave=function(type, params){
 
          break;
        default:
+         //HACK FOR GALP!!!
+         let leadID  = if(params.leadid && params.venda)?requestExtraParts.leadId = params.leadid +'_'+ params.venda:''+params.leadId;
+         //END HACK FOR GALP!!!
          // FIND VISIT
-         let leadID  = ''+params.leadId;
+         //let leadID  = ''+params.leadId;
          let convObj = {
            _id: _this.mDB.ObjectId(),
            campid: type.campid,

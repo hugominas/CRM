@@ -13,8 +13,8 @@ exports.endpoints = [
 	//http://localhost:3007/track/57ebbc827c06bdfb3408800b/save/57ebbc827c06bdfb3408800b/asdasd/asdada
 	//{method: ['POST', 'GET'], 	path: '/', 	config: Track.universal},    // Info por referer
 	{method: ['POST', 'GET'], 	path: '/{param*}', 			config: Admin.adminRoute},    // Info por referer
-	{method: ['POST'], 					path: '/admin/auth', config: Admin.auth()},    // Info por referer
-	{method: ['POST'], 					path: '/admin/logout', 	config: Admin.logout},    // Info por referer
+	{method: ['POST'], 					path: '/admin/auth', 		config: Admin.auth()},    		// Info por referer
+	{method: ['POST'], 					path: '/admin/logout', 	config: Admin.logout},    		// Info por referer
 
 	//admin /api/campaigns/page/items/order/id
 	{method: ['GET'], 										path: '/api/{what}/{page}/{items}/{sort}/{startDate}/{endDate}/{id?}', 	config: API.CRUD()},    // Info por referer
