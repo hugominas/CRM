@@ -95,15 +95,15 @@ trackData.prototype.convSave=function(type, params){
      //_this.log('Ready to save to '+ JSON.stringify(_this.db)+ ' data '+ JSON.stringify(type) + JSON.stringify(params))
      switch (type.action) {
        case 'start':
-
+          let thisId=_this.mDB.ObjectId();
          // FIND VISIT
          let visitObj = {
-           _id: _this.mDB.ObjectId(),
+           _id: thisId,
+           leadid:thisId,
            campid: type.campid,
            date: new Date(),
            action: type.action,
            data:params
-
          }
          // WRITE VISIT
          _this.data.insert(visitObj).then((resultArr)=>{
@@ -115,10 +115,10 @@ trackData.prototype.convSave=function(type, params){
          break;
        default:
          //HACK FOR GALP!!!
-         let leadID  = if(params.leadid && params.venda)?requestExtraParts.leadId = params.leadid +'_'+ params.venda:''+params.leadId;
+         params.leadId   = (params.leadid && params.venda)? params.leadid +'_'+ params.venda:''+params.leadId;
          //END HACK FOR GALP!!!
          // FIND VISIT
-         //let leadID  = ''+params.leadId;
+         let leadID  = ''+params.leadId;
          let convObj = {
            _id: _this.mDB.ObjectId(),
            campid: type.campid,

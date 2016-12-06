@@ -106,6 +106,58 @@ apiApp.prototype.get= function(params) {
       if(!this.checkPermission(params.credentials)){
         reject('not logedin');
       }else{
+
+        if(params.what=='leads'){
+
+          params.q.query['data.leadId'] ={ '$exists': true }
+
+          collections[params.q.db].aggregate([
+                     { $match:  params.q.query  },
+                     { $project : { date: 1, action: 1, _id: 0, 'data':1 } },
+                     { $group: {
+                       _id: "$data.leadId",
+                       action:{"$first":"$action"},
+                       date:{"$first":"$date"},
+                       data:{"$first":"$data"},
+                       }
+                     },
+                     { $sort: { date: -1 } },
+                     { $skip : 5 },
+                     { $limit: 10 }],
+                     function(err, result){
+                          if(err){
+                            reject(err)
+                          }else{
+                            resolve(result);
+                          }
+                      }
+                   )
+                   /*  collections[params.q.db].distinct('data.leadId',params.q.query)
+                     .then((resultArr)=>{
+                       console.log(resultArr);
+                           resolve(resultArr);
+                     }).catch((err)=>{
+                       console.log(err);
+                           reject(err)
+                         });*/
+
+        }else{
+          collections[params.q.db].find(params.q.query)
+          .then((resultArr)=>{
+            if(params.q.db=='users'){
+                resultArr.forEach((ele)=>{
+                  delete ele.password;
+                })
+                resolve(resultArr);
+            }else{
+                resolve(resultArr);
+            }
+          }).catch((err)=>{
+                reject(err)
+              });
+        }
+
+        /*
         collections[params.q.db].find(params.q.query)
         .then((resultArr)=>{
           if(params.q.db=='users'){
@@ -134,10 +186,8 @@ apiApp.prototype.get= function(params) {
           }else{
               resolve(resultArr);
           }
-        })
-        .catch((err)=>{
-          reject(err)
-        });
+        })*/
+
       }
   });
 }
