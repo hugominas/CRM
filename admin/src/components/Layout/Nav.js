@@ -12,7 +12,6 @@ import { DateField, MultiMonthView } from 'react-date-picker'
 
 
 @connect((store) => {
-  console.log(store)
   return {
     campid: (store.campid)?store.campid:'',
     collapsed: true,

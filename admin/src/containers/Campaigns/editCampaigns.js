@@ -20,6 +20,7 @@ import {Col, InputGroup, FormControl, ButtonGroup, Button, FormGroup, ControlLab
 export default class editCampaigns extends React.Component {
 
       constructor (props){
+        console.log(props)
         super();
         this.state= {
           valid : '',

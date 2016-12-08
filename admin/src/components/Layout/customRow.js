@@ -12,18 +12,18 @@ export default class customRowComponent extends React.Component {
 
 
   render() {
-    let {_id, action, campid, data, date, leadid} = this.props.data;
+    console.log(this.props)
+    let {_id, action, campid, data, date, deleteElement, element} = this.props;
     let a = 0;
     let limitData = 3
 
-    let url = '/admin/campaigns/'+campid+'/edit/' + _id;
-    let delURL ='/admin/campaigns/'+campid+'/delete/' + _id;
-    let viewURL ='/admin/campaigns/'+campid+'/'+ _id;
+    let urlConstruct = '/'+['admin',element,campid].filter(function(n){ return n != '' }).join('/')
 
-
+    let url = urlConstruct+'/edit/' + _id;
+    let viewURL =urlConstruct+'/'+ _id;
     let dataElement = Object.keys(data).map(ele => {
       a++;
-      return <div key={_id+Date.now()+ele} class={(a>limitData)?"hidden col-lg-3":"col-lg-3"}><h6>{ele}</h6>{data[ele]}</div>;
+      return <div key={_id+a+ele} class={(a>limitData)?"hidden col-lg-3":"col-lg-3"}><h6>{ele}</h6>{data[ele]}</div>;
     })
 
       return (
@@ -41,7 +41,7 @@ export default class customRowComponent extends React.Component {
             </div>
             <div class="col-lg-2 actions">
               <IndexLink to={url}><Button bsSize="small">Edit</Button></IndexLink>
-              <IndexLink to={delURL}><Button bsSize="small">Delete</Button></IndexLink>
+              <Button bsSize="small" onClick={()=>{deleteElement(_id)}}>Delete</Button>
               <IndexLink to={viewURL}><Button bsSize="small" bsStyle="success">View</Button></IndexLink>
             </div>
            </div>

@@ -82,9 +82,12 @@ apiApp.prototype.CRUD = function() {
           q:q,
           what:request.params.what,
           id:request.params.id,
+          page:request.params.page || 0,
+          items:request.params.items || 10,
           data:(request.payload)?request.payload.data:'',
           credentials:_this.requestSession
         }
+
         objMethods[request.method](params)
         .then((response)=>{
           reply({status:'OK',data:response}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
@@ -112,26 +115,36 @@ apiApp.prototype.get= function(params) {
           params.q.query['data.leadId'] ={ '$exists': true }
 
           collections[params.q.db].aggregate([
-                     { $match:  params.q.query  },
-                     { $project : { date: 1, action: 1, _id: 0, 'data':1 } },
-                     { $group: {
-                       _id: "$data.leadId",
-                       action:{"$first":"$action"},
-                       date:{"$first":"$date"},
-                       data:{"$first":"$data"},
-                       }
-                     },
-                     { $sort: { date: -1 } },
-                     { $skip : 5 },
-                     { $limit: 10 }],
-                     function(err, result){
-                          if(err){
-                            reject(err)
-                          }else{
-                            resolve(result);
-                          }
-                      }
-                   )
+                 { $match:  params.q.query  },
+                 { $group: { _id: null, count: {"$sum": 1} }
+               }],
+               function(err, total){
+                  collections[params.q.db].aggregate([
+                       { $match:  params.q.query  },
+                       { $project : { date: 1, action: 1, _id: 0, 'data':1 } },
+                       { $group: {
+                         _id: "$data.leadId",
+                         action:{"$first":"$action"},
+                         date:{"$first":"$date"},
+                         data:{"$first":"$data"},
+                         }
+                       },
+                       { $sort: { date: -1 } },
+                       { $skip : (params.page*params.items) },
+                       { $limit: params.items }],
+                       function(err, result){
+                            if(err){
+                              reject(err)
+                            }else{
+                              result.push(total[0]);
+                              resolve(result);
+                            }
+                        }
+                     )
+
+                }
+           )
+
                    /*  collections[params.q.db].distinct('data.leadId',params.q.query)
                      .then((resultArr)=>{
                        console.log(resultArr);
@@ -142,16 +155,20 @@ apiApp.prototype.get= function(params) {
                          });*/
 
         }else{
-          collections[params.q.db].find(params.q.query)
+          let offset = (params.page !== '' && params.items !== '')?{limit:params.items,skip:(params.page*params.items)}:'';
+          collections[params.q.db].find(params.q.query,  offset)
           .then((resultArr)=>{
-            if(params.q.db=='users'){
-                resultArr.forEach((ele)=>{
-                  delete ele.password;
-                })
-                resolve(resultArr);
-            }else{
-                resolve(resultArr);
-            }
+            collections[params.q.db].count(params.q.query).then((total)=>{
+              resultArr.push({count:total});
+              if(params.q.db=='users'){
+                  resultArr.forEach((ele)=>{
+                    delete ele.password;
+                  })
+                  resolve(resultArr);
+              }else{
+                  resolve(resultArr);
+              }
+            })
           }).catch((err)=>{
                 reject(err)
               });

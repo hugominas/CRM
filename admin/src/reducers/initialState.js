@@ -4,6 +4,8 @@ export default {
     pager:{
       page:0,
       items:10,
+      totalItems:0,
+      totalPages:0,
       sort:'date',
       endDate:(((thisDate.getDate()<10)?'0'+thisDate.getDate():thisDate.getDate())
       +'-'+((thisDate.getMonth()<10)?'0'+thisDate.getMonth():thisDate.getMonth())

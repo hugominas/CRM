@@ -4,17 +4,22 @@ import DocumentTitle from 'react-document-title';
 
 import tableEditDelete from "../../components/Layout/tableEditDelete";
 import ActionsToolbar from '../../components/Layout/ActionsToolbar';
+
+import * as types from '../../actions/actionTypes';
 import * as actions from '../../actions/adminActions';
-import customRowComponent from '../../components/Layout/customRow';
+import CustomRowComponent from '../../components/Layout/customRow';
+
+import {Col, Pagination } from 'react-bootstrap';
 
 import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
 
 
 @connect((store) => {
+  console.log(store)
   return {
     campid: (store.campid)?store.campid:'',
-    data : (store.campid)?store.admin.data[store.campid]:store.admin.data.leads
-
+    data : store.admin.data.leads,
+    pager: store.admin.pager
   };
 })
 
@@ -22,82 +27,64 @@ export default class Campaigns extends React.Component {
 
       constructor (props){
         super();
-        //LeadStore.get('leads'+(props.params.campid)?props.params.campid:'')
-        //Get DAta
-        //actions.get((this.props.campid)?'leads/'+this.props.campid:'leads/');
-        this.columnMeta =   [{
-          "columnName": "_id",
-          "order": 9999,
-          "locked": false,
-          "visible": true,
-          component:'campaigns',
-          campid:props.params.campid,
-          "customComponent": tableEditDelete
-        }]
-      }
-
-      wordData() {
       }
 
       componentWillMount() {
-        //this.props.dispatch(actions.get('users'));
-        //this.props.dispatch(fetchTweets())
-        //LeadStore.on("change", this.getExternalData.bind(this));
-        this.props.dispatch(actions.get('leads',this.props.params.campid));
-
+        this.props.dispatch(actions.get('leads',this.props.params.campid,{... this.props.pager, page:0}));
       }
 
-      componentWillUnmount() {
-        //this.isUnmounted = true;
-        //LeadStore.removeListener("change", this.getExternalData.bind(this));
+      deleteElement (id){
+        this.props.dispatch(actions.del('lead',id));
       }
 
-      getExternalData (){
-        /*if(!this.isUnmounted ){
-          this.setState({data:LeadStore.get('leads'+this.props.campid)})
-          this.wordData();
-        }*/
+      handleSelect (pagenum){
+        pagenum = pagenum-1;
+        this.props.dispatch({
+          type: types.UPDATE_PAGER,
+          pager: {... this.props.pager, page:pagenum}
+        });
+        this.props.dispatch(actions.get('leads','',{... this.props.pager, page:pagenum}));
       }
 
-      setPage (index){
-        //This should interact with the data source to get the page at the given index
-        index = index > this.props.maxPages ? this.props.maxPages : index < 1 ? 1 : index + 1;
-        //this.getExternalData(index);
+      workElements (data){
+        let a = 0;
+        return this.props.data.map((ele)=>{
+            if(ele.hasOwnProperty('count')){
+              this.props.pager.totalItems = ele.count;
+              this.props.pager.totalPages = this.props.pager.totalItems/this.props.pager.items;
+              return;
+            }
+            a++;
+            return <CustomRowComponent key={ele._id+a} campid={this.props.campid} element="leads" deleteElement={this.deleteElement.bind(this)} {... ele} />
+        })
       }
-
-      setPageSize (size){
-      }
-
-
-
 
       render() {
+
         let button = (typeof this.props.data !== 'undefined')?<ActionsToolbar data='leads' />:'';
+        console.log(this.props.data)
+
+        let grid = this.workElements(this.props.data);
+
         return (
 
-          <DocumentTitle title={'Campaigns'}>
+          <DocumentTitle title={'Leads'}>
           <div class="upContainer">
+              {button}
+              {grid}
+              <Pagination
+                prev
+                next
+                first
+                last
+                ellipsis
+                boundaryLinks
+                items={this.props.pager.items}
+                maxButtons={7}
+                activePage={this.props.pager.page}
+                onSelect={this.handleSelect.bind(this)} />
+            </div>
 
-
-            {button}
-            <GriddleBootstrap
-                hover={true}
-                striped={true}
-                bordered={false}
-                condensed={false}
-                showFilter={true}
-                showSettings={true}
-
-                useCustomRowComponent={true}
-                customRowComponent={customRowComponent}
-                enableToggleCustom={true}
-                resultsPerPage={10}
-                pagerOptions={{ maxButtons: 7 }}
-                customPagerComponent={ BootstrapPager }
-                columnMetadata={this.columnMeta}
-                results={this.props.data}
-                />
-          </div>
           </DocumentTitle>
         );
       }

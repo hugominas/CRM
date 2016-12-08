@@ -26,38 +26,40 @@ export default class Campaigns extends React.Component {
 
       componentWillMount() {
         this.props.dispatch(actions.get('campaigns','',{... this.props.pager, page:0}));
-        //LeadStore.on("change", this.getExternalData.bind(this));
       }
 
       handleSelect (pagenum){
-      /*  if(!this.isUnmounted ){
-          this.setState({data:LeadStore.get('campaigns')})
-        }*/
+        pagenum = pagenum-1;
         this.props.dispatch({
           type: types.UPDATE_PAGER,
           pager: {... this.props.pager, page:pagenum}
         });
+        this.props.dispatch(actions.get('campaigns','',{... this.props.pager, page:pagenum}));
+      }
+
+      workElements (data){
+        return data.map((ele)=>{
+
+            if(ele.hasOwnProperty('count')){
+              this.props.pager.totalItems = ele.count;
+              this.props.pager.totalPages = this.props.pager.totalItems/this.props.pager.items;
+              return;
+            }
+
+            return <CustomRowCampaigns key={ele._id} deleteElement={this.deleteElement.bind(this)} {... ele} />
+
+        })
       }
 
       deleteElement (id){
         this.props.dispatch(actions.del('campaigns',id));
       }
 
-      setPage (index){
-        //This should interact with the data source to get the page at the given index
-        index = index > this.props.maxPages ? this.props.maxPages : index < 1 ? 1 : index + 1;
-        //this.getExternalData(index);
-      }
-
-      setPageSize (size){
-      }
-
-
       render() {
+
         let button = (typeof this.props.data !== 'undefined')?<ActionsToolbar data='campaigns' />:'';
-        let grid = this.props.data.map((ele)=>{
-            return <CustomRowCampaigns key={ele._id} deleteElement={this.deleteElement.bind(this)} {... ele} />
-        })
+        let grid = this.workElements(this.props.data);
+
         return (
 
           <DocumentTitle title={'Campaigns'}>
@@ -71,10 +73,10 @@ export default class Campaigns extends React.Component {
               last
               ellipsis
               boundaryLinks
-              items={20}
+              items={this.props.pager.items}
               maxButtons={7}
-              activePage={this.page}
-              onSelect={this.handleSelect} />
+              activePage={this.props.pager.page}
+              onSelect={this.handleSelect.bind(this)} />
           </div>
           </DocumentTitle>
         );
