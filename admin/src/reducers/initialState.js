@@ -8,10 +8,10 @@ export default {
       totalPages:0,
       sort:'date',
       endDate:(((thisDate.getDate()<10)?'0'+thisDate.getDate():thisDate.getDate())
-      +'-'+((thisDate.getMonth()<10)?'0'+thisDate.getMonth():thisDate.getMonth())
+      +'-'+((thisDate.getMonth()+1<10)?'0'+thisDate.getMonth()+1:thisDate.getMonth()+1)
       +'-'+thisDate.getFullYear()),
       startDate:(((thisDate.getDate()<10)?'0'+thisDate.getDate():thisDate.getDate())
-      +'-'+(((thisDate.getMonth()-3)<10)?'0'+(thisDate.getMonth()-3):thisDate.getMonth()-3)
+      +'-'+(((thisDate.getMonth()-3)<10)?'0'+(thisDate.getMonth()-2):thisDate.getMonth()-2)
       +'-'+thisDate.getFullYear())
     },
     leads:{},

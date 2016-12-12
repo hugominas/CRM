@@ -13,9 +13,24 @@ export default function adminReducer(state = initialState.admin, action) {
 
   switch (action.type) {
     case UPDATE_DATA:
+
       newState = objectAssign({}, state);
+      let total = newState.pager.totalItems;
+      let totalPages = newState.pager.totalPages;
+
+
+      if(action.result.data.data[action.result.data.data.length-1].hasOwnProperty('count')){
+
+        total = action.result.data.data[action.result.data.data.length-1].count;
+        totalPages = Math.ceil(total/newState.pager.items);
+        action.result.data.data.pop();
+
+      }
+
       //MAKE THE CHANGES
       newState.data[action.what] = action.result.data.data;
+      newState.pager= {... newState.pager, totalItems:total, totalPages:totalPages }
+
       return newState;
 
       break;
@@ -32,7 +47,6 @@ export default function adminReducer(state = initialState.admin, action) {
       break;
       case UPDATE_PAGER:
         let thisDate = new Date()
-
         return {... state, pager: action.pager}
       break;
       case DELETE_DATA:

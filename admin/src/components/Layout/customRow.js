@@ -12,7 +12,6 @@ export default class customRowComponent extends React.Component {
 
 
   render() {
-    console.log(this.props)
     let {_id, action, campid, data, date, deleteElement, element} = this.props;
     let a = 0;
     let limitData = 3

@@ -22,7 +22,7 @@ export function get(what, id='', pager={page:0,items:10,sort:'date',startDate:'0
         dispatch(push('/'))
       }else{
         //toastr.success('Updated data', what+' updated');
-              //dispatch data
+        //dispatch data
         dispatch({
           type: (id!='')?types.UPDATE_DATA_SINGLE:types.UPDATE_DATA,
           what,

@@ -39,15 +39,7 @@ export default class Campaigns extends React.Component {
 
       workElements (data){
         return data.map((ele)=>{
-
-            if(ele.hasOwnProperty('count')){
-              this.props.pager.totalItems = ele.count;
-              this.props.pager.totalPages = this.props.pager.totalItems/this.props.pager.items;
-              return;
-            }
-
             return <CustomRowCampaigns key={ele._id} deleteElement={this.deleteElement.bind(this)} {... ele} />
-
         })
       }
 
@@ -73,7 +65,7 @@ export default class Campaigns extends React.Component {
               last
               ellipsis
               boundaryLinks
-              items={this.props.pager.items}
+              items={this.props.pager.totalPages}
               maxButtons={7}
               activePage={this.props.pager.page}
               onSelect={this.handleSelect.bind(this)} />

@@ -15,7 +15,6 @@ import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
 
 
 @connect((store) => {
-  console.log(store)
   return {
     campid: (store.campid)?store.campid:'',
     data : store.admin.data.leads,
@@ -27,6 +26,14 @@ export default class Campaigns extends React.Component {
 
       constructor (props){
         super();
+      }
+
+
+      componentDidUpdate(prevProps, prevState){
+        if(prevProps.pager.startDate !== this.props.startDate
+          || prevProps.pager.endDate !== this.props.endDate ){
+            this.props.dispatch(actions.get('leads',this.props.params.campid,{... this.props.pager}));
+          }
       }
 
       componentWillMount() {
@@ -49,11 +56,6 @@ export default class Campaigns extends React.Component {
       workElements (data){
         let a = 0;
         return this.props.data.map((ele)=>{
-            if(ele.hasOwnProperty('count')){
-              this.props.pager.totalItems = ele.count;
-              this.props.pager.totalPages = this.props.pager.totalItems/this.props.pager.items;
-              return;
-            }
             a++;
             return <CustomRowComponent key={ele._id+a} campid={this.props.campid} element="leads" deleteElement={this.deleteElement.bind(this)} {... ele} />
         })
@@ -62,9 +64,9 @@ export default class Campaigns extends React.Component {
       render() {
 
         let button = (typeof this.props.data !== 'undefined')?<ActionsToolbar data='leads' />:'';
-        console.log(this.props.data)
 
         let grid = this.workElements(this.props.data);
+
 
         return (
 
@@ -81,7 +83,7 @@ export default class Campaigns extends React.Component {
                 boundaryLinks
                 items={this.props.pager.items}
                 maxButtons={7}
-                activePage={this.props.pager.page}
+                activePage={this.props.pager.totalPages}
                 onSelect={this.handleSelect.bind(this)} />
             </div>
 

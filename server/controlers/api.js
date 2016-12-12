@@ -47,20 +47,33 @@ apiApp.prototype.CRUD = function() {
     handler: function(request, reply) {
       //admin /api/campaigns/page/items/order/id
       if(collections.hasOwnProperty(request.params.what) && _this.__proto__.hasOwnProperty(request.method)){
+
         let q = {}
         _this.requestSession=request.yar.get('user');
+
+        ///Work Date pattern
+        let datePattern = /(\d{2})(\d{2})(\d{4})/;
+        ///Work startDate
+        let startDate = new Date(request.params.startDate.toString().trim().replace(datePattern,'$3-$2-$1'));
+        ///Work endDate
+        let endDate = new Date(request.params.endDate.toString().trim().replace(datePattern,'$3-$2-$1'));
+
+
         //Switch dataType and query
         switch (request.params.what) {
           case 'campaigns':
             q.query = (request.params.id)?{_id: mDB.ObjectId(request.params.id)}:{};
+            q.query.time = { $gte : startDate, $lte:endDate };
             q.db = 'campaigns';
             break;
           case 'users':
             q.query = (request.params.id)?(/^[0-9a-fA-F]{24}$/.test(request.params.id))?{_id: mDB.ObjectId(request.params.id)}:{email: request.params.id}:{};
+            q.query.time = { $gte : startDate, $lte:endDate };
             q.db = 'users';
             break;
           case 'leads':
               q.query = (request.params.id)?{campid: request.params.id}:{};
+              q.query.date = { $gte : startDate, $lte:endDate };
               q.db = 'data';
               break;
           case 'lead':
@@ -77,6 +90,7 @@ apiApp.prototype.CRUD = function() {
         //Encode Pass
         if(request.payload && request.payload.data && request.payload.data.password)
            request.payload.data.password=sha256(request.payload.data.password+Conf.secret);
+
 
         let params = {
           q:q,
@@ -103,7 +117,7 @@ apiApp.prototype.CRUD = function() {
 }
 
 //method GET
-apiApp.prototype.get= function(params) {
+apiApp.prototype.get = function(params) {
   let _this = this;
   return new Promise((resolve, reject) => {
       if(!this.checkPermission(params.credentials)){
