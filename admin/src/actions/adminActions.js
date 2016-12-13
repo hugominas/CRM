@@ -1,16 +1,16 @@
 import * as types from './actionTypes';
 import axios from "axios";
-import {  push } from 'react-router-redux'
+import { push } from 'react-router-redux'
 import {toastr} from 'react-redux-toastr'
 
-export function get(what, id='', pager={page:0,items:10,sort:'date',startDate:'00-00-0000',endDate:'00-00-0000'}) {
+export function get(what, id='', pager={page:0,items:10,sort:'date',startDate:'00-00-0000',endDate:'00-00-0000'}, exportData=false) {
 
   return function(dispatch) {
     ///api/{what}/{page}/{items}/{sort}/{startDate}/{endDate}/
     pager.startDate=pager.startDate.replace(/-/g, '');
     pager.endDate=pager.endDate.replace(/-/g, '');
     //create query URL
-    let queryURL = ['api',what, pager.page, pager.items, pager.sort,pager.startDate, pager.endDate, id]
+    let queryURL = ['api',what, pager.page, pager.items, pager.sort,pager.startDate, pager.endDate, exportData, id]
     .join('/');
 
     axios({
@@ -52,7 +52,7 @@ export function get(what, id='', pager={page:0,items:10,sort:'date',startDate:'0
 
 export function set(what,data,id='') {
   return function(dispatch) {
-    data.time=Date.now();
+    data.date=new Date;
     axios({
       method: 'put',
       url: '/api/'+what+((id)?'/'+id:''),

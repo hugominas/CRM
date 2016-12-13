@@ -67,7 +67,7 @@ export default class Campaigns extends React.Component {
               boundaryLinks
               items={this.props.pager.totalPages}
               maxButtons={7}
-              activePage={this.props.pager.page}
+              activePage={this.props.pager.activePage}
               onSelect={this.handleSelect.bind(this)} />
           </div>
           </DocumentTitle>

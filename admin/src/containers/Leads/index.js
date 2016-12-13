@@ -67,7 +67,6 @@ export default class Campaigns extends React.Component {
 
         let grid = this.workElements(this.props.data);
 
-
         return (
 
           <DocumentTitle title={'Leads'}>
@@ -81,9 +80,9 @@ export default class Campaigns extends React.Component {
                 last
                 ellipsis
                 boundaryLinks
-                items={this.props.pager.items}
+                items={this.props.pager.totalPages}
                 maxButtons={7}
-                activePage={this.props.pager.totalPages}
+                activePage={this.props.pager.activePage}
                 onSelect={this.handleSelect.bind(this)} />
             </div>
 

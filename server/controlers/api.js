@@ -41,7 +41,8 @@ apiApp.prototype.CRUD = function() {
           items: Joi.number().allow(''),
           startDate: Joi.number().allow(''),
           endDate: Joi.number().allow(''),
-          sort: Joi.string().allow('')
+          sort: Joi.string().allow(''),
+          exportData: Joi.boolean().truthy('true').falsy('false') // USED FOR SORT OR EXPORT
         }
     },
     handler: function(request, reply) {
@@ -50,32 +51,34 @@ apiApp.prototype.CRUD = function() {
 
         let q = {}
         _this.requestSession=request.yar.get('user');
+        let endDate, startDate = '';
 
-        ///Work Date pattern
-        let datePattern = /(\d{2})(\d{2})(\d{4})/;
-        ///Work startDate
-        let startDate = new Date(request.params.startDate.toString().trim().replace(datePattern,'$3-$2-$1'));
-        ///Work endDate
-        let endDate = new Date(request.params.endDate.toString().trim().replace(datePattern,'$3-$2-$1'));
+        if(request.params.startDate && request.params.endDate){
+          ///Work Date pattern
+          let datePattern = /(\d{2})(\d{2})(\d{4})/;
+          ///Work startDate
+          startDate = new Date(request.params.startDate.toString().trim().replace(datePattern,'$3-$2-$1'));
+          ///Work endDate
+          endDate = new Date(request.params.endDate.toString().trim().replace(datePattern,'$3-$2-$1'));
+        }
 
 
         //Switch dataType and query
         switch (request.params.what) {
           case 'campaigns':
             q.query = (request.params.id)?{_id: mDB.ObjectId(request.params.id)}:{};
-            q.query.time = { $gte : startDate, $lte:endDate };
+            q.query.date = { $gte : startDate, $lte: endDate };
             q.db = 'campaigns';
             break;
           case 'users':
             q.query = (request.params.id)?(/^[0-9a-fA-F]{24}$/.test(request.params.id))?{_id: mDB.ObjectId(request.params.id)}:{email: request.params.id}:{};
-            q.query.time = { $gte : startDate, $lte:endDate };
             q.db = 'users';
             break;
           case 'leads':
-              q.query = (request.params.id)?{campid: request.params.id}:{};
-              q.query.date = { $gte : startDate, $lte:endDate };
-              q.db = 'data';
-              break;
+            q.query = (request.params.id)?{campid: request.params.id}:{};
+            q.query.date = { $gte : startDate, $lte: endDate };
+            q.db = 'data';
+            break;
           case 'lead':
             q.query = {leadid: request.params.id};
             q.db = 'data';
@@ -101,10 +104,18 @@ apiApp.prototype.CRUD = function() {
           data:(request.payload)?request.payload.data:'',
           credentials:_this.requestSession
         }
-
+        if(request.params.exportData)params.items=-1;
         objMethods[request.method](params)
         .then((response)=>{
-          reply({status:'OK',data:response}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
+          //TAKE CARE OF EXPORT ON REPLY
+          if(request.params.exportData){
+            reply(_this.outputCSV(_this.requestSession,response))
+            .header('Content-Type', 'application/octet-stream')
+            .header("Content-Disposition", "attachment; filename=" + request.params.what + "_" + request.params.startDate + "_" +request.params.endDate + ".csv")
+            .header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
+          }else{
+            reply({status:'OK',data:response}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
+          }
         }).catch((err)=>{
           reply({status:'NOK',data:err}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
         });
@@ -127,25 +138,28 @@ apiApp.prototype.get = function(params) {
         if(params.what=='leads'){
 
           params.q.query['data.leadId'] ={ '$exists': true }
-
           collections[params.q.db].aggregate([
                  { $match:  params.q.query  },
                  { $group: { _id: null, count: {"$sum": 1} }
                }],
                function(err, total){
-                  collections[params.q.db].aggregate([
-                       { $match:  params.q.query  },
-                       { $project : { date: 1, action: 1, _id: 0, 'data':1 } },
-                       { $group: {
-                         _id: "$data.leadId",
-                         action:{"$first":"$action"},
-                         date:{"$first":"$date"},
-                         data:{"$first":"$data"},
-                         }
-                       },
-                       { $sort: { date: -1 } },
-                       { $skip : (params.page*params.items) },
-                       { $limit: params.items }],
+                 //CREATE pipeline
+                 let pipeline = [
+                      { $match:  params.q.query  },
+                      { $project : { date: 1, action: 1, _id: 0, 'data':1 } },
+                      { $group: {
+                        _id: "$data.leadId",
+                        action:{"$first":"$action"},
+                        date:{"$first":"$date"},
+                        data:{"$first":"$data"},
+                        }
+                      },
+                      { $sort: { date: -1 } },
+                      { $skip : (params.page*params.items) },
+                      { $limit: params.items }]
+                  //CHECK IF SEE ALL
+                  pipeline=(params.items==-1)?pipeline.slice(4,5):pipeline;
+                  collections[params.q.db].aggregate(pipeline,
                        function(err, result){
                             if(err){
                               reject(err)
@@ -158,18 +172,8 @@ apiApp.prototype.get = function(params) {
 
                 }
            )
-
-                   /*  collections[params.q.db].distinct('data.leadId',params.q.query)
-                     .then((resultArr)=>{
-                       console.log(resultArr);
-                           resolve(resultArr);
-                     }).catch((err)=>{
-                       console.log(err);
-                           reject(err)
-                         });*/
-
         }else{
-          let offset = (params.page !== '' && params.items !== '')?{limit:params.items,skip:(params.page*params.items)}:'';
+          let offset = (params.page !== '' && params.items !== '' && params.items !== -1)?{limit:params.items,skip:(params.page*params.items)}:'';
           collections[params.q.db].find(params.q.query,  offset)
           .then((resultArr)=>{
             collections[params.q.db].count(params.q.query).then((total)=>{
@@ -187,38 +191,6 @@ apiApp.prototype.get = function(params) {
                 reject(err)
               });
         }
-
-        /*
-        collections[params.q.db].find(params.q.query)
-        .then((resultArr)=>{
-          if(params.q.db=='users'){
-              resultArr.forEach((ele)=>{
-                delete ele.password;
-              })
-              resolve(resultArr);
-          }else if (params.what=='leads'){
-              let output = [];
-              let agregate = {};
-              resultArr=resultArr.filter((ele)=>{
-                //create aggregate
-                if(ele.leadid){
-                  (agregate[''+ele.leadid])?agregate[''+ele.leadid].push(ele):agregate[''+ele.leadid]=[ele];
-                  return true;
-                }else {
-                  return false;
-                }
-              }).map((ele)=>{
-                //create outpute
-                  (ele.history)?ele.history.push(agregate[''+ele._id]):ele.history=[''+agregate[ele._id]]
-                  return ele;
-              })
-
-              resolve(resultArr);
-          }else{
-              resolve(resultArr);
-          }
-        })*/
-
       }
   });
 }
@@ -288,5 +260,55 @@ apiApp.prototype.checkPermission = function(session){
       return false;
   }
 }
+apiApp.prototype.recursiveWorkCSV = function(data){
+
+  let objArray = data;
+
+  let line = [];
+  let header = []
+  let lines = []
+
+  Object.keys(objArray).map((subele)=>{
+    if(lines.length==0)header.push(subele);
+
+    if(typeof objArray[subele] == 'object' && subele !=='_id' && subele !=='leadId' && Object.keys(objArray[subele]).length>0){
+      let outputdata=this.recursiveWorkCSV(objArray[subele])
+      header=header.concat(outputdata.header);
+      line=line.concat(outputdata.lines);
+    }else{
+      line.push(objArray[subele]);
+    }
+  })
+  lines.push(line.join(';'))
+
+  return {header,lines}
+
+}
+
+
+apiApp.prototype.outputCSV = function(credentials,data){
+  let _this = this;
+
+    if(!_this.checkPermission(credentials)) {
+      return('not logedin');
+    }else{
+      let headers = '';
+      let body = '';
+      //line + '\r\n';
+      //return header+ '\r\n'+str;*/
+      data.map((ele)=>{
+        if(!ele.hasOwnProperty('count')){
+          let workedCSV = this.recursiveWorkCSV(ele)
+          body+=workedCSV.lines.join(';')+'\r\n'
+          headers=workedCSV.header.join(';')
+        }
+      })
+      return headers+ '\r\n' +body
+      //return _this.workCSV(data)
+    }
+
+}
+
+
 
 exports.api = new apiApp();
