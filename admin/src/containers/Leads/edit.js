@@ -4,16 +4,18 @@ import DocumentTitle from 'react-document-title';
 
 import tableEditDelete from "../../components/Layout/tableEditDelete";
 import ActionsToolbar from '../../components/Layout/ActionsToolbar';
-import customRowComponent from '../../components/Layout/customRow';
+import CustomRowComponent from '../../components/Layout/customRow';
 import * as actions from '../../actions/adminActions';
 
+import "./edit.scss";
 
 
 import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
 
 @connect((store) => {
+  console.log(store.admin.data.leads)
   return {
-    data: store.admin.data.lead
+    data: store.admin.data.leads
   };
 })
 
@@ -21,60 +23,44 @@ export default class Lead extends React.Component {
   constructor(props) {
     super();
     this.params = {}
-    this.columnMeta =   [{
-      "columnName": "_id",
-      "order": 9999,
-      "locked": false,
-      "visible": true,
-      component:'campaigns',
-      campid:props.params.campid,
-      "customComponent": tableEditDelete
-    }]
+
   }
 
+
   componentWillMount() {
-    this.props.dispatch(actions.get('lead',this.props.params.leadid));
+    this.props.dispatch(actions.get('leads',this.props.params.leadid));
+  }
+
+  exportDataURL(){
+
+  }
+
+  deleteElement(){
+
+  }
+
+  workElements (){
+    let a = 0;
+    return this.props.data.map((ele)=>{
+        a++;
+        return <CustomRowComponent key={ele._id+a} campid={this.props.campid} element="leads" deleteElement={this.deleteElement.bind(this)} {... ele} />
+    })
   }
 
   render() {
-    console.log(this.props)
-    const { complete, edit, text } = this.props;
+    let button = (typeof this.props.data !== 'undefined')?<ActionsToolbar data='leads' exportData={this.exportDataURL()} />:'';
 
-    let button = (typeof this.props.data !== 'undefined')?<ActionsToolbar data='leads' />:'';
-
-    /*if (edit) {
-      return (
-        <li>
-          <input value={text} focus="focused"/>
-        </li>
-      );
-    }*/
+    let grid = this.workElements();
 
     return (
+
       <DocumentTitle title={'Leads'}>
       <div class="upContainer">
+          {button}
+          {grid}
 
+        </div>
 
-        {button}
-        <GriddleBootstrap
-            hover={true}
-            striped={true}
-            bordered={false}
-            condensed={false}
-            showFilter={true}
-            showSettings={true}
-
-            useCustomRowComponent={true}
-            customRowComponent={customRowComponent}
-            enableToggleCustom={true}
-            resultsPerPage={10}
-
-            pagerOptions={{ maxButtons: 7 }}
-            customPagerComponent={ BootstrapPager }
-            columnMetadata={this.columnMeta}
-            results={this.props.data}
-            />
-      </div>
       </DocumentTitle>
     );
   }

@@ -2,26 +2,25 @@ import React from "react";
 import { Button, ButtonToolbar } from 'react-bootstrap';
 import { IndexLink, Link } from "react-router";
 
-import tableEditDelete from "./tableEditDelete";
 import './customRow.scss';
 
-export default class customRowCampaigns extends React.Component {
+export default class customRowUsers extends React.Component {
   constructor(props) {
     super();
+    this.props = props
   }
 
 
   render() {
-    let {_id, name, email, group, time} = this.props.data;
+    let {element, expanded, expandElement, _id, name, email, group, time, deleteElement} = this.props;
     let a = 0;
     let limitData = 3
 
     let dt = new Date(time);
-    let date =  parseInt(dt.getDate()) + '/' + parseInt(dt.getMonth()+1) + '/' + dt.getFullYear();
+    let date = dt.getDate() + '/' + parseInt(dt.getMonth()+1) + '/' + dt.getFullYear();
 
-    let url = '/admin/users/edit/' + _id;
-    let delURL ='/admin/users/delete/' + _id;
-    let viewURL ='/admin/users/'+ _id;
+    let url = '/admin/campaigns/edit/' + _id;
+    let viewURL ='/admin/campaigns/'+ _id;
 
       return (
         <div class="col-lg-6 eleRow">
@@ -37,7 +36,7 @@ export default class customRowCampaigns extends React.Component {
 
             <div class="col-lg-4 actions">
               <IndexLink to={url}><Button bsSize="small">Edit</Button></IndexLink>
-              <IndexLink to={delURL}><Button bsSize="small">Delete</Button></IndexLink>
+              <Button bsSize="small" onClick={()=>{deleteElement(_id)}}>Delete</Button>
               <IndexLink to={viewURL}><Button bsSize="small" bsStyle="success">View</Button></IndexLink>
             </div>
            </div>

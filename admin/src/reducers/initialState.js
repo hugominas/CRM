@@ -15,6 +15,7 @@ export default {
       +'-'+thisDate.getFullYear())
     },
     leads:{},
+    expanded:'',
     campaigns:{
       _id:'',
       local:'',
@@ -23,6 +24,7 @@ export default {
     },
     users:{},
     data:{
+      overview:[],
       leads:[],
       campaigns:[],
       users:[]

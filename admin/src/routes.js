@@ -7,6 +7,7 @@ import LeadsEdit from "./containers/Leads/edit";
 import EditCampaigns from "./containers/Campaigns/editCampaigns";
 
 import Users from "./containers/Users";
+import EditUsers from "./containers/Users/editUsers";
 import Settings from "./containers/Settings";
 import Dashboard from "./containers/Dashboard";
 import layout from "./containers/Layout";
@@ -32,9 +33,8 @@ export default (
         <Route path="leads/edit/:leadid" component={Leads}></Route>
 
         <Route path="users" component={Users}></Route>
-        <Route path="users/add" component={Users}></Route>
-        <Route path="users/:campid/:userid" component={Users}></Route>
-        <Route path="users/:userid" component={Users}></Route>
+        <Route path="users/add" component={EditUsers}></Route>
+        <Route path="users/:userid" component={EditUsers}></Route>
 
         <Route path="settings" component={Settings}></Route>
 

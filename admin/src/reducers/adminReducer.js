@@ -1,4 +1,4 @@
-import {UPDATE_DATA, UPDATE_DATE, DELETE_DATA, UPDATE_SELECTOR, UPDATE_DATA_SINGLE, UPDATE_FORM, UPDATE_PAGER} from '../actions/actionTypes';
+import {UPDATE_DATA, UPDATE_DATE, DELETE_DATA, UPDATE_SELECTOR, UPDATE_DATA_SINGLE, UPDATE_FORM, UPDATE_PAGER, UPDATE_SELECTED} from '../actions/actionTypes';
 //import calculator from '../utils/fuelSavingsCalculator';
 import objectAssign from 'object-assign';
 import initialState from './initialState';
@@ -27,6 +27,7 @@ export default function adminReducer(state = initialState.admin, action) {
 
       }
 
+
       //MAKE THE CHANGES
       newState.data[action.what] = action.result.data.data;
       newState.pager= {... newState.pager, totalItems:total, totalPages:totalPages }
@@ -34,9 +35,14 @@ export default function adminReducer(state = initialState.admin, action) {
       return newState;
 
       break;
-    case UPDATE_DATA_SINGLE:
+      case UPDATE_DATA_SINGLE:
       //MAKE THE CHANGES
       return objectAssign({}, state, {[action.what]: action.result.data.data[0]});
+
+      break;
+      case UPDATE_SELECTED:
+      //MAKE THE CHANGES
+        return {... state, expanded: action.id}
 
       break;
       case UPDATE_FORM:
@@ -50,12 +56,16 @@ export default function adminReducer(state = initialState.admin, action) {
         return {... state, pager: action.pager}
       break;
       case DELETE_DATA:
-
+      //add ploral to affect the correct element
+      action.what = (action.what=='lead')?'leads':action.what
+      //return correct element
       return {
          ...state,
          data : {
              ...state.data,
-             [action.what] : state.data[action.what].filter((ele)=>{return (ele._id!=action.id)})
+             [action.what] : state.data[action.what].filter((ele)=>{
+               console.log(ele._id,action.id);
+               return (ele._id!=action.id)})
          }
        }
       break;

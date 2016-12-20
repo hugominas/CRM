@@ -3,19 +3,24 @@ import axios from "axios";
 import { push } from 'react-router-redux'
 import {toastr} from 'react-redux-toastr'
 
-export function get(what, id='', pager={page:0,items:10,sort:'date',startDate:'00-00-0000',endDate:'00-00-0000'}, exportData=false) {
+//axios.defaults.baseURL = 'http://localhost:3007'
+axios.defaults.baseURL = 'http://admin.energia-galp.com'
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+//WORKS FOR CROSSDOMAIN
+axios.defaults.withCredentials = true;
 
+export function get(what, id='', pager={page:0,items:10,sort:'date',startDate:'00-00-0000',endDate:'00-00-0000'}, exportData=false) {
   return function(dispatch) {
     ///api/{what}/{page}/{items}/{sort}/{startDate}/{endDate}/
-    pager.startDate=pager.startDate.replace(/-/g, '');
-    pager.endDate=pager.endDate.replace(/-/g, '');
+    let startDate=pager.startDate.replace(/-/g, '');
+    let endDate=pager.endDate.replace(/-/g, '');
     //create query URL
-    let queryURL = ['api',what, pager.page, pager.items, pager.sort,pager.startDate, pager.endDate, exportData, id]
+    let queryURL = ['api',what, pager.page, pager.items, pager.sort,startDate, endDate, exportData, id]
     .join('/');
 
     axios({
       method: 'get',
-      url: queryURL
+      url: '/'+queryURL
     }).then((result)=>{
       //if not logedin
       if(result.data.data == 'not logedin'){
@@ -23,32 +28,33 @@ export function get(what, id='', pager={page:0,items:10,sort:'date',startDate:'0
       }else{
         //toastr.success('Updated data', what+' updated');
         //dispatch data
-        dispatch({
-          type: (id!='')?types.UPDATE_DATA_SINGLE:types.UPDATE_DATA,
-          what,
-          result,
-        });
+
+        if(!exportData)
+          dispatch({
+            type: (id!='' && what!=='leads')?types.UPDATE_DATA_SINGLE:types.UPDATE_DATA,
+            what,
+            result,
+          });
       }
 
-    }).catch((result)=>{
-      //if not logedin
-      if(result.data && result.data.data == 'not logedin'){
-        dispatch(push('/'))
-      }else if(result.data){
-        //dispatch data
-        dispatch({
-          type: (id!='')?types.UPDATE_DATA_SINGLE:types.UPDATE_DATA,
-          what,
-          result,
-        });
-      }
-
+    }).catch((err)=>{
+      //console.log(err)
     });
 
   };
 
 }
 
+
+export function exportData(what, id='', pager={page:0,items:10,sort:'date',startDate:'00-00-0000',endDate:'00-00-0000'}, exportData=false) {
+    ///api/{what}/{page}/{items}/{sort}/{startDate}/{endDate}/
+    let startDate=pager.startDate.replace(/-/g, '');
+    let endDate=pager.endDate.replace(/-/g, '');
+    //create query URL
+    let queryURL = [axios.defaults.baseURL,'api',what, pager.page, pager.items, pager.sort,startDate, endDate, exportData, id]
+    .join('/');
+    window.open(queryURL, '_blank')
+}
 
 export function set(what,data,id='') {
   return function(dispatch) {

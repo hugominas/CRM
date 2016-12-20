@@ -2,27 +2,23 @@ import React from "react";
 import { connect } from "react-redux"
 import DocumentTitle from 'react-document-title';
 
-//import { Button, ButtonToolbar } from 'react-bootstrap';
-import tableEditDelete from "../../components/Layout/tableEditDelete";
-import * as actions from '../../actions/adminActions';
-import ActionsToolbar from '../../components/Layout/ActionsToolbar';
-import customRowUsers from '../../components/Layout/customRowUsers';
+import CustomRowUsers from '../../components/Layout/customRowUsers';
 
-import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
+import tableEditDelete from "../../components/Layout/tableEditDelete";
+import ActionsToolbar from '../../components/Layout/ActionsToolbar';
+
+import * as types from '../../actions/actionTypes';
+import * as actions from '../../actions/adminActions';
+
+import {Col, Pagination } from 'react-bootstrap';
+
 
 
 @connect((store) => {
-  console.log(store.admin)
   return {
-    data : (store.admin.data.users || []),
-    columnMeta:   [{
-      "columnName": "_id",
-      "order": 9999,
-      "locked": false,
-      "visible": true,
-      component:'users',
-      "customComponent": tableEditDelete
-    }]
+    data : store.admin.data.users,
+    pager: store.admin.pager,
+    expanded: store.admin.expanded
   };
 })
 
@@ -30,59 +26,80 @@ import { BootstrapPager, GriddleBootstrap } from 'griddle-react-bootstrap';
 export default class Users extends React.Component {
   constructor (){
     super();
-    //SetState
 
+  }
+
+
+  componentDidUpdate(prevProps, prevState){
+    if(prevProps.pager.startDate !== this.props.startDate
+      || prevProps.pager.endDate !== this.props.endDate ){
+        this.props.dispatch(actions.get('users',this.props.params.campid,{... this.props.pager}));
+      }
   }
 
   componentWillMount() {
-    this.props.dispatch(actions.get('users'));
+    this.props.dispatch(actions.get('users',this.props.params.campid,{... this.props.pager, page:0}));
   }
 
-  componentWillUnmount() {
-    //this.isUnmounted = true;
-    //LeadStore.removeListener("change", this.getExternalData.bind(this));
+  deleteElement (id){
+    this.props.dispatch(actions.del('users',id));
   }
 
-  getExternalData (){
-    /*if(!this.isUnmounted ){
-      this.setState({data:LeadStore.get('users')})
-    }*/
+  exportDataURL(){
+    this.props.dispatch(actions.exportData('users',this.props.params.campid,{... this.props.pager},true));
+  }
+
+  handleSelect (pagenum){
+    pagenum = pagenum-1;
+    this.props.dispatch({
+      type: types.UPDATE_PAGER,
+      pager: {... this.props.pager, page:pagenum}
+    });
+    this.props.dispatch(actions.get('users','',{... this.props.pager, page:pagenum}));
   }
 
 
-  setPage (index){
-    //This should interact with the data source to get the page at the given index
-    index = index > this.props.maxPages ? this.props.maxPages : index < 1 ? 1 : index + 1;
-    //this.getExternalData(index);
+  expandElement(_id){
+    this.props.dispatch({
+      type: types.UPDATE_SELECTED,
+      id: _id
+    });
   }
 
-  setPageSize (size){
+  workElements (data){
+    let a = 0;
+    return data.map((ele)=>{
+        a++;
+        return <CustomRowUsers key={ele._id+a}
+        element="users"
+        expanded={(this.props.expanded==ele._id)}
+        expandElement={this.expandElement.bind(this)}
+        deleteElement={this.deleteElement.bind(this)}
+        {... ele} />
+    })
   }
 
   render() {
-    let button = (typeof this.props.data !== 'undefined')?<ActionsToolbar data='campaigns' />:'';
+    let button = (typeof this.props.data !== 'undefined')?<ActionsToolbar data='users' exportData={()=>this.exportDataURL().bind(this)} />:'';
+
+    let grid = this.workElements(this.props.data);
+
     return (
       <DocumentTitle title={'Users'}>
-        <div class="upContainer">
+      <div class="upContainer">
           {button}
-          <GriddleBootstrap
-              hover={true}
-              striped={true}
-              bordered={false}
-              condensed={false}
-              showFilter={true}
-              showSettings={true}
-
-              useCustomRowComponent={true}
-              customRowComponent={customRowUsers}
-              enableToggleCustom={true}
-              resultsPerPage={10}
-
-              pagerOptions={{ maxButtons: 7 }}
-              customPagerComponent={ BootstrapPager }
-              columnMetadata={this.props.columnMeta}
-              results={this.props.data}
-              />
+          {grid}
+          <Pagination
+            prev
+            next
+            first
+            last
+            ellipsis
+            boundaryLinks
+            items={this.props.pager.totalPages}
+            maxButtons={7}
+            activePage={this.props.pager.page}
+            onSelect={this.handleSelect.bind(this)} />
         </div>
       </DocumentTitle>
     );
