@@ -4,6 +4,11 @@
 sudo apt-get update
 sudo apt-get install -y git expect build-essential
 
+# install nginx
+sudo apt-get install -y nginx
+sudo cp /vagrant/default.conf /etc/nginx/sites-available/default
+sudo service nginx restart
+
 # install nvm
 sudo apt-get install -y git-core curl
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.2/install.sh | bash
@@ -14,14 +19,13 @@ source /home/vagrant/.profile
 nvm install 6.2.2
 nvm alias default 6.2.2
 
-# add project to folder
+# install mongod
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
+echo "deb [ arch=amd64 ] http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
+sudo apt-get update
+sudo apt-get install -y mongodb-org
+sudo service mongod start
 
-mkdir hacks
-cd hacks
-#sudo cp -vr /vagrant/angular2 ./
-#sudo chown -R vagrant:vagrant ./
-#cd angular2
-#npm install -g typescript typings
-npm install
+# add project to folder
 
 echo "------ done ------"
