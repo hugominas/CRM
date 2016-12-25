@@ -4,6 +4,8 @@ const sha256 = require('js-sha256');
 const Joi = require('joi');
 const api  = require('./api').api;
 const Conf  = require('../conf/conf').config;
+const jwt = require('jsonwebtoken');
+const mDB = require('mongodb');
 
 //constructor
 function adminApp (){
@@ -12,6 +14,7 @@ function adminApp (){
 
 //method
 adminApp.prototype.adminRoute = {
+    auth: false ,
     handler: {
      directory: {
        path: '../admin/dist',
@@ -24,6 +27,7 @@ adminApp.prototype.adminRoute = {
 adminApp.prototype.auth = function(){
   let _this = this;
   return {
+    auth: false ,
 
     validate: {
         params: {
@@ -42,7 +46,8 @@ adminApp.prototype.auth = function(){
             _this.authCheck(user,sha256(password+Conf.secret)).then((u)=>{
               delete u[0].password;
               request.yar.set('user', u[0]);
-              reply({status:'OK',data:'loged in'}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
+              let token = _this.getToken(u[0]._id);
+              reply({status:'OK',token: token, data:'loged in'}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
             }).catch((err)=>{
               reply({status:'NOK',data:err}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
             })
@@ -52,10 +57,37 @@ adminApp.prototype.auth = function(){
 }
 
 adminApp.prototype.logout = {
+    auth: 'jwt',
     handler: function(request, reply) {
       request.yar.clear('user');
       reply({status:'OK',data:'user loggedout'}).header("P3P", "CP=IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
     }
+}
+
+
+adminApp.prototype.getToken = function (id) {
+  let secretKey = Conf.tokenSecret;
+
+  return jwt.sign({
+    id: id
+  }, secretKey, {expiresIn: '18h'});
+}
+
+adminApp.prototype.validateUser = function (id) {
+  return new Promise((resolve, reject) => {
+    let Db = require('../conf/db').dbTrackLocal();
+    Db.collection('users').find({_id: mDB.ObjectId(id)})
+     .then((u)=>{
+       if(u.length==0){
+         reject(u);
+       }else{
+         resolve(u);
+       }
+     }).catch((err)=>{
+       reject(err);
+     })
+   })
+
 }
 
 adminApp.prototype.authCheck = function(user,password){

@@ -34,6 +34,7 @@ apiApp.prototype.CRUD = function() {
   // VALIDATE ROUTE
   ///api/{what}/{page}/{items}/{sort}/{startDate}/{endDate}/
   return {
+    auth: 'jwt',
     validate: {
         params: {
           what: Joi.string(),
@@ -110,7 +111,7 @@ apiApp.prototype.CRUD = function() {
           data:(request.payload)?request.payload.data:'',
           credentials:_this.requestSession
         }
-        
+
         if(request.params.exportData)params.items=-1;
         objMethods[request.method](params)
         .then((response)=>{

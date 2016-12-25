@@ -1,10 +1,10 @@
-import * as types from './actionTypes';
-import axios from "axios";
+import * as types from './actionTypes'
+import axios from "axios"
 import { push } from 'react-router-redux'
 import {toastr} from 'react-redux-toastr'
+import cookie from 'react-cookie'
 
 axios.defaults.baseURL = 'http://localhost:3007'
-//axios.defaults.baseURL = 'http://admin.energia-galp.com'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 //WORKS FOR CROSSDOMAIN
 axios.defaults.withCredentials = true;
@@ -20,6 +20,7 @@ export function get(what, id='', pager={page:0,items:10,sort:'date',startDate:'0
 
     axios({
       method: 'get',
+      headers: { 'Authorization': cookie.load('token') },
       url: '/'+queryURL
     }).then((result)=>{
       //if not logedin
@@ -62,6 +63,7 @@ export function set(what,data,id='') {
     axios({
       method: 'put',
       url: '/api/'+what+((id)?'/'+id:''),
+      headers: { 'Authorization': cookie.load('token') },
       data: {
         data
       }
@@ -102,6 +104,7 @@ export function del(what,id) {
         axios({
           method: 'delete',
           url: '/api/'+what+((id)?'/'+id:''),
+          headers: { 'Authorization': cookie.load('token') },
         }).then((act)=>{
           toastr.success('Succeful', what+' deleted');
           //dispatch data

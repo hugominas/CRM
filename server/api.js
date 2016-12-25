@@ -1,11 +1,12 @@
 'use strict';
-const Hapi 		= require("hapi");
+const Hapi 			= require("hapi");
 const Yar 			= require("yar");
 const Checks 		= require("./conf/init").systemCheck;
-const routes 	= require('./routes');
-const Inert = require('inert');
+const Conf 			= require("./conf/conf").config;
+const routes 		= require('./routes');
+const Inert			= require('inert');
+const UCheck			= require('./controlers/admin').admin;
 const corsHeaders = require('hapi-cors-headers')
-
 
 const options 	= {
 		server: {
@@ -50,6 +51,42 @@ const options 	= {
 			options: options.cookie
 		}], function(err) {});
 
+
+	// bring your own validation function
+	var validate = function (decoded, request, callback) {
+			//IF we have sesion don't check user
+			if(request.yar.get('user')){
+				return callback(null, true);
+			}else{
+				UCheck.validateUser(decoded.id).then((u) =>{
+					console.log('in',u)
+					return callback(null, true);
+				}).catch((err)=>{
+					console.log('out',err)
+					return callback(null, false);
+				})
+			}
+	};
+
+	// include our module here ↓↓
+server.register(require('hapi-auth-jwt2'), function (err) {
+
+		if(err){
+			console.log(err);
+		}
+
+		server.auth.strategy('jwt', 'jwt',
+			{ key: Conf.tokenSecret,          // Never Share your secret key
+				validateFunc: validate,            // validate function defined above
+				verifyOptions: { algorithms: [ 'HS256' ] } // pick a strong algorithm
+		});
+
+		server.auth.default('jwt');
+
+		server.route(routes.endpoints);
+
+})
+
 	server.ext('onPreResponse', corsHeaders)
 
 
@@ -58,7 +95,6 @@ const options 	= {
 		//console.log('✖ Caught exception [' + new Date() + ']: ' + err);
 	//});
 
-	server.route(routes.endpoints);
 	server.start();
 	/// ADD THIS TO MAIN INDEX
 	console.log('✓ server started succefully at http://localhost:3007/');

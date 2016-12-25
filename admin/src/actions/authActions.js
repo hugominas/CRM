@@ -2,9 +2,9 @@ import * as types from './actionTypes';
 import axios from "axios";
 import {  push } from 'react-router-redux'
 import {toastr} from 'react-redux-toastr'
+import cookie from 'react-cookie'
 
 //TEMp
-//axios.defaults.baseURL = 'http://admin.energia-galp.com'
 axios.defaults.baseURL = 'http://localhost:3007'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 //WORKS FOR CROSSDOMAIN
@@ -25,6 +25,7 @@ export function sendLogin(email,password) {
           if(result.data.status=='OK'){
             localStorage.login = Date.now();
             toastr.success('Login', 'you have successfuly logged in');
+            cookie.save('token', result.data.token, { path: '/' });
             dispatch({
               type: types.AUTH_USER,
               result:'OK'
@@ -53,6 +54,7 @@ export function sendLogout() {
         result:'OK',
       });
       toastr.warning('Warning', 'you have been succefully logedout');
+      cookie.remove('token', { path: '/' });
       localStorage.login='';
       dispatch(push('/'))
 

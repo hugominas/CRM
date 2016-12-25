@@ -44,7 +44,7 @@ systemCheck.prototype.chekckAdminUser = function() {
     let options = {email:Conf.adminEmail, group:'admin'}
     Api.get({q:{db:'users',query:{email:Conf.adminEmail}}, credentials:options})
     .then((resultArr)=>{
-      if(resultArr.length<1){
+      if(resultArr.length<1 || resultArr[0].count<1 ){
         console.log('✖ admin user not found')
         this.setAdminUser().then(()=>{
           resolve(resultArr);

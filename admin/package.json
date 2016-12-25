@@ -26,6 +26,7 @@
     "react-bootstrap": "^0.30.6",
     "react-chartjs": "^0.8.0",
     "react-chartjs-2": "^1.6.2",
+    "react-cookie": "^1.0.4",
     "react-date-picker": "^5.3.28",
     "react-document-title": "^2.0.2",
     "react-dom": "^15.4.1",

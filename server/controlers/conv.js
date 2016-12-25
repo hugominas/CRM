@@ -21,6 +21,7 @@ trackData.prototype.convRoute = function() {
   let _this = this;
   // VALIDATE ROUTE
   return {
+    auth: false ,
     validate: {
         params: {
           campid: this.Joi.string().regex(/^[0-9a-fA-F]{24}$/),

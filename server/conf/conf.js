@@ -7,5 +7,6 @@ exports.config = {
     dbName : 'PSAPI',
     adminEmail: 'admin@admin.com',
     adminPassword: '12345',
-    secret: 'ZKJeD:R4(Zoxz66,Jz4e1,6p+0q~52o+%R7@9*C^5qa83+."lRj|t[/-Ym:asdas'
+    secret: 'ZKJeD:R4(Zoxz66,Jz4e1,6p+0q~52o+%R7@9*C^5qa83+."lRj|t[/-Ym',
+    tokenSecret:'FzjXcNLCuBXKtDDRlJDcvXxdi0j6sHNfwHsNRCdv0qg1BLjbvMWF6qr8Ik20Hmv'
 }
